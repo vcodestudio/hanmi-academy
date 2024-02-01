@@ -1,0 +1,29 @@
+//layout
+@pad: 1rem;
+//media
+@cont_width: 1200px;
+@mob_width: 765px;
+@pc_width: @mob_width+1;
+@phone_width: 650px;
+@pc:~ "screen and (min-width:@{pc_width})";
+@mobile:~ "screen and (max-width:@{mob_width})";
+@phone:~ "screen and (max-width:@{phone_width})";
+@cont:~ "screen and (max-width:@{cont_width})";
+//font
+@b: 700;
+@med: 500;
+@reg: 400;
+@light: 300;
+//color
+@text-sub: #888;
+@text-w-80: fade(#fff, 80%);
+@text-w-40: fade(#fff, 40%);
+@line-sub: fade(#000, 10%);
+@line-prim: fade(#000, 40%);
+@fill-sub: #f6f6f6;
+@pattern-chips: #687d94, #889b91, #6f2e2a, #a18f8e;
+@aprim: #5fb800;
+
+//gap
+@gaps: 0, 4, 8, 12, 16, 24, 28, 30, 32, 36, 40, 60;
+@gaps-r: 1, 2, 3, 4, 5;

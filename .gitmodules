@@ -1,0 +1,3 @@
+[submodule "src/hanmi-components"]
+	path = src/hanmi-components
+	url = https://github.com/vcodestudio/hanmi-components.git

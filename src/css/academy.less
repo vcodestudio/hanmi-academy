@@ -1,0 +1,254 @@
+// academy
+*[fade] {
+  transition: 0.6s;
+  &:not(.fade-active) {
+    opacity: 0;
+    transform: translate(0, 100px);
+  }
+}
+.main_activity {
+  padding-bottom: 60px;
+  overflow: visible;
+}
+.prim {
+  color: @aprim;
+}
+.w-full {
+  width: 100%;
+}
+
+.archive-list {
+  & > .item {
+    &:first-child {
+      padding-top: 0;
+    }
+    &:last-child {
+      padding-bottom: 0;
+    }
+    &:hover:not(.active) {
+      .a-title {
+        p,
+        svg {
+          &,
+          & * {
+            color: @aprim!important;
+          }
+        }
+      }
+    }
+
+    // insert line between items
+    &:not(:last-child) {
+      border-bottom: 1px solid @text-sub;
+    }
+
+    .a-title {
+      padding: 24px 0;
+      cursor: pointer;
+      align-items: center;
+      @media @mobile {
+        p {
+          line-height: 1.5em;
+        }
+        gap: 16px;
+      }
+      & > * {
+        @media not @mobile {
+          .single-line;
+          &:not(:last-child) {
+            flex: 1;
+          }
+        }
+        @media @mobile {
+          &:first-child {
+            flex: auto;
+          }
+        }
+      }
+    }
+    .a-content {
+      padding-right: (24 + 16px);
+      padding-bottom: 24px;
+      p {
+        margin-bottom: 1.5em;
+      }
+      img {
+        width: 100%;
+      }
+      & > * {
+        &:nth-child(1) {
+          flex: 1;
+        }
+        &:nth-child(2) {
+          flex: 2;
+        }
+      }
+    }
+
+    .icon {
+      //   transition: 0.3s;
+    }
+
+    &.active {
+      .a-title {
+        .icon {
+          transform: rotate(180deg);
+        }
+      }
+      .a-content {
+        display: flex;
+      }
+    }
+
+    &:not(.active) {
+      .a-content {
+        display: none;
+      }
+    }
+  }
+}
+
+.gallery-grid {
+  .alert {
+    width: 70px;
+    height: 70px;
+    background: #000;
+    font-size: 16px;
+    color: @aprim;
+    text-align: center;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    transform: translate(-0.3em, 0.3em);
+  }
+  .item {
+    --width: 100%;
+    padding-bottom: var(--width);
+  }
+}
+
+.img_overlay {
+  &:not([type="zoom"]) .zoom_ {
+    display: none;
+  }
+  &:not([type="gall"]) .gall_ {
+    display: none;
+  }
+
+  .ov_gall {
+    width: calc(~"100vw - 2em");
+    max-width: 750px;
+    .swiper-slide {
+      width: 100%;
+      position: relative;
+      height: 0;
+      padding-bottom: 55%;
+      img {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.about {
+  ._text {
+    font-size: min(6vw, 40px);
+    line-height: 1.5em;
+    @media @mobile {
+      br {
+        display: none;
+      }
+    }
+  }
+  ._content {
+    h4 {
+    }
+    p {
+      @media @pc {
+        font-size: 24px;
+        line-height: 1.8em;
+      }
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.post_exhibition {
+  ._content {
+    background: #f6f6f6;
+    padding: 32px 0;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  ._square {
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.m {
+  @media @mobile {
+    &-hori_scroll {
+      overflow: scroll;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 16px;
+      margin-left: -1rem;
+      width: calc(~"100% + 2rem");
+      padding: 0 100vw 0 1rem;
+      & > .item {
+        flex: none;
+        --width: 240px;
+        width: var(--width);
+        padding-bottom: var(--width);
+
+        user-select: none;
+        -webkit-user-drag: none;
+
+        h6 {
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+.index {
+  & > div {
+    @media @mobile {
+      padding: 24px 0;
+    }
+  }
+}
+
+.sticky-wrapper {
+  position: relative;
+  .sticky {
+    position: absolute;
+    top: 0;
+    @media @mobile {
+      position: static;
+    }
+  }
+}
