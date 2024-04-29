@@ -28,19 +28,15 @@ $tags[] = [
     "link"=>"/",
     "label"=>get_post_type_label($pi)
 ];
-if($f = get_field("location",$pi)) $tags[] = [
-    "label"=>$f->name
-];
-if($f = get_field("program_theme",$pi)) $tags[] = [
-    "label"=>$f->name
-];
-if($f = get_field("relative_program",$pi)) $tags[] = [
-    "label"=>"연계 프로그램"
-];
-if($f = get_field("relative_exhibition",$pi)) $tags[] = [
-    "label"=>"연계 전시"
-];
-$tags = array_slice($tags,0,3);
+$fields = ["location", "program_theme", "relative_program", "relative_exhibition"];
+foreach ($fields as $field) {
+    if ($f = get_field($field, $pi)) {
+        $tags[] = [
+            "label" => $f->name
+        ];
+    }
+}
+$tags = array_slice($tags, 0, 3);
 ?>
 <div class="col gap-8">
     <?php foreach($tags as $tag): ?>

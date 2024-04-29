@@ -17,7 +17,7 @@ $views = get_post_meta(get_the_ID(), "views", true);
         if(_acf("thumb")):
     ?>
     <div class="img-banner">
-        <img src="<?= _acf("thumb")["sizes"]["detail_slider"] ?? getImg("error") ?>"/>
+        <img src="<?= _acf("thumb")["sizes"]["detail_slider"] ?>"/>
     </div>
     <?php
         endif;

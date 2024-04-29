@@ -104,10 +104,16 @@ function customSetPostViews() {
     }
 }
 
-function get_post_type_label($post) {
-	$type = get_post_type($post);
-	global $wp_post_types;
-	return $wp_post_types[$type]->labels->singular_name;
+/**
+ * Get the post views
+ * @param int $postID
+ */
+function get_post_type_label($postID) {
+	$post = get_post($postID);
+	$post_type = get_post_type_object($post->post_type);
+	// if no label, set it "게시물"
+	$out = $post_type->label ?? "";
+	return $out;
 }
 
 function sendMail($to = "",$subject="",$message="") {
@@ -139,41 +145,6 @@ function map_artist($arr) {
 	return implode(",",$map);
 }
 
-//front page
-// if(!is_admin() && strlen(strstr($_SERVER['HTTP_USER_AGENT'],"Yeti")) <= 0 ){ // if not Naver
-// 	//do something
-// 	if((!is_404() && !_bot_detected() && get_the_ID() != getPage("front")->ID) && get_field("front_active","option")):
-// 		$skey = "frontgate";
-// 		session_start();
-// 		if(!isset($_SESSION[$skey])) {
-// 			$_SESSION[$skey] = true;
-// 			$gate_page = getPage("front");
-// 			wp_redirect(get_permalink($gate_page));
-// 			exit;
-// 		}
-// 	endif;
-// }
-// function getWhatsOn() {
-// 	$posts = get_posts([
-// 		"post_type"=>["post_exhibition","post_program"],
-// 		"post_status"=>"publish",
-// 		"meta_query"=>[
-// 			'relation'=>"AND",
-// 			[
-// 				"key"=>"end",
-// 				"value"=>date("Y-m-d"),
-// 				"compare"=>">=",
-// 				"type"=>"DATE"
-// 			],
-// 			[
-// 				"key"=>"permanent",
-// 				"value"=>"1",
-// 				"compare"=>"!="
-// 			]
-// 		]
-// 	]);
-// 	return $posts;
-// }
 function get_start_end_format($post) {
 	$start = _acf("start",$post);
 	$end = _acf("end",$post);

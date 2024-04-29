@@ -55,8 +55,11 @@ $currentPost = get_post();
             <code class="displaynone">
                 <?php
                 $imgs=[];
+                /**
+                 * $img is the image object
+                 */
                 foreach(_acf("gallery") as $img):
-                    $imgs[] = img_src($img,"large");
+                    $imgs[] = get_img_url($img);
                 endforeach;
                 echo implode(",",$imgs);
                 ?>

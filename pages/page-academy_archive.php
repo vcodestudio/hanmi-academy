@@ -22,7 +22,7 @@
                 <p class="pc"><?= $info["project_name"] ?></p>
                 <p><?= $info["date_start"] ?><br class="mob">~<?= $info["date_end"] ?></p>
                 <div>
-                    <?= icon_svg("chevron_w/down","icon") ?>
+                    <?= icon("chevron_w/down","icon") ?>
                 </div>
             </div>
             <div class="col gap-16 a-content">

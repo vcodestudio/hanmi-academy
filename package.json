@@ -4,6 +4,7 @@
     "dev": "webpack --watch --mode=development"
   },
   "dependencies": {
+    "@prettier/plugin-php": "^0.22.2",
     "gsap": "^3.12.1",
     "jquery": "^3.6.1",
     "query-string": "^7.1.1",
