@@ -1,4 +1,4 @@
-<a href="<?= get_permalink() ?>" class="item flex gap-24 reg">
+<a href="#" class="item flex gap-24 reg">
 <div class="flex-none">
     <img src="<?= _acf("thumb")["sizes"]["large"] ?? getImg() ?>"/>
 </div>
@@ -9,7 +9,7 @@
             <h6><?= get_post_type_label(get_the_ID()) ?></h6>
         </div>
         <h4><?= get_the_title() ?></h4>
-        <p class="fade light">
+        <p class="fade">
             <?= _acf("start") ?> - <?= _acf("end") ?>
         </p>
     </div>

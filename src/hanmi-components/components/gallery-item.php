@@ -7,14 +7,8 @@
             </div>
             <div class="meta row gap-16">
                 <div class="stat">
-                    <?php if(isset($arg["location"])): ?><h6 class="bold"><?= $arg['location'] ?></h6><?php endif; ?>
-                    <?php
-                        if(isset($arg["state"])):
-                    ?>
-                        <h6 class="bold"><?= $arg['state'] ?></h6>
-                        <?php
-                            endif;
-                        ?>
+                    <h6 class="bold"><?= $arg['location'] ?></h6>
+                    <h6 class="bold"><?= $arg['state'] ?></h6>
                 </div>
                 <h4><?= $arg['title'] ?></h4>
                 <h6 class="text-sub single-line"><?=$arg['start'].". ".yoil($arg['start']) ?> ~ <?=$arg['end'].". ".yoil($arg['end'])?></h6>

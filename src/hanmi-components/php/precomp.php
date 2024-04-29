@@ -9,8 +9,6 @@ define("DIR_MODULE",DIR.'/src/hanmi-components');
 
 add_filter("show_admin_bar","__return_false");
 if(file_exists(DIR_MODULE."/php/admin.php")) include DIR_MODULE."/php/admin.php";
-if(file_exists(DIR_MODULE."/php/post_type.php")) include_once DIR_MODULE."/php/post_type.php";
-if(file_exists(DIR_MODULE."/php/acf.php")) include_once DIR_MODULE."/php/acf.php";
 
 if(!is_admin()) {
 	if(file_exists(DIR_SRC.'/js/dist/app.css'))
@@ -23,6 +21,14 @@ class HM {
 	static $logo_w = SRC."/imgs/logo/typo_w.svg";
 	static $symbol = SRC."/imgs/logo/symbol.svg";
 	static $lab_logo = SRC."/imgs/logo/symbol.svg";
+
+	// static function. can call MH::getLogo();
+	static function getLogo($str) {
+		$path = DIR_SRC."/imgs/logo/${str}.svg";
+		if(file_exists($path)) $path = SRC."/imgs/logo/${str}.svg";
+		else $path = SRC_MODULE."/imgs/logo/error.svg";
+		return $path;
+	}
 }
 
 function _acf($str,$id=0) {
@@ -53,19 +59,9 @@ function img($obj = [],$size = 'large',$empty=[]) {
 			return comp("img",['id'=>$id, 'size'=>$size]);
 	} else {
 		?>
-			<img src="<?= getImg("empty.svg") ?>" class="empty" loading="lazy" />
+			<img src="<?= getImg("empty.svg") ?>" class="empty" />
 		<?php
 			}
-}
-function img_src($obj = [],$size = 'large',$empty=[]) {
-	$id = 0;
-	if((empty($obj)||!$obj)&&!empty($empty)) $obj = $empty;
-	switch(gettype($obj)) {
-		case "integer": $id = $obj; break;
-		case "array": $id = $obj['id']; break;
-	}
-	$img = wp_get_attachment_image_url($id,$size);
-	return $img;
 }
 function getImg($str = "error.svg") {
 	$path = DIR_SRC."/imgs/system/{$str}";
@@ -73,27 +69,10 @@ function getImg($str = "error.svg") {
 	else $path = SRC_MODULE."/imgs/system/error.svg";
 	return $path;
 }
-/**
- * @param string $str 아이콘이름
- * @param string $class 클래스명
- * @return string <img class="$class" src="DIR_MODULE."/imgs/icons/${str}.svg"/>
- */
 function icon($str, $class= '') {
 	$url = DIR_MODULE."/imgs/icons/${str}.svg";
 	$url = (file_exists($url))? SRC_MODULE."/imgs/icons/${str}.svg" : SRC_MODULE.'/imgs/system/empty.svg';
 	return "<img class='${class}' src='${url}'/>";
-}
-function icon_svg($str, $class= '') {
-	$url = DIR_MODULE."/imgs/icons/${str}.svg";
-	if(file_exists($url)) {
-		$html = file_get_contents($url);
-		$html = str_replace("<svg","<svg class='icon'",$html);
-		// replace fill="..." to fill="currentColor"
-		$html = preg_replace("/fill=\"(.*?)\"/","fill=\"currentColor\"",$html);
-		return $html;
-	} else {
-		return "";
-	}
 }
 function comp($name='',$arg = []) {
 	$html = "";
@@ -134,6 +113,7 @@ function getDateRange() {
 	$s = _acf("start");
 	$e = _acf("end");
 	$end = ($e)?" ~ ".$e.". ".yoil($e):"";
+	if($s == $e) $end = "";
 	return $s.". ".yoil($s).$end;
 }
 function getDateState($post = null) {

@@ -248,7 +248,7 @@
         .back {
           width: 100%;
           padding-bottom: 52%;
-          height: 0;
+          height: 0px;
           position: relative;
           background: #ddd;
           @media @mobile {
@@ -413,6 +413,10 @@
 .accordion {
   border-top: 1px solid fade(#000, 40%);
   padding-top: 32px;
+  &.compet {
+    border-color: hsl(0 0% 60% / 1);
+    padding-top: 1rem;
+  }
   @media @mobile {
     padding-top: 24px;
     &.col {
@@ -753,7 +757,6 @@
 }
 input[type="submit"],
 button,
-.woocommerce .button,
 .button {
   display: flex;
   gap: 8px;
@@ -770,7 +773,15 @@ button,
   line-height: 1em;
   cursor: pointer;
   &.rect {
-    padding: (3/4rem);
+    padding: (0.5em);
+  }
+  &.small {
+    font-size: 0.7rem;
+    svg,
+    img {
+      height: 1em;
+      width: auto;
+    }
   }
   &:disabled,
   &[disabled="disabled"] {
@@ -866,7 +877,8 @@ button,
       }
     }
   }
-  &.r {
+  &.r,
+  &.rounded {
     border-radius: 3em;
     @media @mobile {
       padding: 6px 1rem;
@@ -1110,8 +1122,7 @@ input[type="radio"] {
         @media @phone {
           flex-direction: column;
           input[type="text"],
-          input[type="number"],
-          input[type="tel"] {
+          input[type="number"] {
             flex: auto;
             width: 100%;
           }
@@ -1215,18 +1226,6 @@ input[type="radio"] {
           max-width: 100%;
           object-fit: cover;
           box-shadow: 0 0 1rem fade(#000, 20%);
-        }
-      }
-    }
-  }
-}
-.activity-list {
-  .publish-list;
-  .item {
-    .thumb {
-      & > div {
-        img {
-          box-shadow: none;
         }
       }
     }
@@ -1808,42 +1807,5 @@ div.disabled {
 }
 
 //woocommerce
-.wc_style {
-  .button {
-    background: #000;
-    color: #fff;
-  }
-  #payment {
-    background: #fff;
-  }
-  .form-row.place-order {
-    padding: 0;
-    border-top: 1px solid #000;
-    padding-top: 24px;
-  }
-  .woocommerce-message {
-    border-top: 0;
-    color: #000;
-    font-weight: 500;
-    &::before {
-      color: #000;
-    }
-  }
-  h3 {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 8px;
-  }
-  .woocommerce-billing-fields__field-wrapper {
-    p {
-      width: 100%;
-    }
-  }
-  table.shop_table {
-    margin-bottom: 32px;
-  }
-}
-.woocommerce {
-  .wc_style !important;
+.order-actions {
 }

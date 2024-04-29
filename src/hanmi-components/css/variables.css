@@ -1,0 +1,4 @@
+@text-w- 80:fade (#fff,80%);
+@text-w- 40:fade (#fff,40%);
+@line-sub :fade (#000,10%);
+@line-prim :fade (#000,40%);
