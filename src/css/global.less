@@ -1,0 +1,74 @@
+@import (css) url(../hanmi-components/font/pretendard.css);
+@import url(../hanmi-components/css/precomp.less);
+@import url(../hanmi-components/css/animations.less);
+@import url(../hanmi-components/css/components.less);
+@import url(header.less);
+@import url(pages.less);
+
+//trp
+#trp-floater-ls {
+  display: none !important;
+}
+//footer
+.footer {
+  background: #000;
+  padding: 60px 0;
+  position: relative;
+  z-index: 2;
+  * {
+    color: #fff;
+  }
+  p {
+    font-weight: 400;
+    line-height: (28em/16);
+  }
+  .wrap {
+    max-width: @cont_width;
+    padding: 0 @pad;
+    margin: 0 auto;
+  }
+}
+
+//contact form
+form.wpforms-validate {
+  input[type="submit"] {
+    width: 100%;
+  }
+  .wpforms-field-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .wpforms-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      & > * {
+        margin: 0;
+        width: 100%;
+        display: block;
+        max-width: 100% !important;
+      }
+    }
+  }
+
+  .wpforms-submit-container {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid @line-sub;
+
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.card {
+  padding: 24px;
+  border: 1px solid @line-sub;
+  border-radius: 3px;
+
+  @media @mobile {
+    padding: 1rem;
+  }
+}

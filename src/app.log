@@ -1,0 +1,84 @@
+[2023-07-25 10:45:25.294418] PAY-API: https://test-relay.mainpay.co.kr호출할 API URL
+[2023-07-25 10:45:25.294780] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf293547d2d
+)
+
+[2023-07-25 10:57:20.655072] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 10:57:20.655322] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf2c009fde1
+)
+
+[2023-07-25 10:57:35.896344] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 10:57:35.896549] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf2c0fdac5d
+)
+
+[2023-07-25 11:00:22.090782] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:00:22.091061] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf2cb6161ab
+)
+
+[2023-07-25 11:01:29.816311] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:01:29.816625] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf2cf9c74a3
+)
+
+[2023-07-25 11:01:40.082998] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:01:40.083283] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf2d0414422
+)
+
+[2023-07-25 11:19:14.949778] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:19:14.950121] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf3122e7dfe
+)
+
+[2023-07-25 11:19:40.084768] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:19:40.085083] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf313c14b0a
+)
+
+[2023-07-25 11:19:59.848350] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:19:59.848622] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf314fcf1cc
+)
+
+[2023-07-25 11:20:16.462717] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:20:16.462941] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf316070f6e
+)
+
+[2023-07-25 11:20:47.118405] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:20:47.118706] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf317f1ce70
+)
+
+[2023-07-25 11:21:00.061426] PAY-API: https://test-relay.mainpay.co.kr/v1/payment/ready
+[2023-07-25 11:21:00.061691] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001164bf318c0efdf
+)
+
