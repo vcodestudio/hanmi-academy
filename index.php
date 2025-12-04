@@ -1,6 +1,6 @@
 <?php
 get_header();
-$sliders = get_field("main_slider","option");
+$sliders = function_exists('get_field') ? get_field("main_slider","option") : null;
 $sliders = $sliders?$sliders:[];
 ?>
 <style>

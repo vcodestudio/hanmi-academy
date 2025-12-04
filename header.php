@@ -34,7 +34,7 @@ if (is_home()) {
 					<a href="/" class="menu_logo">
 						<img src="<?= HM::$symbol ?>" />
 					</a>
-					<?php if (function_exists('get_field') && get_field("menu", "option")): foreach (get_field("menu", "option") as $idx => $item):
+					<?php if (function_exists('get_field') && ($menu_items = get_field("menu", "option"))): foreach ($menu_items as $idx => $item):
      	$link = $item["page"]; ?>
 					<?php $iscur =
      	!is_home() && str_contains($link, $_SERVER["REQUEST_URI"])
@@ -119,7 +119,7 @@ if (is_home()) {
 		<!-- hambug -->
 		<div class="hambug-menu mob">
 			<div class="wrap col gap-1r">
-				<?php if (function_exists('get_field') && get_field("menu", "option")): foreach (get_field("menu", "option") as $idx => $item):
+				<?php if (function_exists('get_field') && ($menu_items = get_field("menu", "option"))): foreach ($menu_items as $idx => $item):
     	$link = $item["page"]; ?>
 				<?php $iscur =
     	!is_home() && str_contains($link, $_SERVER["REQUEST_URI"])
