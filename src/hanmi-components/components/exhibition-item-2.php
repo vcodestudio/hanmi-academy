@@ -6,32 +6,32 @@
     <div class="program-card flex flex-col gap-[1.5rem]">
         <?php $color = _acf("color") ?? "#E8A433"; ?>
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
-            <div class="relative w-full" style="background: <?= $color ?>;">
-                <div class="relative w-full">
-                    <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
-                    <div class="absolute inset-0" style="opacity:.8; background: <?= $color ?>;"></div>
-                </div>
+            <div class="relative w-full">
+                <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
             </div>
         </a>
         <div class="flex flex-col gap-[0.5rem]">
+            <?php
+            $tag_items = [];
+            $terms = ["location"];
+            foreach ($terms as $term):
+                if ($f = _acf($term)):
+                    $filter_query = $query;
+                    foreach ($terms as $t) {
+                        unset($filter_query[$t]);
+                    }
+                    $filter_query[$term] = $f->slug;
+                    $tag_items[] = [
+                        "text" => $f->name,
+                        "link" => "?" . http_build_query($filter_query)
+                    ];
+                endif;
+            endforeach;
+            
+            if (!empty($tag_items)):
+            ?>
             <div class="flex items-center gap-[0.5rem]">
                 <?php
-                $tag_items = [];
-                $terms = ["location"];
-                foreach ($terms as $term):
-                    if ($f = _acf($term)):
-                        $filter_query = $query;
-                        foreach ($terms as $t) {
-                            unset($filter_query[$t]);
-                        }
-                        $filter_query[$term] = $f->slug;
-                        $tag_items[] = [
-                            "text" => $f->name,
-                            "link" => "?" . http_build_query($filter_query)
-                        ];
-                    endif;
-                endforeach;
-                
                 $tag_count = count($tag_items);
                 foreach ($tag_items as $index => $tag_item):
                 ?>
@@ -43,6 +43,7 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
+            <?php endif; ?>
             <div class="flex flex-col">
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>

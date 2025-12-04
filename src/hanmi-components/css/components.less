@@ -6,6 +6,7 @@
   position: relative;
   height: 100%;
   transition: 0.3s;
+  min-width: 120px;
   &:not(.loaded) {
     opacity: 0;
   }
@@ -916,6 +917,18 @@ button,
     }
     .down {
       display: block;
+    }
+  }
+  // download button label styling
+  &[download] {
+    span {
+      display: block;
+      flex: 1;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

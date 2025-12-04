@@ -8,15 +8,26 @@
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full" style="background: <?= $color ?>;">
                 <div class="relative w-full">
-                    <img class="w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
+                    <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
                     <div class="absolute inset-0" style="opacity:.8; background: <?= $color ?>;"></div>
                 </div>
             </div>
         </a>
         <div class="flex flex-col gap-3">
+            <?php
+            $terms = ["location"];
+            $has_tags = false;
+            foreach ($terms as $term):
+                if ($f = _acf($term)):
+                    $has_tags = true;
+                    break;
+                endif;
+            endforeach;
+            
+            if ($has_tags):
+            ?>
             <div class="inline-flex gap-2">
                 <?php
-                $terms = ["location"];
                 foreach ($terms as $term):
                     if ($f = _acf($term)):
                         $filter_query = $query;
@@ -31,6 +42,7 @@
                 endforeach;
                 ?>
             </div>
+            <?php endif; ?>
             <div class="flex flex-col gap-2">
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1rem] leading-[1.2em] font-bold"><?= get_the_title() ?></div>

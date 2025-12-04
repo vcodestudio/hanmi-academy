@@ -154,6 +154,9 @@ function comp_attr_str($arg = [])
 function yoil($str = "0000.00.00")
 {
     $y = ["일", "월", "화", "수", "목", "금", "토"];
+    if (empty($str) || $str === null) {
+        return "";
+    }
     $str = str_replace(".", "-", $str);
     return $y[date("w", strtotime($str))];
 }

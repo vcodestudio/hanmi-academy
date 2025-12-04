@@ -8,3 +8,4 @@ keys/
 .idea
 .vscode
 *.sh
+migration/

@@ -83,6 +83,9 @@ body {
         position: relative;
         padding-left: 1em;
         line-height: 1.8em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         &:before {
           content: "•";
           display: flex;
@@ -98,6 +101,11 @@ body {
           line-height: 1em;
         }
       }
+    }
+    li {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -590,6 +598,11 @@ input[type="number"] {
   &-60 {
     @media @cont {
       gap: 30px;
+    }
+  }
+  &-64 {
+    @media @mobile {
+      gap: 32px;
     }
   }
   &-32 {

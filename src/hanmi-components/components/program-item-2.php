@@ -34,35 +34,38 @@
             </div>
         </a>
         <div class="flex flex-col gap-[0.5rem]">
+            <?php
+            $tax_tags = [
+                [
+                    "slug" => "application",
+                    "label" => "신청중"
+                ],
+                [
+                    "slug" => "course",
+                    "label" => null
+                ],
+                [
+                    "slug" => "participant",
+                    "label" => null
+                ]
+            ];
+            $tag_items = [];
+            foreach ($tax_tags as $tax_tag):
+                $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
+                if ($terms && !is_wp_error($terms)):
+                    foreach ($terms as $term):
+                        $tag_items[] = [
+                            "text" => $tax_tag["label"] ?: $term->name,
+                            "link" => "?{$tax_tag['slug']}={$term->slug}"
+                        ];
+                    endforeach;
+                endif;
+            endforeach;
+            
+            if (!empty($tag_items)):
+            ?>
             <div class="flex items-center gap-[0.5rem]">
                 <?php
-                $tax_tags = [
-                    [
-                        "slug" => "application",
-                        "label" => "신청중"
-                    ],
-                    [
-                        "slug" => "course",
-                        "label" => null
-                    ],
-                    [
-                        "slug" => "participant",
-                        "label" => null
-                    ]
-                ];
-                $tag_items = [];
-                foreach ($tax_tags as $tax_tag):
-                    $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
-                    if ($terms && !is_wp_error($terms)):
-                        foreach ($terms as $term):
-                            $tag_items[] = [
-                                "text" => $tax_tag["label"] ?: $term->name,
-                                "link" => "?{$tax_tag['slug']}={$term->slug}"
-                            ];
-                        endforeach;
-                    endif;
-                endforeach;
-                
                 $tag_count = count($tag_items);
                 foreach ($tag_items as $index => $tag_item):
                 ?>
@@ -74,6 +77,7 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
+            <?php endif; ?>
             <div class="flex flex-col">
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>

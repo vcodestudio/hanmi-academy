@@ -49,6 +49,22 @@
         } elseif ($image && is_numeric($image)) {
             $image_url = wp_get_attachment_image_url($image, 'full');
         }
+        
+        // ACF 이미지가 없을 경우 탭 이름에 따라 미디어 라이브러리의 기본 이미지 할당
+        if (empty($image_url)) {
+            $tab_name = $tab['tab_name'] ?? '';
+            $default_image_ids = [
+                '정규과정' => 3697,
+                '단기과정' => 3698,
+                '이론과정' => 3699,
+                '창작 스튜디오' => 3700,
+                '창작스튜디오' => 3700,
+            ];
+            
+            if (isset($default_image_ids[$tab_name])) {
+                $image_url = wp_get_attachment_image_url($default_image_ids[$tab_name], 'full');
+            }
+        }
     ?>
     <div class="row gap-32 py-[20px] m:gap-16 m:py-[16px]<?= !$is_first ? ' hide' : '' ?>" data-tab="<?= esc_attr($index) ?>">
         <div class="flex gap/8 justify-between flex-wrap gap-y-8 m:gap-x-0 m:gap-y-4">

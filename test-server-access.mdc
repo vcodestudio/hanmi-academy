@@ -1,0 +1,88 @@
+---
+alwaysApply: true
+---
+
+# 테스트 서버 접속 가이드
+
+## 서버 정보
+
+- **서버 주소**: http://43.200.249.203/
+- **서버 IP**: `43.200.249.203`
+- **사용자**: `bitnami`
+- **키 파일**: `./keys/mh.pem` (프로젝트 루트 기준)
+- **테마 경로**: `/opt/bitnami/wordpress/wp-content/themes/hanmi-academy`
+- **WordPress 타입**: 멀티사이트 (Multisite)
+
+## SSH 접속 방법
+
+### 기본 접속 명령어
+
+프로젝트 루트 디렉토리에서 실행:
+
+```bash
+ssh -i ./keys/mh.pem bitnami@43.200.249.203
+```
+
+### 키 파일 권한 설정
+
+키 파일이 없거나 권한 문제가 있는 경우:
+
+```bash
+chmod 400 ./keys/mh.pem
+```
+
+## 자동 배포 방법
+
+### 배포 스크립트 사용
+
+```bash
+npm run deploy:test [커밋 메시지]
+```
+
+예시:
+```bash
+npm run deploy:test "기능 추가: 새로운 페이지 추가"
+```
+
+### 배포 프로세스
+
+1. 프로덕션 빌드 실행 (`npm run build`)
+2. Git 상태 확인 및 변경사항 커밋
+3. 원격 저장소에 푸시
+4. 테스트 서버에 SSH 접속하여 자동으로 git pull 실행
+
+## 멀티사이트 관련 주의사항
+
+### ACF 플러그인 필수
+
+- 테스트 서버에서 **ACF (Advanced Custom Fields)** 플러그인이 활성화되어 있어야 합니다
+- `get_field()` 함수는 ACF 플러그인에서 제공하는 함수입니다
+- 플러그인이 비활성화되면 `Call to undefined function get_field()` 에러가 발생합니다
+
+### 멀티사이트 설정 확인
+
+- WordPress 멀티사이트 환경이므로 네트워크 관리자 권한이 필요할 수 있습니다
+- 각 사이트별로 ACF 필드 설정이 다를 수 있습니다
+- 네트워크 활성화된 플러그인과 사이트별 활성화 플러그인을 구분해야 합니다
+
+## 문제 해결
+
+### ACF 에러 발생 시
+
+1. SSH로 서버 접속
+2. WordPress 관리자 페이지 접속: http://43.200.249.203/wp-admin
+3. 플러그인 메뉴에서 ACF 플러그인 활성화 확인
+4. 네트워크 관리자 페이지에서 네트워크 활성화 확인
+
+### 배포 실패 시
+
+1. 키 파일 존재 확인: `ls -la ./keys/mh.pem`
+2. 키 파일 권한 확인: `chmod 400 ./keys/mh.pem`
+3. SSH 연결 테스트: `ssh -i ./keys/mh.pem bitnami@43.200.249.203`
+4. 서버의 테마 경로 확인: `/opt/bitnami/wordpress/wp-content/themes/hanmi-academy`
+
+## 웹사이트 접속
+
+- **메인 사이트**: http://43.200.249.203/
+- **관리자 페이지**: http://43.200.249.203/wp-admin
+- **네트워크 관리자**: http://43.200.249.203/wp-admin/network/ (멀티사이트)

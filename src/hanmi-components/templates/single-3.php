@@ -55,14 +55,16 @@ $product = wc_get_product($product);
                     <p class="bold">참고자료</p>
                     <div class="row gap-16">
                         <?php foreach ($f as $i): ?>
-                        <a class="underline" href="<?= $i["item"]["url"] ?>"
-                            target="_blank"><?= $i["item"]["filename"] ?></a>
+                        <?php if (isset($i["item"]) && is_array($i["item"]) && isset($i["item"]["url"])): ?>
+                        <a class="underline" href="<?= esc_url($i["item"]["url"]) ?>"
+                            target="_blank"><?= esc_html($i["item"]["filename"] ?? basename($i["item"]["url"])) ?></a>
                         <div class="flex">
                             <?= comp("download", [
                             	"label" => "다운로드",
-                            	"link" => $i["item"]["url"],
+                            	"link" => esc_url($i["item"]["url"]),
                             ]) ?>
                         </div>
+                        <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
                 </div>

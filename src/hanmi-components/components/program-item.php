@@ -6,7 +6,7 @@
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full" style="">
                 <div class="relative w-full">
-                    <img class="w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
+                    <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
                     <?php
                     $deadline_status = _acf("deadline_status");
                     if ($deadline_status && $deadline_status !== 'none'):
@@ -29,22 +29,34 @@
             </div>
         </a>
         <div class="flex flex-col gap-3">
+            <?php
+            $tax_tags = [
+                [
+                    "slug" => "application",
+                    "class" => "gray"
+                ],
+                [
+                    "slug" => "course",
+                    "class" => ""
+                ],
+                [
+                    "slug" => "participant",
+                    "class" => ""
+                ]
+            ];
+            $has_tags = false;
+            foreach ($tax_tags as $tax_tag):
+                $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
+                if ($terms && !is_wp_error($terms) && !empty($terms)):
+                    $has_tags = true;
+                    break;
+                endif;
+            endforeach;
+            
+            if ($has_tags):
+            ?>
             <div class="inline-flex gap-2">
                 <?php
-                $tax_tags = [
-                    [
-                        "slug" => "application",
-                        "class" => "gray"
-                    ],
-                    [
-                        "slug" => "course",
-                        "class" => ""
-                    ],
-                    [
-                        "slug" => "participant",
-                        "class" => ""
-                    ]
-                ];
                 foreach ($tax_tags as $tax_tag):
                     $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
                     if ($terms && !is_wp_error($terms)):
@@ -55,6 +67,7 @@
                 endforeach;
                 ?>
             </div>
+            <?php endif; ?>
             <div class="flex flex-col gap-2">
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1rem] leading-[1.2em] font-bold"><?= get_the_title() ?></div>

@@ -1,4 +1,4 @@
-<div class="row gap-32">
+<div class="row gap-64">
 
     <div class="row gap-32 detail w-limit">
         <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: _acf("imgs"), "forceSlider" => true, "showBullets" => true]) ?>
@@ -9,43 +9,72 @@
                     <h6 class="light"><?= getDateRange() ?></h6>
                 </div>
             </div>
+            <?php 
+            $additional_info = _acf("additional_info");
+            $has_content = false;
+            if ($additional_info && is_array($additional_info)) {
+                foreach ($additional_info as $info) {
+                    if (!empty($info['title']) || !empty($info['description']) || 
+                        (!empty($info['has_attachments']) && !empty($info['attachments']))) {
+                        $has_content = true;
+                        break;
+                    }
+                }
+            }
+            if ($has_content): ?>
             <div class="row gap-24">
                 <div class="metabox row gap-24">
-                    <?php if($additional_info = _acf("additional_info")): ?>
-                        <?php foreach($additional_info as $info): ?>
-                            <div class="flex gap-24">
-                                <?php if(!empty($info['title'])): ?>
-                                    <p class="bold"><?= $info['title'] ?></p>
-                                <?php endif; ?>
-                                <?php if(!empty($info['description'])): ?>
-                                    <p><?= $info['description'] ?></p>
-                                <?php endif; ?>
-                            </div>
-                            <?php if(!empty($info['has_attachments']) && !empty($info['attachments'])): ?>
-                                <div class="row gap-16">
-                                    <?php foreach($info['attachments'] as $attachment): ?>
-                                        <?php if(!empty($attachment['file'])): ?>
-                                            <?php
-                                            $file = $attachment['file'];
-                                            $file_url = $file['url'] ?? '';
-                                            $file_label = !empty($attachment['file_label']) 
-                                                ? $attachment['file_label'] 
-                                                : ($file['filename'] ?? '다운로드');
-                                            ?>
-                                            <div class="flex">
-                                                <?= comp("download", [
-                                                    'label' => $file_label,
-                                                    'link' => $file_url
-                                                ]) ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
+                    <?php foreach($additional_info as $info): 
+                        $has_info_content = !empty($info['title']) || !empty($info['description']) || 
+                                           (!empty($info['has_attachments']) && !empty($info['attachments']));
+                        if (!$has_info_content) continue;
+                        
+                        // 첨부파일이 실제로 있는지 확인
+                        $has_real_attachments = false;
+                        if (!empty($info['has_attachments']) && !empty($info['attachments'])) {
+                            foreach ($info['attachments'] as $attachment) {
+                                if (!empty($attachment['file'])) {
+                                    $has_real_attachments = true;
+                                    break;
+                                }
+                            }
+                        }
+                    ?>
+                        <?php if(!empty($info['title']) || !empty($info['description'])): ?>
+                        <div class="flex gap-24">
+                            <?php if(!empty($info['title'])): ?>
+                                <p class="bold"><?= $info['title'] ?></p>
                             <?php endif; ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                            <?php if(!empty($info['description'])): ?>
+                                <p><?= $info['description'] ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+                        <?php if($has_real_attachments): ?>
+                            <div class="row gap-16">
+                                <?php foreach($info['attachments'] as $attachment): ?>
+                                    <?php if(!empty($attachment['file'])): ?>
+                                        <?php
+                                        $file = $attachment['file'];
+                                        $file_url = $file['url'] ?? '';
+                                        $file_label = !empty($attachment['file_label']) 
+                                            ? $attachment['file_label'] 
+                                            : ($file['filename'] ?? '다운로드');
+                                        ?>
+                                        <div class="flex">
+                                            <?= comp("download", [
+                                                'label' => $file_label,
+                                                'link' => $file_url
+                                            ]) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
     <div class="w-limit row gap-24">

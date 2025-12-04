@@ -102,7 +102,7 @@
                                         if($f=get_field($download)):
                                 ?>
                                 <a href="<?= $f["url"] ?>" class="button w" download>
-                                    <?= $label ?>
+                                    <span><?= $label ?></span>
                                 </a>
                                 <?php
                                 endif;
