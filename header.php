@@ -34,7 +34,7 @@ if (is_home()) {
 					<a href="/" class="menu_logo">
 						<img src="<?= HM::$symbol ?>" />
 					</a>
-					<?php foreach (get_field("menu", "option") as $idx => $item):
+					<?php if (function_exists('get_field') && get_field("menu", "option")): foreach (get_field("menu", "option") as $idx => $item):
      	$link = $item["page"]; ?>
 					<?php $iscur =
      	!is_home() && str_contains($link, $_SERVER["REQUEST_URI"])
@@ -44,7 +44,7 @@ if (is_home()) {
 	"label"
 ] ?></a>
 					<?php
-     endforeach; ?>
+     endforeach; endif; ?>
 				</div>
 				<div></div>
 				<div class="col gap-32 flex middle">
@@ -63,7 +63,7 @@ if (is_home()) {
 					<a href="javascript:void()" @click="loginPanel ^= 1">로그인/회원가입</a>
 					<?php endif; ?>
 
-					<?php if (get_field("multi_lang", "options")): ?>
+					<?php if (function_exists('get_field') && get_field("multi_lang", "options")): ?>
 					<div class="switch">
 						<a href="/" class="active">한</a>
 						<a href="/">A</a>
@@ -119,7 +119,7 @@ if (is_home()) {
 		<!-- hambug -->
 		<div class="hambug-menu mob">
 			<div class="wrap col gap-1r">
-				<?php foreach (get_field("menu", "option") as $idx => $item):
+				<?php if (function_exists('get_field') && get_field("menu", "option")): foreach (get_field("menu", "option") as $idx => $item):
     	$link = $item["page"]; ?>
 				<?php $iscur =
     	!is_home() && str_contains($link, $_SERVER["REQUEST_URI"])
@@ -130,7 +130,7 @@ if (is_home()) {
  	$idx ?>"><?= $item["label"] ?></a>
 				</p>
 				<?php
-    endforeach; ?>
+    endforeach; endif; ?>
 				<br />
 				<hr />
 				<div class="w_fit flex gap-1r end">
