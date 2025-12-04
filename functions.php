@@ -412,6 +412,24 @@ function payment_history_endpoint_title($title, $endpoint) {
 }
 
 include DIR_SRC . "/php/ajax.php";
+
+// Filter out deprecated warnings from output
+add_action("template_redirect", function() {
+	ob_start(function($buffer) {
+		if ($buffer) {
+			// Remove deprecated warnings from HTML output
+			$buffer = preg_replace("/<b>Deprecated<\/b>.*?<br \/>/is", "", $buffer);
+			$buffer = preg_replace("/Deprecated:.*?on line.*?<br \/>/is", "", $buffer);
+		}
+		return $buffer;
+	});
+}, 1);
+
+add_action("shutdown", function() {
+	if (ob_get_level()) {
+		ob_end_flush();
+	}
+}, 99999);
 include DIR_SRC . "/php/acf_fields.php";
 include DIR_SRC . "/php/post_types.php";
 include DIR_SRC . "/php/taxonomies.php";
