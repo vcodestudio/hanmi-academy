@@ -131,6 +131,7 @@ function temp($name = "", $arg = [])
     $html = "";
     if (($path = DIR_MODULE . "/templates/$name.php") && file_exists($path)):
         ob_start();
+        extract($arg);
         require $path;
         $html = ob_get_contents();
         ob_end_clean();
@@ -183,10 +184,20 @@ function getDateState($post = null)
 }
 function changeDateFormat($current = "Ymd", $seperator = "", $to = "Y.m.d")
 {
-    $current = str_replace($seperator, "", $current);
+    if(empty($current) || $current === null) {
+        return "";
+    }
+    $current = str_replace($seperator, "", (string)$current);
+    if(strlen($current) < 8) {
+        return "";
+    }
     $current = substr_replace($current, "-", 4, 0);
     $current = substr_replace($current, "-", 7, 0);
-    return date($to, strtotime($current));
+    $timestamp = strtotime($current);
+    if($timestamp === false) {
+        return "";
+    }
+    return date($to, $timestamp);
 }
 function dateState($start = "0000.00.00", $end = "0000.00.00")
 {

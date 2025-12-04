@@ -26,8 +26,8 @@
 				국내 사진사의 체계화와 사진문화예술의 활성화를 위해 최선의 노력을 다해왔습니다.
 			</p>
 		</div>
-		<div class="col-2 gap-28 m-col-1">
-			<div class="col gap-28 m-col-1">
+		<div class="col-2 gap-28 m-col-1 footer-menu-wrapper">
+			<div class="col gap-28 m-col-1 footer-menu">
 				<?php foreach(get_field("footer_menu","option") as $item):
 				if($link=$item['link']): ?>
 				<a href="<?= $link['url'] ?>" target="<?= $link['target'] ?>"><?= $link['title'] ?></a>
@@ -36,15 +36,14 @@
 				endforeach;
 				?>
 			</div>
-			<div class="col right gap-28 m-col-1">
-				<?php foreach(get_field("footer_menu_right","option") as $item):
-				if($link=$item['link']): ?>
-				<a href="<?= $link['url'] ?>" target="<?= $link['target'] ?>"><?= $link['title'] ?></a>
-				<?php
-				endif;
-				endforeach;
-				?>
+			<?php if($phone_number = get_field("footer_phone_number","option")): ?>
+			<div class="col right gap-28 m-col-1 footer-phone">
+				<p>
+					<span class="footer-phone-label">대표번호 | </span>
+					<span class="footer-phone-number"><?= $phone_number ?></span>
+				</p>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
@@ -57,6 +56,7 @@
 			</button>
 		</div>
 		<img class="img" src="<?= getImg("sample.png") ?>" />
+		<p class="text-white caption"></p>
 	</div>
 	<div class="row gap-12 gall_">
 		<div class="col right">
@@ -74,6 +74,26 @@
 		<p class="w desc">
 			
 		</p>
+	</div>
+</div>
+<!-- gallery -->
+<div class="img_overlay gall_overlay bg-black">
+	<div class="gap-0 row">
+		<div class="col right">
+			<button class="" click="document.querySelector('.img_overlay.gall_overlay').classList.remove('active')">
+				<?= icon("close_w") ?>
+			</button>
+		</div>
+		<img class="img" src="<?= getImg("sample.png") ?>" click="window.open(e.currentTarget.src)" style="cursor:zoom-in" />
+		<div class="flex">
+			<button class="rect" click="gallOv.move(-1)">
+				<?= icon("arrow/left_w") ?>
+			</button>
+			<p class="flex-auto p-2 text-white bg-black caption"></p>
+			<button class="rect" click="gallOv.move(1)">
+				<?= icon("arrow/right_w") ?>
+			</button>
+		</div>
 	</div>
 </div>
 </body>

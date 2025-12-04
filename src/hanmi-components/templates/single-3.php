@@ -11,7 +11,7 @@ $product = wc_get_product($product);
 // $link = $product->add_to_cart_url();
 ?>
 <div class="row gap-32 page-wrap detail">
-    <?= comp("slider-banner", ["imgs" => _acf("imgs")]) ?>
+    <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: (_acf("thumb") ? [_acf("thumb")] : []), "forceSlider" => true, "showBullets" => true]) ?>
     <div class="col-2 gap-32 detail">
         <div class="row gap-24">
             <div class="row gap-12">
@@ -19,11 +19,7 @@ $product = wc_get_product($product);
                 <h6 class="light"><?= getDateRange() ?></h6>
             </div>
             <div class="flex">
-                <?php if ($f = $product): ?>
-                <a href="<?= $f->add_to_cart_url() ?>" class="button" target="_blank">신청하기</a>
-                <?php elseif ($f = _acf("book-program")): ?>
-                <a href="<?= $f ?>" class="button" target="_blank">신청하기</a>
-                <?php endif; ?>
+                <a href="/order" class="button">신청하기</a>
             </div>
         </div>
         <div class="row gap-24">

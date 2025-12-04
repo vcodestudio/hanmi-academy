@@ -20,7 +20,18 @@ $sliders = $sliders?$sliders:[];
             <?php
             foreach($sliders as $item): ?>
             <div class="swiper-slide" data-swiper-autoplay="<?= $sl_autoplay ?>">
+                <?php
+                    $video = _acf("video", $item->ID);
+                    $poster = _acf("video_poster", $item->ID) ?: _acf("thumb_main_slider", $item->ID);
+                    $video_url = is_array($video) ? ($video["url"] ?? "") : ($video ?: "");
+                    if ($video_url):
+                ?>
+                <video class="banner-video" muted playsinline preload="metadata" poster="<?= esc_url(is_array($poster)?($poster["url"]??""):$poster) ?>">
+                    <source src="<?= esc_url($video_url) ?>" type="video/mp4" />
+                </video>
+                <?php else: ?>
                 <?= img(_acf("thumb_main_slider",$item->ID),"main-slider",_acf("thumb",$item->ID)) ?>
+                <?php endif; ?>
             </div>
             <?php
             endforeach;
@@ -116,20 +127,10 @@ $sliders = $sliders?$sliders:[];
                     </a>
                 </div>
             </div>
-            <div class="gallery-view col-3 m-hori_scroll">
-                <?php
-                while($posts->have_posts()):$posts->the_post();
-                ?>
-                <?= comp("gallery-item",[
-                    'link'=>get_permalink(),
-                    'thumb'=>_acf("thumb")["sizes"]["gallery_thumb"] ?? getImg(""),
-                    // 'location'=>_acf("location")->name,
-                    'start'=>_acf("start"),
-                    'end'=>_acf("end"),
-                    'title'=>get_the_title()
-                ])?>
-                <?php
-                endwhile; ?>
+            <div class="gallery-grid m-hori_scroll">
+                <?=
+            comp("exhibition-item",["posts"=>$posts]);
+            ?>
             </div>
         </div>
     </div>
@@ -175,7 +176,7 @@ $sliders = $sliders?$sliders:[];
                 <?php
                     else:
                 ?>
-                <img src="<?= getImg("academy/image-${i}.png") ?>" />
+                <img src="<?= getImg("academy/image-{$i}.png") ?>" />
                 <?php
                     endif;
                 ?>

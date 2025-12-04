@@ -15,24 +15,27 @@
   .select {
     height: 100%;
     width: 100%;
-    // padding: (12/16rem) (30/16rem);
-    padding: (12/16rem) (1.2rem) (12/16rem) (1.5rem);
+    padding: (12/16rem) (1.5rem);
     @media @mobile {
       padding: (12/16rem) (1rem);
     }
     text-align: center;
     display: flex;
     align-items: center;
-    line-height: 1em;
-    gap: 0.5rem;
+    justify-content: flex-end;
+    gap: (8/16rem);
     border: 1px solid @line-sub;
     border-radius: 4px;
     cursor: pointer;
+    background: #fff;
     & > span {
       display: block;
       flex: auto;
-      height: 1.05em;
-      line-height: 1em;
+      font-size: 1rem;
+      font-weight: @b;
+      line-height: 1.5rem;
+      letter-spacing: -0.0125rem;
+      color: #000;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -41,10 +44,10 @@
     &:after {
       content: "";
       flex: none;
-      width: 1em;
-      height: $width;
+      width: 1rem;
+      height: 1rem;
       background: url(../imgs/icons/chevron/down.svg) center center no-repeat;
-      background-size: auto 0.8em;
+      background-size: contain;
     }
     &.open {
       &:after {
@@ -84,6 +87,28 @@
     }
   }
 }
+
+/* about tabs: keep hover styles neutral */
+.about-tabs {
+  .button {
+    &:hover {
+      background: inherit !important;
+      color: inherit !important;
+      border-color: inherit !important;
+    }
+    &:not(.w):hover {
+      background: #000 !important;
+      color: #fff !important;
+      border-color: #000 !important;
+    }
+    &.w:hover {
+      background: #fff !important;
+      color: #000 !important;
+      border-color: @line-sub !important;
+    }
+  }
+}
+
 .banner {
   .swiper-wrapper {
     height: 480px;
@@ -148,15 +173,10 @@
         background: fade(#000, 25%);
         // mix-blend-mode: multiply;
       }
-      &.swiper-slide-active {
-        @idx: 0, 1, 2;
-        each(@idx,{
-                    &.slider-@{value} {
-                        img {
-                            // animation: ~ slider-@{value}  4s forwards;
-                        }
-                    }
-                });
+      // banner video should cover entire slide
+      .banner-video {
+        .abs_fit;
+        object-fit: cover;
       }
     }
     .slider-pagination {
@@ -239,8 +259,6 @@
         @media @phone {
           display: none;
         }
-      }
-      .swiper-wrapper {
       }
       .swiper-slide {
         display: block;
@@ -571,6 +589,10 @@
       border-color: fade(#fff, 50%);
     }
   }
+  &.gray {
+    background: #DADADA;
+    border: 0px!important;
+  }
   &.transparent {
     background: transparent;
     color: #fff;
@@ -581,8 +603,11 @@
   }
   &.small {
     .caption;
-    font-weight: @light;
-    padding: 0.3em 0.85em;
+    font-weight: @med;
+    padding: (4rem/16) (12rem/16);
+    border: 1px solid #000;
+    border-radius: (100rem/16);
+    line-height: (21rem/16);
   }
   &.dark {
     background: fade(#000, 30%);
@@ -660,13 +685,6 @@
       a {
         // border-radius: 4px 0px 0px 4px;
         margin-left: 0px;
-      }
-    }
-    &:last-child {
-      input[type="radio"] + label,
-      a {
-        // border-radius: 0px 4px 4px 0px;
-        // border-right-width: 1px;
       }
     }
   }
@@ -802,10 +820,6 @@ button,
     }
   }
   //sizes
-  &.small {
-  }
-  &.medium {
-  }
   &.large {
     font-size: 18px;
   }
@@ -1376,7 +1390,7 @@ input[type="radio"] {
       }
     }
     .text {
-      strong {
+      b {
         font-weight: @b;
       }
       p {
@@ -1418,7 +1432,7 @@ input[type="radio"] {
   border-left: 4px solid #000;
   min-width: 0;
   p {
-    strong {
+    b {
       display: block;
       margin-bottom: 8px;
       font-weight: @b;
@@ -1461,8 +1475,48 @@ input[type="radio"] {
   padding: @pad 0;
   &-toggle {
     button {
-      font-size: 1rem;
-      font-weight: 400;
+      height: 100%;
+      width: 100%;
+      padding: (12/16rem) (1.5rem);
+      @media @mobile {
+        padding: (12/16rem) (1rem);
+      }
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: (8/16rem);
+      border: 1px solid @line-sub;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #fff !important;
+      color: #000 !important;
+      & > span {
+        display: block;
+        flex: auto;
+        font-size: 1rem;
+        font-weight: @b;
+        line-height: 1.5rem;
+        letter-spacing: -0.0125rem;
+        color: #000;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: left;
+      }
+      &:after {
+        content: "";
+        flex: none;
+        width: 1rem;
+        height: 1rem;
+        background: url(../imgs/icons/chevron/down.svg) center center no-repeat;
+        background-size: contain;
+      }
+      &.open {
+        &:after {
+          background-image: url(../imgs/icons/chevron/up.svg);
+        }
+      }
     }
   }
   &:not(.ready) {
@@ -1807,5 +1861,4 @@ div.disabled {
 }
 
 //woocommerce
-.order-actions {
-}
+// .order-actions styles can be added here if needed

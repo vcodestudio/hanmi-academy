@@ -1,48 +1,106 @@
 <?php
     get_header();
 
-    $args = [
-        ["title" => "Photo Craft", "content" => "사진의 즐거움과 가치를 찾아내는 것을 목표로 다양한 사진적 언어를 찾기 위한 메커니즘의 기본원리를 이해하고 이론에 기반하여 촬영실습을 유기적으로 진행합니다."],
-        ["title" => "Photo Craft", "content" => "사진의 즐거움과 가치를 찾아내는 것을 목표로 다양한 사진적 언어를 찾기 위한 메커니즘의 기본원리를 이해하고 이론에 기반하여 촬영실습을 유기적으로 진행합니다."],
-        ["title" => "Photo Craft", "content" => "사진의 즐거움과 가치를 찾아내는 것을 목표로 다양한 사진적 언어를 찾기 위한 메커니즘의 기본원리를 이해하고 이론에 기반하여 촬영실습을 유기적으로 진행합니다."],
-        ["title" => "Photo Craft", "content" => "사진의 즐거움과 가치를 찾아내는 것을 목표로 다양한 사진적 언어를 찾기 위한 메커니즘의 기본원리를 이해하고 이론에 기반하여 촬영실습을 유기적으로 진행합니다."]
-    ];
+    // ACF 필드에서 데이터 가져오기
+    $about_intro = get_field('about_intro');
+    $about_tabs = get_field('about_tabs');
 ?>
-<div class="page-wrap row">
-    <div class="row py-[60px] m:py-[24px]">
-        <p class="text-[22px] m:text-[16px]">
-            뮤지엄한미 아카데미는 <br>
-            <strong>사진예술의 확장과 다가가는 미술관</strong>인 뮤지엄한미와 발 맞추어<br>
-            열린 공간, 창작 공간, 소통 공간이라는 <strong>특화된 교육환경</strong>에서<br>
-            사진과 예술을 사랑하는 <strong>모두를 위한 아카데미</strong>를 지향합니다.
-        </p>
+<div class="page-wrap row detail">
+    <?php if ($about_intro): 
+        // 인라인 스타일 제거 (글씨 크기, 행간, 자간 등은 CSS 클래스로 제어)
+        $about_intro_clean = preg_replace('/style\s*=\s*["\'][^"\']*["\']/i', '', $about_intro);
+        // font 태그 제거 (글씨 크기 등은 CSS로 제어)
+        $about_intro_clean = preg_replace('/<\/?font[^>]*>/i', '', $about_intro_clean);
+        // strong 태그를 b 태그로 변환
+        $about_intro_clean = str_replace(['<strong>', '</strong>'], ['<b>', '</b>'], $about_intro_clean);
+        // p 태그에 클래스 추가 (WYSIWYG에서 나온 p 태그에 클래스 적용)
+        $about_intro_clean = preg_replace('/<p>/i', '<p class="text-[22px] m:text-[16px]">', $about_intro_clean);
+        // p 태그가 없는 경우 전체를 p 태그로 감싸기
+        if (!preg_match('/<p[^>]*>/i', $about_intro_clean)) {
+            $about_intro_clean = '<p class="text-[22px] m:text-[16px]">' . $about_intro_clean . '</p>';
+        }
+    ?>
+    <div class="row py-[60px] m:py-[24px] m:pt-0">
+        <?= wp_kses_post($about_intro_clean) ?>
     </div>
+    <?php endif; ?>
 
-    <div class="row gap-32 py-[60px] m:gap-16 m:py-[24px]">
-        <div class="flex justify-between flex-wrap gap-24 m:gap-16 m:gap-y-[10px]">
-            <div class="flex-auto">
-                <h3>뮤지엄한미 아카데미<br/> 4가지 정규과정</h3>
-            </div>
-            <div class="flex-none max-w-[640px] w-full">
-               사진 입문과정부터 포트폴리오 제작과 전시를 세부적으로 기획하고 진행하는 필수과정을 통해 사진언어를 이해하고 개별적으로 표현하는데 목표를 두고 있습니다. 또한 양질의 교육을 제공하는 각 과정이 체계적이고 유기적으로 이어질 수 있도록 내실 있게 운영되고 있습니다.
-            </div>
+    <?php if ($about_tabs && !empty($about_tabs)): ?>
+    <div class="row">
+        <div class="about-tabs flex [&>*]:flex-1 m:[&>*]:flex-auto flex-wrap m:[&>*]:basis-[150px]">
+            <?php foreach ($about_tabs as $index => $tab): 
+                $is_last = ($index === count($about_tabs) - 1);
+                $tab_name = $tab['tab_name'] ?? '';
+            ?>
+            <button class="button !rounded-none !py-4<?= !$is_last ? ' pc:!border-r-0' : '' ?>" data-tab="<?= esc_attr($index) ?>"><?= esc_html($tab_name) ?></button>
+            <?php endforeach; ?>
         </div>
     </div>
 
-    <?php foreach ($args as $value): ?>
-    <div class="row gap-32 py-[20px] m:gap-16 m:py-[16px]">
-        <hr />
-        <div class="flex gap-16 justify-between flex-wrap gap-y-8 m:gap-x-0 m:gap-y-[10px]">
-            <img class="w-full m:order-2 m:h-[300px]" src="https://placehold.co/1080x400" alt="Photo Craft 이미지" />
+    <div class="about-sections">
+    <?php foreach ($about_tabs as $index => $tab): 
+        $is_first = ($index === 0);
+        $image = $tab['image'] ?? null;
+        $image_url = '';
+        
+        // 이미지 처리: ACF 이미지 배열만 사용
+        if ($image && is_array($image) && isset($image['url'])) {
+            $image_url = $image['url'];
+        } elseif ($image && is_numeric($image)) {
+            $image_url = wp_get_attachment_image_url($image, 'full');
+        }
+    ?>
+    <div class="row gap-32 py-[20px] m:gap-16 m:py-[16px]<?= !$is_first ? ' hide' : '' ?>" data-tab="<?= esc_attr($index) ?>">
+        <div class="flex gap/8 justify-between flex-wrap gap-y-8 m:gap-x-0 m:gap-y-4">
+            <?php if ($image_url): ?>
+            <img class="w-full h-auto m:w-[328px] m:order-2" src="<?= esc_url($image_url) ?>" alt="<?= esc_attr($tab['title'] ?? '') ?> 이미지" />
+            <?php endif; ?>
             <div class="flex-auto m:order-1">
-                <h4 class="bold"><?= $value["title"] ?></h4>
+                <h4 class="bold"><?= esc_html($tab['title'] ?? '') ?></h4>
             </div>
             <div class="flex-none max-w-[640px] w-full m:order-3 keep-all">
-                <?= $value["content"] ?>
+                <?= wpautop(esc_html($tab['content'] ?? '')) ?>
             </div>
         </div>
     </div>
     <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
+    <script>
+    (function(){
+      const tabs = document.querySelectorAll('.about-tabs button');
+      const sections = document.querySelectorAll('.about-sections [data-tab]');
+
+      function showTab(key){
+        // toggle button styles
+        tabs.forEach(b=>b.classList.add('w'));
+        const activeBtn = [...tabs].find(b=>b.getAttribute('data-tab')===key);
+        if(activeBtn) activeBtn.classList.remove('w');
+        // show/hide sections
+        sections.forEach(sec=>{
+          if(sec.getAttribute('data-tab') === key){
+            sec.classList.remove('hide');
+          } else {
+            sec.classList.add('hide');
+          }
+        });
+      }
+
+      tabs.forEach(btn=>{
+        btn.addEventListener('click', function(){
+          const key = this.getAttribute('data-tab');
+          showTab(key);
+        });
+      });
+
+      // initialize on load: show first tab
+      if(tabs.length > 0) {
+        const firstTab = tabs[0].getAttribute('data-tab');
+        if(firstTab) showTab(firstTab);
+      }
+    })();
+    </script>
 </div>
 <?php
     get_footer();

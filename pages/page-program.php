@@ -16,8 +16,12 @@ if ($f = $_GET["location"] ?? false) {
 		"terms" => $f,
 	]);
 }
-if ($f = $_GET["date"] ?? false) {
-	switch ($f) {
+// date 파라미터가 없으면 기본값으로 "before" (신청중) 적용
+$date_filter = $_GET["date"] ?? "before";
+if ($date_filter === "all") {
+	// 전체는 필터 없음
+} else {
+	switch ($date_filter) {
 		case "before":
 			array_push($args["meta_query"], [
 				"key" => "start",
@@ -50,7 +54,7 @@ if ($f = $_GET["date"] ?? false) {
 			break;
 	}
 }
-$cats = ["program_theme", "job"];
+$cats = ["course", "participant"];
 foreach ($cats as $cat) {
 	if ($f = $query[$cat] ?? false) {
 		array_push($args["tax_query"], [
@@ -60,10 +64,10 @@ foreach ($cats as $cat) {
 		]);
 	}
 }
-$c_arr = [["", "카테고리"]];
-$b_arr = [["", "대상"]];
-$b_args = get_terms(["taxonomy" => "job"]);
-$c_args = get_terms(["taxonomy" => "program_theme"]);
+$c_arr = [["", "전체"]];
+$b_arr = [["", "전체"]];
+$b_args = get_terms(["taxonomy" => "participant"]);
+$c_args = get_terms(["taxonomy" => "course"]);
 foreach ($c_args as $c) {
 	array_push($c_arr, [$c->slug, $c->name]);
 }
@@ -81,62 +85,66 @@ $posts = new WP_Query($args);
         </h3>
         <span class="text-sub light"><?= $posts->found_posts ?></span>
     </div>
-    <div>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit id temporibus veritatis ducimus,
-        </p>
-    </div>
-    <div>
+    <div class="flex justify-between items-center">
         <div class="col tab">
-            <a href="." class="<?= !($_GET["date"] ?? false)
-            	? "selected"
-            	: "" ?>">전체</a>
-            <a href="?date=current" class="<?= ($_GET["date"] ?? false) ==
-            "current"
+            <a href="?date=before" class="<?= ($date_filter == "before")
             	? "selected"
             	: "" ?>">신청중</a>
-            <a href="?date=before" class="<?= ($_GET["date"] ?? false) ==
-            "before"
+            <a href="?date=current" class="<?= ($date_filter == "current")
             	? "selected"
-            	: "" ?>">예정</a>
-            <a href="?date=closed" class="<?= ($_GET["date"] ?? false) ==
-            "closed"
+            	: "" ?>">진행중</a>
+            <a href="?date=closed" class="<?= ($date_filter == "closed")
             	? "selected"
-            	: "" ?>">마감</a>
+            	: "" ?>">종료</a>
+            <a href="?date=all" class="<?= ($date_filter == "all")
+            	? "selected"
+            	: "" ?>">전체</a>
         </div>
-    </div>
-    <div class="col-2 gap-1r">
-        <div class="pc"></div>
-        <div class="flex right p-left">
-            <!-- <div class="col">
-                
-                <?= comp("select", [
-                	"type" => "program_theme",
-                	"options" => $c_arr,
-                	"change" => "
-                    this.queryLinkTo();
-                ",
-                ]) ?>
-                <?= comp("select", [
-                	"type" => "job",
-                	"options" => $b_arr,
-                	"change" => "
-                    this.queryLinkTo();
-                ",
-                ]) ?>
-            </div> -->
+        <div class="flex gap-1r">
+            <?= comp("select", [
+            	"type" => "course",
+            	"options" => $c_arr,
+            	"defaultLabel" => "과정",
+            	"change" => "
+                this.queryLinkTo();
+            ",
+            ]) ?>
+            <?= comp("select", [
+            	"type" => "participant",
+            	"options" => $b_arr,
+            	"defaultLabel" => "참여대상",
+            	"change" => "
+                this.queryLinkTo();
+            ",
+            ]) ?>
         </div>
     </div>
     <?php if ($posts->have_posts()): ?>
     <div class="gallery-grid">
-        <?= comp("program-item", ["posts" => $posts]) ?>
+        <?= comp("program-item-2", ["posts" => $posts]) ?>
     </div>
     <?php else: ?>
     <div class="row gap-32 center middle">
         <br />
         <br />
         <h2>
-            진행중인 프로그램이 없습니다.
+            <?php
+            switch ($date_filter) {
+                case "before":
+                    echo "신청중인 프로그램이 없습니다.";
+                    break;
+                case "current":
+                    echo "진행중인 프로그램이 없습니다.";
+                    break;
+                case "closed":
+                    echo "종료된 프로그램이 없습니다.";
+                    break;
+                case "all":
+                default:
+                    echo "프로그램이 없습니다.";
+                    break;
+            }
+            ?>
         </h2>
         <br />
     </div>

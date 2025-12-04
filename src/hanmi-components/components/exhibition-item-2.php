@@ -1,0 +1,59 @@
+    <?php
+    $posts = $arg["posts"];
+    $query = $arg["query"] ?? [];
+    while ($posts->have_posts()):
+        $posts->the_post(); ?>
+    <div class="program-card flex flex-col gap-[1.5rem]">
+        <?php $color = _acf("color") ?? "#E8A433"; ?>
+        <a href="<?= esc_url(get_permalink()) ?>" class="block">
+            <div class="relative w-full" style="background: <?= $color ?>;">
+                <div class="relative w-full">
+                    <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
+                    <div class="absolute inset-0" style="opacity:.8; background: <?= $color ?>;"></div>
+                </div>
+            </div>
+        </a>
+        <div class="flex flex-col gap-[0.5rem]">
+            <div class="flex items-center gap-[0.5rem]">
+                <?php
+                $tag_items = [];
+                $terms = ["location"];
+                foreach ($terms as $term):
+                    if ($f = _acf($term)):
+                        $filter_query = $query;
+                        foreach ($terms as $t) {
+                            unset($filter_query[$t]);
+                        }
+                        $filter_query[$term] = $f->slug;
+                        $tag_items[] = [
+                            "text" => $f->name,
+                            "link" => "?" . http_build_query($filter_query)
+                        ];
+                    endif;
+                endforeach;
+                
+                $tag_count = count($tag_items);
+                foreach ($tag_items as $index => $tag_item):
+                ?>
+                    <a href="<?= esc_url($tag_item["link"]) ?>" class="text-[1rem] font-bold leading-[1.5rem] tracking-[-0.0125rem] text-black">
+                        <?= esc_html($tag_item["text"]) ?>
+                    </a>
+                    <?php if ($index < $tag_count - 1): ?>
+                    <div class="bg-[rgba(0,0,0,0.1)] h-[1rem] w-px"></div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <div class="flex flex-col">
+                <a href="<?= esc_url(get_permalink()) ?>">
+                    <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php
+    endwhile;
+    wp_reset_postdata();
+
+
+?>
+

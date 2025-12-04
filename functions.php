@@ -2,10 +2,17 @@
 // require_once get_stylesheet_directory()."/src/hanmi-components/php/precomp.php";
 include_once "src/hanmi-components/php/precomp.php";
 
-// debug on
-ini_set("display_errors", 1);
-ini_set("display_startup_errors", 1);
-error_reporting(E_ALL);
+// debug handling
+if (defined('WP_DEBUG') && WP_DEBUG) {
+	ini_set("display_errors", 1);
+	ini_set("display_startup_errors", 1);
+	error_reporting(E_ALL);
+} else {
+	ini_set("display_errors", 0);
+	ini_set("display_startup_errors", 0);
+	// hide deprecation notices from legacy plugins/themes on production
+	error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+}
 
 function isValid($a)
 {
@@ -97,7 +104,7 @@ function _acfobjs()
 }
 function get_img($size, $dir = "up")
 {
-	return _acf("copywrite")["i_1"]["i_1"]["sizes"][$size];
+	return _acf("copywrite")["i_1"]["i_1"]["sizes"]["$size"];
 }
 function formatBytes($size, $precision = 2)
 {
@@ -298,10 +305,12 @@ function woocommerce_clear_cart_url()
 	$woocommerce->cart->empty_cart();
 }
 
-// remove menu link
+// remove menu link and add payment history tab
 add_filter(
 	"woocommerce_account_menu_items",
-	"misha_remove_my_account_dashboard"
+	"misha_remove_my_account_dashboard",
+	10,
+	1
 );
 function misha_remove_my_account_dashboard($menu_links)
 {
@@ -310,10 +319,29 @@ function misha_remove_my_account_dashboard($menu_links)
 		"edit-account" => "계정 관리",
 	];
 	foreach ($trans as $key => $value) {
-		$menu_links[$key] = $value;
+		if (isset($menu_links[$key])) {
+			$menu_links[$key] = $value;
+		}
 	}
-	unset($menu_links["dashboard"]);
-	return $menu_links;
+	
+	// 결제내역 탭을 orders 다음에 추가
+	$new_menu = [];
+	$added = false;
+	foreach ($menu_links as $k => $v) {
+		$new_menu[$k] = $v;
+		// orders 다음에 결제내역 추가
+		if ($k === 'orders' && !$added) {
+			$new_menu['payment-history'] = '결제내역';
+			$added = true;
+		}
+	}
+	// orders가 없으면 맨 뒤에 추가
+	if (!$added) {
+		$new_menu['payment-history'] = '결제내역';
+	}
+	
+	unset($new_menu["dashboard"]);
+	return $new_menu;
 }
 // perform a redirect
 add_action("template_redirect", "misha_redirect_to_orders_from_dashboard");
@@ -329,4 +357,61 @@ function misha_redirect_to_orders_from_dashboard()
 	}
 }
 
+// ACF location 규칙에 페이지 슬러그 지원 추가
+add_filter('acf/location/rule_match/page', 'acf_location_rule_match_page_slug', 10, 3);
+function acf_location_rule_match_page_slug($match, $rule, $options) {
+	// 페이지 슬러그로 매칭 시도
+	if (isset($options['post_id'])) {
+		$post = get_post($options['post_id']);
+		if ($post && $post->post_type === 'page') {
+			$page_slug = $post->post_name;
+			if ($rule['operator'] === '==') {
+				$match = ($page_slug === $rule['value']);
+			} elseif ($rule['operator'] === '!=') {
+				$match = ($page_slug !== $rule['value']);
+			}
+		}
+	}
+	return $match;
+}
+
+// 커스텀 라우팅: /order, /payment-detail
+add_action('template_redirect', 'custom_page_routing');
+function custom_page_routing() {
+	$request_uri = $_SERVER['REQUEST_URI'];
+	$request_uri = strtok($request_uri, '?'); // 쿼리 스트링 제거
+	
+	if ($request_uri === '/order' || $request_uri === '/order/') {
+		$page_path = get_stylesheet_directory() . '/pages/page-order.php';
+		if (file_exists($page_path)) {
+			require $page_path;
+			exit;
+		}
+	}
+	
+	if ($request_uri === '/payment-detail' || $request_uri === '/payment-detail/') {
+		$page_path = get_stylesheet_directory() . '/pages/page-payment-detail.php';
+		if (file_exists($page_path)) {
+			require $page_path;
+			exit;
+		}
+	}
+}
+
+
+// WooCommerce account 엔드포인트 등록
+add_action('init', 'add_payment_history_endpoint');
+function add_payment_history_endpoint() {
+	add_rewrite_endpoint('payment-history', EP_ROOT | EP_PAGES);
+}
+
+// 엔드포인트 타이틀 설정
+add_filter('woocommerce_endpoint_payment-history_title', 'payment_history_endpoint_title', 10, 2);
+function payment_history_endpoint_title($title, $endpoint) {
+	return '결제내역';
+}
+
 include DIR_SRC . "/php/ajax.php";
+include DIR_SRC . "/php/acf_fields.php";
+include DIR_SRC . "/php/post_types.php";
+include DIR_SRC . "/php/taxonomies.php";

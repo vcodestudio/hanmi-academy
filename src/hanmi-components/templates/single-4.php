@@ -1,7 +1,7 @@
 <div class="row gap-32">
 
     <div class="row gap-32 detail w-limit">
-        <?= comp("slider-banner", ["imgs" => _acf("imgs")]) ?>
+        <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: _acf("imgs"), "forceSlider" => true, "showBullets" => true]) ?>
         <div class="col-2 gap-32 detail">
             <div class="row gap-24">
                 <div class="row gap-12">
@@ -11,67 +11,57 @@
             </div>
             <div class="row gap-24">
                 <div class="metabox row gap-24">
-                    <div class="flex gap-24">
-                        <p class="bold">Title</p>
-                        <p>Description</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row gap-32 _content">
-        <!-- 내용 -->
-        <div class="w-limit">
-                                <!-- 전시소개 -->
-                    <h4>전시소개</h4>
-        </div>
-        <div class="col-1-3 gap-32 w-limit">
-            <?php if ($f = _acf("poster")): ?>
-            <div>
-                <?= img($f, "large") ?>
-            </div>
-            <?php endif; ?>
-            <div class="row gap-16">
-                <div class="row gap-8">
-                    <h4><?= get_the_title() ?></h4>
-                    <p>2022. 04. 06. 목 - 2022. 06. 05. 목</p>
-                </div>
-                <div>
-                    <?= get_field("desc") ?>
+                    <?php if($additional_info = _acf("additional_info")): ?>
+                        <?php foreach($additional_info as $info): ?>
+                            <div class="flex gap-24">
+                                <?php if(!empty($info['title'])): ?>
+                                    <p class="bold"><?= $info['title'] ?></p>
+                                <?php endif; ?>
+                                <?php if(!empty($info['description'])): ?>
+                                    <p><?= $info['description'] ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <?php if(!empty($info['has_attachments']) && !empty($info['attachments'])): ?>
+                                <div class="row gap-16">
+                                    <?php foreach($info['attachments'] as $attachment): ?>
+                                        <?php if(!empty($attachment['file'])): ?>
+                                            <?php
+                                            $file = $attachment['file'];
+                                            $file_url = $file['url'] ?? '';
+                                            $file_label = !empty($attachment['file_label']) 
+                                                ? $attachment['file_label'] 
+                                                : ($file['filename'] ?? '다운로드');
+                                            ?>
+                                            <div class="flex">
+                                                <?= comp("download", [
+                                                    'label' => $file_label,
+                                                    'link' => $file_url
+                                                ]) ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
     <div class="w-limit row gap-24">
+        <?php if ($desc = _acf("desc")): ?>
         <div class="row gap-16">
-            <div class="row gap-8">
-                <h4>홍길동 작가</h4>
-                <p class="gray light">1925 - </p>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem sequi velit fugit, nisi consequuntur ipsum nostrum fugiat debitis repellat eveniet mollitia veritatis minus, unde quod expedita quam non reiciendis animi.
-                </p>
-            </div>
-            <!-- <p>
-            Sodales eu venenatis, id a sed quis aliquet a orci. Malesuada sit urna dui pellentesque tincidunt purus. Rutrum tortor, facilisis nullam bibendum.Sodales eu venenatis, id a sed quis aliquet a orci. Malesuada sit urna dui pellentesque tincidunt purus. Rutrum tortor, facilisis nullam bibendum.
-            </p> -->
+            <p>
+                <?= $desc ?>
+            </p>
         </div>
+        <?php endif; ?>
 
         <?php if ($f = _acf("imgs")): ?>
         <!-- gallery -->
-        <div class="col-4 gap-24 _square " gall>
-
-            <code class="displaynone">
-                <?php
-                $imgs = [];
-                foreach ($f as $img):
-                	$imgs[] = img_src($img, "large");
-                endforeach;
-                echo implode(",", $imgs);
-                ?>
-            </code>
-            <?php // for 16 times
-            foreach ($f as $item): ?>
-            <div class="item" gall>
+        <div class="col-4 gap-24 _square" gallery>
+            <?php foreach ($f as $item): ?>
+            <div class="item">
                 <?= img($item, "thumb") ?>
             </div>
             <?php endforeach; ?>

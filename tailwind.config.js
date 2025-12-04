@@ -9,7 +9,13 @@ module.exports = {
       // Match LESS @mobile (max-width: 765px)
       m: { max: "765px" },
     },
-    extend: {},
+    extend: {
+      colors: {
+        ascent: { // 5fb800
+          DEFAULT: "#5fb800",
+        },
+      },
+    },
   },
   corePlugins: {
     preflight: false,

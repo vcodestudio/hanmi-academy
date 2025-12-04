@@ -9,9 +9,25 @@
  */
     $name = $arg['name'] ?? $arg["type"] ?? 'post_type';
     $options = $arg["options"] ?? [];
-    $selected = $_GET[$name] ?? $_POST[$name] ?? $options[0][0] ?? 0;
+    $defaultLabel = $arg["defaultLabel"] ?? "전체";
+    // GET 파라미터에서 값 가져오기
+    $get_value = $_GET[$name] ?? $_POST[$name] ?? null;
+    // GET 값이 options 배열에 있는지 확인
+    $selected = null;
+    if ($get_value !== null) {
+        foreach ($options as $option) {
+            if ($option[0] == $get_value) {
+                $selected = $get_value;
+                break;
+            }
+        }
+    }
+    // options 배열에 없으면 기본값 사용
+    if ($selected === null) {
+        $selected = $options[0][0] ?? "";
+    }
 ?>
-<div class="select-box" type="<?= $name ?>" v-click-outside="closeOptions" ref="root">
+<div class="select-box" type="<?= $name ?>" default-label="<?= htmlspecialchars($defaultLabel) ?>" v-click-outside="closeOptions" ref="root">
     <select v-model="selected" ref="select" vchange="<?= $arg["change"] ?? "" ?>" name="<?= $arg["name"] ?? '' ?>">
         <?php
             foreach ($options as $idx=>$item):

@@ -50,17 +50,78 @@ $(window).on("load", () => {
     window.tabs.push(obj);
   });
   //img detail
-  $("*[zoom]").each(function () {
-    this.addEventListener("click", (e) => {
-      if (e.target.tagName == "IMG") {
-        const src = e.target.dataset?.src ?? e.target.src;
-        const iov = $(".img_overlay");
-        iov.addClass("active");
-        iov.find(".img").attr("src", src);
-        iov.attr("type", "zoom");
+  document.querySelectorAll('*[zoom]').forEach((element) => {
+    element.addEventListener('click', (e) => {
+      if (e.target.tagName == 'IMG') {
+        // 배너 슬라이더의 캡션 토글
+        const bannerCaption = e.target.parentElement.querySelector('.banner-caption');
+        if (bannerCaption) {
+          bannerCaption.style.display = bannerCaption.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        const iov = document.querySelector(".img_overlay:not(.gall_overlay)");
+        if (iov) {
+          iov.classList.add("active");
+          const imgElement = iov.querySelector(".img");
+          const captionElement = iov.querySelector(".caption");
+          if (imgElement) imgElement.setAttribute("src", e.target.src);
+          if (captionElement) captionElement.textContent = e.target.alt ?? "";
+        }
       }
     });
   });
+  // gallery
+  window.gallOv = {};
+  window.gallOv.imgs = [];
+  document.querySelectorAll("*[gallery]").forEach((obj) => {
+    // img list
+    const imgs = [...obj.querySelectorAll("img")];
+    imgs.forEach((img, i) => {
+      img.style.cursor = "pointer";
+      img.dataset.idx = i;
+      img.addEventListener("click", (e, idx) => {
+        window.gallOv.imgs = imgs;
+        window.gallOv.idx = i;
+        const iov = document.querySelector(".img_overlay.gall_overlay");
+        if (iov) {
+          iov.classList.add("active");
+          const imgElement = iov.querySelector(".img");
+          const captionElement = iov.querySelector(".caption");
+          const flexContainer = iov.querySelector(".flex");
+          if (imgElement) imgElement.setAttribute("src", e.target.src);
+          if (captionElement) {
+            captionElement.textContent = e.target.alt ?? "";
+          }
+          // 이미지가 1개일 때 화살표와 caption을 포함한 flex 컨테이너 숨김
+          if (flexContainer) {
+            if (imgs.length === 1) {
+              flexContainer.style.display = "none";
+            } else {
+              flexContainer.style.display = "";
+            }
+          }
+        }
+      });
+    });
+  });
+  window.gallOv.move = (to) => {
+    let idx = window.gallOv.idx;
+    const len = window.gallOv.imgs.length;
+    let next = (idx + to + len) % len; // 음수도 순환
+    window.gallOv.imgs[next]?.click();
+    // 이미지가 1개일 때 화살표와 caption을 포함한 flex 컨테이너 숨김
+    const iov = document.querySelector(".img_overlay.gall_overlay");
+    if (iov) {
+      const flexContainer = iov.querySelector(".flex");
+      if (flexContainer) {
+        if (len === 1) {
+          flexContainer.style.display = "none";
+        } else {
+          flexContainer.style.display = "";
+        }
+      }
+    }
+  };
   //img gall
   $("*[gall]").each(function () {
     this.addEventListener("click", (e) => {
@@ -142,7 +203,11 @@ $(window).on("load", () => {
       },
       pagination: {
         el: `.${id} .swiper-pagination`,
+        clickable: true,
       },
+      // 슬라이드가 1개일 때도 슬라이더가 작동하도록 설정
+      allowSlidePrev: true,
+      allowSlideNext: true,
     };
     if (obj.dataset) {
       const perview = +obj.dataset["slidesperview"] ?? 1;
@@ -175,6 +240,13 @@ $(window).on("load", () => {
       Object.assign(attr, dt);
     }
     const slides = $(`.${id} .swiper-slide`).length;
+    // 슬라이드가 1개일 때도 슬라이더가 작동하도록 설정
+    if (slides === 1 && !attr.loop) {
+      // 슬라이드가 1개일 때는 navigation 버튼을 숨기거나 비활성화
+      // 하지만 슬라이더 자체는 유지
+      attr.allowSlidePrev = false;
+      attr.allowSlideNext = false;
+    }
     const sw = new Swiper(`.${id}`, attr);
     if (obj.classList.contains("main-slider")) {
       sw.on("transitionStart", () => {
@@ -254,16 +326,20 @@ $(window).on("load", () => {
       label: a.label,
     }));
     const name = obj.getAttribute("type") ?? "";
-    const selected = obj.querySelector("select option[selected]")?.value ?? "";
+    const queries = getQueries();
+    const defaultLabel = obj.getAttribute("default-label") || "전체";
+    // GET 파라미터 값이 있으면 사용, 없으면 selected 속성이 있는 option 사용, 둘 다 없으면 첫 번째 옵션
+    const getSelectedValue = queries[name] || obj.querySelector("select option[selected]")?.value || options[0]?.value || "";
     const sl = new Vue({
       el: `#${obj.id}`,
       data() {
         return {
           options,
-          selected: selected, //(getQueries()[name]?.length?getQueries()[name]:undefined) ?? options[0].value,
+          selected: getSelectedValue,
           open: 0,
           type: obj.getAttribute("type"),
           evt: "",
+          defaultLabel: defaultLabel,
         };
       },
       directives: {
@@ -275,7 +351,12 @@ $(window).on("load", () => {
         },
         queryLinkTo() {
           let query = getQueries();
-          query[name] = this.selected;
+          // 선택된 값이 빈 문자열이면 해당 키를 쿼리에서 제거
+          if (this.selected && this.selected.length > 0) {
+            query[name] = this.selected;
+          } else {
+            delete query[name];
+          }
           let str = `./`;
           if (queryToString(query)?.length) str = `./?${queryToString(query)}`;
           location.href = str;
@@ -283,7 +364,8 @@ $(window).on("load", () => {
       },
       watch: {
         selected(v) {
-          $(`form.search input[name=${this.type}]`).val(v);
+          const input = document.querySelector(`form.search input[name="${this.type}"]`);
+          if (input) input.value = v;
           eval(this.evt);
           this.closeOptions();
         },
@@ -294,17 +376,27 @@ $(window).on("load", () => {
       mounted() {
         // this.$refs.select.click();
         this.evt = this.$refs.select.getAttribute("vchange");
-        $(this.$refs.select).removeAttr("vchange");
-        this.$refs.root.classList.add("loaded");
+        this.$refs.select.removeAttribute("vchange");
+        this.$refs.root?.classList?.add("loaded");
       },
       computed: {
         selectedItem() {
-          return (
-            this.options.find((a) => a.value == this.selected) ?? {
-              value: "",
-              label: "-",
+          const found = this.options.find((a) => a.value == this.selected);
+          if (found) {
+            // 빈 값일 때는 원본 라벨 이름 표시
+            if (found.value === "" || found.value === null) {
+              return {
+                value: "",
+                label: this.defaultLabel,
+              };
             }
-          );
+            return found;
+          }
+          // 기본값: 빈 값일 때 원본 라벨 표시
+          return {
+            value: "",
+            label: this.defaultLabel,
+          };
         },
       },
     });
@@ -323,7 +415,8 @@ $(window).on("load", () => {
         .join(" ")}`;
     });
   }
-  $(".hide").removeClass("hide");
+  // about-sections 내부의 hide 클래스는 제외 (탭 기능을 위해 유지)
+  $(".hide").not(".about-sections .hide").removeClass("hide");
 });
 $(window).on("load resize", () => {
   // slider update

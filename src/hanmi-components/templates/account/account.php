@@ -1,24 +1,32 @@
 <?php
-session_start();
-    $user = wp_get_current_user();
+// 세션이 필요한 경우에만 시작 (이메일 인증용)
+if (!empty($_POST) && isset($_POST["action"]) && $_POST["action"] == "change_user") {
+    if (session_status() === PHP_SESSION_NONE) {
+        @session_start();
+    }
+}
+    if (!isset($user)) {
+        $user = wp_get_current_user();
+    }
     $user_id = "user_".$user->ID;
-    $arg = [
-        "user"=>$user
-    ];
 ?>
 <?php
-    if(!empty($_POST ?? []) && isset($_POST["action"]) && $_POST["action"] == "change_user") {
+    if(!empty($_POST) && isset($_POST["action"]) && $_POST["action"] == "change_user") {
 
-        if(isset($_SESSION["email"]) && $_SESSION["cert_numb"] == $_POST["cert_numb"]) {
-            if($_POST['email_id'] ?? false && $_POST['email_addr'] ?? false) {
+        if(session_status() === PHP_SESSION_ACTIVE && isset($_SESSION["email"]) && isset($_POST["cert_numb"]) && $_SESSION["cert_numb"] == $_POST["cert_numb"]) {
+            if(isset($_POST['email_id']) && !empty($_POST['email_id']) && isset($_POST['email_addr']) && !empty($_POST['email_addr'])) {
                 wp_update_user([
-                    "id"=>$user_id,
+                    "ID"=>$user->ID,
                     "user_email"=>$_POST['email_id']."@".$_POST['email_addr']
                 ]);
             }
         }
-        update_field("tel",$_POST["tel-1"]."-".$_POST["tel-2"]."-".$_POST["tel-3"],$user_id);
-        update_field("address",$_POST["address"],$user_id);
+        if(isset($_POST["tel-1"]) && isset($_POST["tel-2"]) && isset($_POST["tel-3"])) {
+            update_field("tel",$_POST["tel-1"]."-".$_POST["tel-2"]."-".$_POST["tel-3"],$user_id);
+        }
+        if(isset($_POST["address"])) {
+            update_field("address",$_POST["address"],$user_id);
+        }
 
         echo comp("info",[
             "label"=>"회원정보가 변경되었습니다."
@@ -36,7 +44,7 @@ session_start();
             </div>
             <div>
                 <p>
-                    <?= $arg["user"]->user_login ?>
+                    <?= $user->user_login ?>
                 </p>
             </div>
         </div>
@@ -60,7 +68,14 @@ session_start();
             </div>
             <div>
                 <p>
-                    <?= changeDateFormat(_acf("birth",$user_id),"","Y년 m월 d일") ?>
+                    <?php
+                    $birth = _acf("birth",$user_id);
+                    if($birth) {
+                        echo changeDateFormat($birth,"","Y년 m월 d일");
+                    } else {
+                        echo "-";
+                    }
+                    ?>
                 </p>
             </div>
         </div>
@@ -72,10 +87,19 @@ session_start();
             </div>
             <div>
                 <p>
-                    <?=
-                    get_field_object("gender",$user_id)["choices"][
-                        _acf("gender",$user_id)["label"] ?? _acf("gender",$user_id)
-                    ]
+                    <?php
+                    $gender_obj = get_field_object("gender",$user_id);
+                    $gender_value = _acf("gender",$user_id);
+                    if($gender_obj && is_array($gender_obj) && isset($gender_obj["choices"]) && $gender_value) {
+                        $gender_label = is_array($gender_value) && isset($gender_value["label"]) ? $gender_value["label"] : $gender_value;
+                        if(isset($gender_obj["choices"][$gender_label])) {
+                            echo esc_html($gender_obj["choices"][$gender_label]);
+                        } else {
+                            echo esc_html($gender_label);
+                        }
+                    } else {
+                        echo "-";
+                    }
                     ?>
                 </p>
             </div>
@@ -96,11 +120,11 @@ session_start();
                         ["017"],
                         ["018"],
                         ["019"]
-                    ],"name"=>"tel-1"]) ?>
+                    ],"name"=>"tel-1"                    ]) ?>
                     -
-                    <?= comp("number",["name"=>"tel-2","attr"=>["value"=>$_POST["tel-2"] ?? ""]]) ?>
+                    <?= comp("number",["name"=>"tel-2","attr"=>["value"=>isset($_POST["tel-2"]) ? $_POST["tel-2"] : ""]]) ?>
                     -
-                    <?= comp("number",["name"=>"tel-3","attr"=>["value"=>$_POST["tel-3"] ?? ""]]) ?>
+                    <?= comp("number",["name"=>"tel-3","attr"=>["value"=>isset($_POST["tel-3"]) ? $_POST["tel-3"] : ""]]) ?>
                 </div>
             </div>
         </div>
@@ -112,13 +136,15 @@ session_start();
             </div>
             <div>
                 <?php
-                    $email = $user->user_email ?? "";
-                    $email = explode("@",$email);
+                    $email = isset($user->user_email) ? $user->user_email : "";
+                    $email_parts = $email ? explode("@",$email) : [];
+                    $email_id_val = isset($email_parts[0]) ? $email_parts[0] : "";
+                    $email_addr_val = count($email_parts) > 1 ? $email_parts[count($email_parts) - 1] : "";
                 ?>
                 <div class="email">
-                    <input type="text" id="email_id" name="email_id" value="<?= $email[0] ?? "" ?>"/>
+                    <input type="text" id="email_id" name="email_id" value="<?= esc_attr($email_id_val) ?>"/>
                     @
-                    <input type="text" id="email_addr" name="email_addr" value="<?= $email[array_key_last($email)] ?>"/>
+                    <input type="text" id="email_addr" name="email_addr" value="<?= esc_attr($email_addr_val) ?>"/>
                     <button type="button" class="w" click="
                     console.log(`${email_id.value}@${email_addr.value}`);
                     $.post(ajaxurl,{action:'createEmailCert',email:`${email_id.value}@${email_addr.value}`})

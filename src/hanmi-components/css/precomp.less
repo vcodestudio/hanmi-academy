@@ -43,6 +43,8 @@ html,
 body {
   font-size: 16px;
   overflow-x: hidden;
+  background: #fff;
+  color: #000;
 
   @media @mobile {
     font-size: 15px;
@@ -99,7 +101,7 @@ body {
     }
   }
 
-  strong {
+  b {
     font-weight: @b;
   }
 
@@ -241,7 +243,7 @@ img {
 }
 caption,
 .caption {
-  font-size: (14rem/16);
+  font-size: 0.875rem;
 }
 a {
   font-weight: @b;
@@ -466,6 +468,10 @@ input[type="number"] {
   &-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    & > * {
+      height: 100%;
+    }
     @media @phone {
       grid-template-columns: 1fr;
     }
@@ -631,6 +637,9 @@ button {
   display: block !important;
 }
 .search {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
   & > * {
     display: flex;
     gap: 1rem;
@@ -638,9 +647,11 @@ button {
   }
   input {
     flex: auto;
+    height: 100%;
   }
   button {
     flex: none;
+    height: 100%;
   }
 }
 .s {
@@ -871,6 +882,14 @@ input {
       .animation-forwards(~"showUp");
       max-width: calc(~"100vw - 2 * @{pad}");
       max-height: calc(~"100vh - 15*@{pad}");
+    }
+  }
+  &.gall_overlay {
+    background: fade(#000, 85%) !important;
+    & > div {
+      .img {
+        object-fit: contain;
+      }
     }
   }
 }

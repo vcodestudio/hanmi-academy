@@ -1,9 +1,9 @@
 <?php
 	function wp_ajax($function,$priv=false) {
-		$out = "wp_ajax_${function}";
+		$out = "wp_ajax_{$function}";
 		add_action( $out, $function);
 		if(!$priv) {
-            $out = "wp_ajax_nopriv_${function}";
+            $out = "wp_ajax_nopriv_{$function}";
 		    add_action( $out, $function);
         }
 	}
