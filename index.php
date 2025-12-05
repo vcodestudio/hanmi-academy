@@ -10,65 +10,19 @@ $sliders = $sliders?$sliders:[];
 </style>
 <div class="index">
     <?php
-        $sl_autoplay=5000;
         if(count($sliders) > 0):
+            $first_item = $sliders[0];
+            $main_image = _acf("thumb_main_slider", $first_item->ID) ?: _acf("thumb", $first_item->ID);
+            if($main_image):
     ?>
-    <div class="s-1 main-slider slider-wrap swiper swiper-container" data-name="main" data-slidesperview="1"
-        data-auto="<?= (count($sliders) > 1)?"1":"0" ?>" data-effect="fade"
-        data-loop="<?= (count($sliders) > 1)?"1":"0" ?>">
-        <div class="swiper-wrapper">
-            <?php
-            foreach($sliders as $item): ?>
-            <div class="swiper-slide" data-swiper-autoplay="<?= $sl_autoplay ?>">
-                <?php
-                    $video = _acf("video", $item->ID);
-                    $poster = _acf("video_poster", $item->ID) ?: _acf("thumb_main_slider", $item->ID);
-                    $video_url = is_array($video) ? ($video["url"] ?? "") : ($video ?: "");
-                    if ($video_url):
-                ?>
-                <video class="banner-video" muted playsinline preload="metadata" poster="<?= esc_url(is_array($poster)?($poster["url"]??""):$poster) ?>">
-                    <source src="<?= esc_url($video_url) ?>" type="video/mp4" />
-                </video>
-                <?php else: ?>
-                <?= img(_acf("thumb_main_slider",$item->ID),"main-slider",_acf("thumb",$item->ID)) ?>
-                <?php endif; ?>
-            </div>
-            <?php
-            endforeach;
-            ?>
-        </div>
-        <div class="w-limit text">
-            <?php
-                foreach($sliders as $idx => $item):
-            ?>
-            <div class="item row gap-8 <?= ($idx == 0)?'active':'' ?>">
-                <?= comp("tags",["post"=>$item->ID,"class"=>"transparent small"]) ?>
-                <h3 class="w"><?= get_the_title($item) ?></h3>
-                <a href="<?= get_permalink($item) ?>" class="button w line">
-                    자세히 알아보기
-                </a>
-            </div>
-            <?php
-                endforeach;
-            ?>
-        </div>
+    <div class="main-banner-image" style="width: 100%; height: 640px; position: relative; overflow: hidden;">
         <?php
-            $maxsl = count($sliders);
-            $curnum = min(1,$maxsl);
-            if((count($sliders) > 1)):
+            $img_src = is_array($main_image) ? ($main_image["sizes"]["large"] ?? $main_image["url"]) : $main_image;
         ?>
-        <div class="slider-pagination">
-            <p class="light">
-                <span class="idx" target="main"><?= sprintf("%02d",$curnum) ?></span> of <?= sprintf("%02d",$maxsl) ?>
-            </p>
-        </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <?php
-            endif;
-        ?>
+        <img src="<?= esc_url($img_src) ?>" alt="<?= esc_attr(get_the_title($first_item)) ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
     </div>
     <?php
+            endif;
         endif;
     ?>
     <?php

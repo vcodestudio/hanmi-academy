@@ -4,13 +4,9 @@
     while ($posts->have_posts()):
         $posts->the_post(); ?>
     <div class="program-card flex flex-col gap-6">
-        <?php $color = _acf("color") ?? "#E8A433"; ?>
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
-            <div class="relative w-full" style="background: <?= $color ?>;">
-                <div class="relative w-full">
-                    <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
-                    <div class="absolute inset-0" style="opacity:.8; background: <?= $color ?>;"></div>
-                </div>
+            <div class="relative w-full">
+                <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
             </div>
         </a>
         <div class="flex flex-col gap-3">

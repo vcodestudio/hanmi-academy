@@ -21,7 +21,7 @@ if ($min_year_query->have_posts()) {
         $min_year_query->the_post();
         $start_date = get_field('start');
         if ($start_date) {
-            // Y/m/d 형식에서 연도 추출
+            // Y.m.d 형식에서 연도 추출
             $year = (int) substr($start_date, 0, 4);
             if ($year > 0) {
                 $years[] = $year;
@@ -59,31 +59,31 @@ if ($date_filter === "all") {
 		case "before":
 			array_push($args["meta_query"], [
 				"key" => "start",
-				"value" => date("Y/m/d"),
+				"value" => date("Y.m.d"),
 				"compare" => ">",
-				"type" => "DATE",
+				"type" => "CHAR",
 			]);
 			break;
 		case "current":
 			array_push($args["meta_query"], [
 				"key" => "start",
-				"value" => date("Y/m/d"),
+				"value" => date("Y.m.d"),
 				"compare" => "<=",
-				"type" => "DATE",
+				"type" => "CHAR",
 			]);
 			array_push($args["meta_query"], [
 				"key" => "end",
-				"value" => date("Y/m/d"),
-				"compare" => ">",
-				"type" => "DATE",
+				"value" => date("Y.m.d"),
+				"compare" => ">=",
+				"type" => "CHAR",
 			]);
 			break;
 		case "closed":
 			array_push($args["meta_query"], [
 				"key" => "end",
-				"value" => date("Y/m/d"),
+				"value" => date("Y.m.d"),
 				"compare" => "<",
-				"type" => "DATE",
+				"type" => "CHAR",
 			]);
 			break;
 	}

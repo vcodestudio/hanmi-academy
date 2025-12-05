@@ -73,14 +73,6 @@ $parent = get_post(get_post()->post_parent);
 $currentPost = get_post();
 ?>
 <div class="row gap-32 page-wrap">
-    <div class="row gap-1r">
-        <h3>
-            <?= $parent->post_title ?? "" ?>
-        </h3>
-        <p>
-            <?= $parent->post_content ?>
-        </p>
-    </div>
     <div class="flex justify-between items-center">
         <div class="col tab">
         <?php
@@ -136,7 +128,7 @@ $currentPost = get_post();
     <?php
         if($posts->have_posts()):
     ?>
-    <div class="gallery-view col-3">
+    <div class="gallery-view col-3 tw-items-center">
         <?php
         while($posts->have_posts()):$posts->the_post();
         ?>

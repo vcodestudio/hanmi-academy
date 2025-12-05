@@ -125,9 +125,6 @@
 .sticky {
     position: sticky
 }
-.inset-0 {
-    inset: 0px
-}
 .bottom-4 {
     bottom: 1rem
 }
@@ -4134,6 +4131,7 @@ input[type="radio"]:disabled + label {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 80px 24px;
+  align-items: center;
 }
 @media screen and (max-width:765px) {
   .gallery-view {
@@ -5153,6 +5151,9 @@ div.what-slide * {
 .index > div.s-2 {
   color: #fff;
 }
+.index > div.main-banner-image {
+  padding: 0;
+}
 .index .slider-wrap {
   position: relative;
   height: 640px;
@@ -5505,6 +5506,9 @@ body#error-page {
   }
   .index > div {
     padding: 24px 0;
+  }
+  .index > div.main-banner-image {
+    padding: 0;
   }
 }
 .sticky-wrapper {

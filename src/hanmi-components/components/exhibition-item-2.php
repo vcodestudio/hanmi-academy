@@ -4,7 +4,6 @@
     while ($posts->have_posts()):
         $posts->the_post(); ?>
     <div class="program-card flex flex-col gap-[1.5rem]">
-        <?php $color = _acf("color") ?? "#E8A433"; ?>
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full">
                 <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
