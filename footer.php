@@ -26,18 +26,18 @@
 				국내 사진사의 체계화와 사진문화예술의 활성화를 위해 최선의 노력을 다해왔습니다.
 			</p>
 		</div>
-		<div class="col-2 gap-28 m-col-1 footer-menu-wrapper">
-			<div class="col gap-28 m-col-1 footer-menu">
+		<div class="flex mobile:flex-col gap-28 footer-menu-wrapper">
+			<div class="flex-auto col gap-28 m-col-1 footer-menu">
 				<?php foreach(get_field("footer_menu","option") as $item):
 				if($link=$item['link']): ?>
-				<a href="<?= $link['url'] ?>" target="<?= $link['target'] ?>"><?= $link['title'] ?></a>
+				<a class="mobile:py-[10px]" href="<?= $link['url'] ?>" target="<?= $link['target'] ?>"><?= $link['title'] ?></a>
 				<?php
 				endif;
 				endforeach;
 				?>
 			</div>
 			<?php if($phone_number = get_field("footer_phone_number","option")): ?>
-			<div class="col right gap-28 m-col-1 footer-phone">
+			<div class="flex-none col right gap-28 m-col-1 footer-phone">
 				<p>
 					<span class="footer-phone-label">대표번호 | </span>
 					<span class="footer-phone-number"><?= $phone_number ?></span>

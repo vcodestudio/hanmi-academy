@@ -48,7 +48,7 @@ $sliders = $sliders?$sliders:[];
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll">
+            <div class="gallery-grid m-hori_scroll [&>*]:w-[240px]">
                 <?=
             comp("program-item",["posts"=>$posts]);
             ?>
@@ -81,7 +81,7 @@ $sliders = $sliders?$sliders:[];
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll">
+            <div class="gallery-grid m-hori_scroll [&>*]:w-[240px]">
                 <?=
             comp("exhibition-item",["posts"=>$posts]);
             ?>
