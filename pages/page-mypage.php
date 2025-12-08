@@ -6,7 +6,9 @@ if (!is_user_logged_in()) {
     wp_redirect(wp_login_url(get_permalink()));
     exit;
 }
-
+?>
+<div class="row gap-24 page-wrap">
+<?php
 // Ultimate Member account 템플릿 사용
 $account_template_path = get_stylesheet_directory() . '/ultimate-member/templates/account.php';
 if (file_exists($account_template_path)) {
@@ -22,9 +24,11 @@ if (file_exists($account_template_path)) {
             <p>계정 정보를 표시할 수 없습니다.</p>
         </div>
     </div>
-    <?php
+<?php
 }
-
+?>
+</div>
+<?php
 get_footer();
 ?>
 
