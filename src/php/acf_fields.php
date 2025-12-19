@@ -546,27 +546,48 @@ if( function_exists('acf_add_local_field_group') ):
 				'endpoint' => 0,
 			),
 			array(
-				'key' => 'field_6376d36189135',
-				'label' => '메인 슬라이더',
-				'name' => 'main_slider',
-				'type' => 'post_object',
-				'instructions' => '',
+				'key' => 'field_main_video_pc',
+				'label' => '메인 비디오 (PC)',
+				'name' => 'main_video_pc',
+				'type' => 'file',
+				'instructions' => 'PC 버전 메인 비디오를 업로드하세요.
+권장 가로세로 크기: 1920 x 980 px
+권장 용량: 2MB 이하
+지원 형식: MP4, WebM, MOV',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(
-					'width' => '',
+					'width' => '50',
 					'class' => '',
 					'id' => '',
 				),
-				'post_type' => array(
-					0 => 'post_exhibition',
-					1 => 'post_program',
+				'return_format' => 'array',
+				'library' => 'all',
+				'min_size' => '',
+				'max_size' => '50',
+				'mime_types' => 'mp4,webm,mov',
+			),
+			array(
+				'key' => 'field_main_video_mobile',
+				'label' => '메인 비디오 (모바일)',
+				'name' => 'main_video_mobile',
+				'type' => 'file',
+				'instructions' => '모바일 버전 메인 비디오를 업로드하세요.
+권장 가로세로 크기: 430 x 680 px
+권장 용량: 2MB 이하
+지원 형식: MP4, WebM, MOV',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '50',
+					'class' => '',
+					'id' => '',
 				),
-				'taxonomy' => '',
-				'return_format' => 'object',
-				'multiple' => 1,
-				'allow_null' => 0,
-				'ui' => 1,
+				'return_format' => 'array',
+				'library' => 'all',
+				'min_size' => '',
+				'max_size' => '30',
+				'mime_types' => 'mp4,webm,mov',
 			),
 			array(
 				'key' => 'field_63981baeb6b98',

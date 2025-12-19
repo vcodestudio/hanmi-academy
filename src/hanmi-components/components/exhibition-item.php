@@ -25,13 +25,8 @@
             <div class="inline-flex gap-2">
                 <?php
                 foreach ($terms as $term):
-                    if ($f = _acf($term)):
-                        $filter_query = $query;
-                        foreach ($terms as $t) {
-                            unset($filter_query[$t]);
-                        }
-                        $filter_query[$term] = $f->slug; ?>
-                        <a href="?<?= http_build_query($filter_query) ?>" class="tag small"><?= $f->name ?></a>
+                    if ($f = _acf($term)): ?>
+                        <span class="tag small no-hover"><?= $f->name ?></span>
                     <?php
                     endif; ?>
                 <?php

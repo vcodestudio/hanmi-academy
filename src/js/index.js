@@ -424,8 +424,29 @@ $(window).on("load resize", () => {
     sw.update();
   });
 
-  const h = $(".header").outerHeight();
-  $(".content_wrap").css({ marginTop: `${h}px` });
+  // content_wrap 마진 계산 (리사이즈 시에도 정확하게)
+  const updateContentWrapMargin = () => {
+    const header = $(".header");
+    if (header.length) {
+      const h = header.outerHeight() || 0;
+      $(".content_wrap").css({ marginTop: `${h}px` });
+    }
+  };
+  updateContentWrapMargin();
+
+  // 메인페이지 비디오 배너 높이 계산 (헤더 높이 제외한 윈도우 높이) - video 태그 자체에 적용
+  const updateMainBannerVideoHeight = () => {
+    const bannerVideos = $(".main-banner-video video");
+    if (bannerVideos.length) {
+      const header = $(".header");
+      const headerHeight = header.length ? header.outerHeight() || 0 : 0;
+      const windowHeight = window.innerHeight;
+      const videoHeight = windowHeight - headerHeight;
+      bannerVideos.css({ height: `${videoHeight}px` });
+    }
+  };
+  updateMainBannerVideoHeight();
+
   //floater
   if ($(".floater").length) {
     const floater = $(".floater");

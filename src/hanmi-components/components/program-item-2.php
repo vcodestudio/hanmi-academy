@@ -69,9 +69,9 @@
                 $tag_count = count($tag_items);
                 foreach ($tag_items as $index => $tag_item):
                 ?>
-                    <a href="<?= esc_url($tag_item["link"]) ?>" class="text-[1rem] font-bold leading-[1.5rem] tracking-[-0.0125rem] text-black">
+                    <span class="text-[1rem] font-bold leading-[1.5rem] tracking-[-0.0125rem] text-black no-hover">
                         <?= esc_html($tag_item["text"]) ?>
-                    </a>
+                    </span>
                     <?php if ($index < $tag_count - 1): ?>
                     <div class="bg-[rgba(0,0,0,0.1)] h-[1rem] w-px"></div>
                     <?php endif; ?>

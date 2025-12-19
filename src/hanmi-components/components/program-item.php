@@ -61,7 +61,7 @@
                     $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
                     if ($terms && !is_wp_error($terms)):
                         foreach ($terms as $term):
-                            echo '<a href="?'.$tax_tag["slug"].'='.$term->slug.'" class="tag small '.$tax_tag["class"].'">'.$term->name.'</a>';
+                            echo '<span class="tag small '.$tax_tag["class"].' no-hover">'.$term->name.'</span>';
                         endforeach;
                     endif;
                 endforeach;

@@ -577,7 +577,7 @@
   border: 1px solid fade(#000, 10%);
   line-height: 1em;
   font-weight: @reg;
-  &:hover {
+  &:not(.no-hover):hover {
     background: #000;
     border-color: #000;
     color: #fff;
@@ -586,7 +586,7 @@
     color: #fff;
     background: fade(#fff, 10%);
     border-color: transparent;
-    &:hover {
+    &:not(.no-hover):hover {
       border-color: fade(#fff, 50%);
     }
   }
@@ -598,7 +598,7 @@
     background: transparent;
     color: #fff;
     border-color: #fff;
-    &:hover {
+    &:not(.no-hover):hover {
       background: fade(#fff, 20%);
     }
   }
@@ -612,10 +612,18 @@
   }
   &.dark {
     background: fade(#000, 30%);
-    &:hover {
+    &:not(.no-hover):hover {
       border-color: fade(#000, 50%);
     }
   }
+  &.no-hover {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+.no-hover {
+  cursor: default;
+  pointer-events: none;
 }
 .button_set {
   display: flex;

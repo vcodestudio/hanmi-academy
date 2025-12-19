@@ -3,7 +3,8 @@
     "build": "webpack --mode=production --config ./webpack.config",
     "dev": "node dev.js",
     "start": "node dev.js",
-    "deploy:test": "./deploy-test.sh"
+    "deploy:test": "./deploy-test.sh",
+    "ssh": "ssh -i ./keys/mh.pem bitnami@43.200.249.203"
   },
   "dependencies": {
     "@prettier/plugin-php": "^0.22.2",

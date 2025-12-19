@@ -1,30 +1,82 @@
 <?php
 get_header();
-$sliders = function_exists('get_field') ? get_field("main_slider","option") : null;
-$sliders = $sliders?$sliders:[];
+$main_video_pc = function_exists('get_field') ? get_field("main_video_pc","option") : null;
+$main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile","option") : null;
 ?>
 <style>
     .content_wrap {
         margin-bottom: 0px;
     }
+    .main-banner-video {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .main-banner-video video {
+        width: 100%;
+        /* 높이는 JavaScript로 동적으로 설정됨 (헤더 높이 제외한 윈도우 높이) */
+        object-fit: cover;
+        display: block;
+    }
+    .main-banner-video .video-pc {
+        display: block;
+    }
+    .main-banner-video .video-mobile {
+        display: none;
+    }
+    @media (max-width: 768px) {
+        .main-banner-video .video-pc {
+            display: none;
+        }
+        .main-banner-video .video-mobile {
+            display: block;
+        }
+    }
 </style>
 <div class="index">
     <?php
-        if(count($sliders) > 0):
-            $first_item = $sliders[0];
-            $main_image = _acf("thumb_main_slider", $first_item->ID) ?: _acf("thumb", $first_item->ID);
-            if($main_image):
+        if($main_video_pc || $main_video_mobile):
+            $video_pc_url = $main_video_pc ? (is_array($main_video_pc) ? $main_video_pc['url'] : $main_video_pc) : null;
+            $video_mobile_url = $main_video_mobile ? (is_array($main_video_mobile) ? $main_video_mobile['url'] : $main_video_mobile) : null;
     ?>
-    <div class="main-banner-image" style="width: 100%; height: 640px; position: relative; overflow: hidden;">
-        <?php
-            $img_src = is_array($main_image) ? ($main_image["sizes"]["large"] ?? $main_image["url"]) : $main_image;
-        ?>
-        <img src="<?= esc_url($img_src) ?>" alt="<?= esc_attr(get_the_title($first_item)) ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+    <div class="main-banner-video">
+        <?php if($video_pc_url): ?>
+        <video 
+            class="video-pc" 
+            autoplay 
+            muted 
+            playsinline 
+            loop
+            style="width: 100%; object-fit: cover;"
+        >
+            <source src="<?= esc_url($video_pc_url) ?>" type="video/mp4">
+        </video>
+        <?php endif; ?>
+        <?php if($video_mobile_url): ?>
+        <video 
+            class="video-mobile" 
+            autoplay 
+            muted 
+            playsinline 
+            loop
+            style="width: 100%; object-fit: cover;"
+        >
+            <source src="<?= esc_url($video_mobile_url) ?>" type="video/mp4">
+        </video>
+        <?php elseif($video_pc_url): ?>
+        <video 
+            class="video-mobile" 
+            autoplay 
+            muted 
+            playsinline 
+            loop
+            style="width: 100%; object-fit: cover;"
+        >
+            <source src="<?= esc_url($video_pc_url) ?>" type="video/mp4">
+        </video>
+        <?php endif; ?>
     </div>
-    <?php
-            endif;
-        endif;
-    ?>
+    <?php endif; ?>
     <?php
     // program section
     $posts = new WP_Query([
