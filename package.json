@@ -4,7 +4,7 @@
     "dev": "node dev.js",
     "start": "node dev.js",
     "deploy:test": "./deploy-test.sh",
-    "ssh": "ssh -i ./keys/mh.pem bitnami@43.200.249.203"
+    "ssh": "./ssh.sh"
   },
   "dependencies": {
     "@prettier/plugin-php": "^0.22.2",

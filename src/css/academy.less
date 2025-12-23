@@ -225,15 +225,51 @@ body#error-page {
 .m {
   @media @mobile {
     &-hori_scroll {
-      overflow: scroll;
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 16px;
       margin-left: -1rem;
       width: calc(~"100% + 2rem");
-      // padding: 0 100vw 0 1rem;
       padding: 0 1rem;
+      
+      // Swiper 구조일 때
+      &.swiper {
+        overflow: visible;
+        
+        .swiper-wrapper {
+          display: flex;
+        }
+        
+        .swiper-slide {
+          width: auto;
+          height: auto;
+          flex-shrink: 0;
+        }
+      }
+      
+      // Swiper가 아닐 때 (fallback)
+      &:not(.swiper) {
+        overflow: scroll;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 16px;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        
+        & > * {
+          min-width: calc((100vw - 2rem - 16px) / 1.5);
+          flex-shrink: 0;
+          scroll-snap-align: start;
+        }
+      }
     }
+  }
+}
+
+// Swiper 활성화 시 program-card width 100% (1200px 미만에서 적용)
+@media screen and (max-width: 1199px) {
+  .m-hori_scroll.swiper .swiper-slide .program-card,
+  .gallery-grid.m-hori_scroll.swiper .swiper-slide .program-card,
+  .swiper.m-hori_scroll .swiper-slide .program-card {
+    width: 100% !important;
   }
 }
 

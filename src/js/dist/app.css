@@ -110,9 +110,6 @@
 .visible {
     visibility: visible
 }
-.invisible {
-    visibility: hidden
-}
 .collapse {
     visibility: collapse
 }
@@ -470,10 +467,6 @@
     --tw-blur: blur(8px);
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
 }
-.drop-shadow {
-    --tw-drop-shadow: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
-    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
-}
 .\!invert {
     --tw-invert: invert(100%) !important;
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important
@@ -542,9 +535,6 @@
 }
 .\[\&\>\*\]\:flex-1>* {
     flex: 1 1 0%
-}
-.\[\&\>\*\]\:basis-\[240px\]>* {
-    flex-basis: 240px
 }
 @media (max-width: 765px) {
     .m\:\[\&\>\*\]\:flex-auto>* {
@@ -5528,14 +5518,44 @@ body#error-page {
 }
 @media screen and (max-width:765px) {
   .m-hori_scroll {
-    overflow: scroll;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 16px;
     margin-left: -1rem;
     width: calc(100% + 2rem);
     padding: 0 1rem;
   }
+  .m-hori_scroll.swiper {
+    overflow: visible;
+  }
+  .m-hori_scroll.swiper .swiper-wrapper {
+    display: flex;
+  }
+  .m-hori_scroll.swiper .swiper-slide {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .m-hori_scroll:not(.swiper) {
+    overflow: scroll;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .m-hori_scroll:not(.swiper) > * {
+    min-width: calc((100vw - 2rem - 16px) / 1.5);
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+@media screen and (max-width: 1199px) {
+  .m-hori_scroll.swiper .swiper-slide .program-card,
+  .gallery-grid.m-hori_scroll.swiper .swiper-slide .program-card,
+  .swiper.m-hori_scroll .swiper-slide .program-card {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width:765px) {
   .index > div {
     padding: 0 0 24px;
   }

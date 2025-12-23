@@ -100,7 +100,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll [&>*]:basis-[240px]">
+            <div class="gallery-grid m-hori_scroll">
                 <?=
             comp("program-item",["posts"=>$posts]);
             ?>
@@ -133,7 +133,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll [&>*]:basis-[240px]">
+            <div class="gallery-grid m-hori_scroll">
                 <?=
             comp("exhibition-item",["posts"=>$posts]);
             ?>

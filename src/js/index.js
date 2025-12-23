@@ -587,79 +587,153 @@ function academyInit() {
     });
   });
 
-  document.querySelectorAll(".m-hori_scroll").forEach((el) => {
-    let sanim;
-    let prevent = (e) => {
-      e.preventDefault();
-    };
-    el.querySelectorAll("a").forEach((a) => {
-      let coro;
-      // disable drag
-      a.addEventListener("dragstart", (e) => {
-        if (window.innerWidth > 980) return;
-        e.preventDefault();
-        coro = setTimeout(() => {
-          a.addEventListener("click", prevent);
-        }, 30);
-      });
+  // 컨텐츠 너비 기반으로 slidesPerView 계산
+  const calculateSlidesPerView = (el) => {
+    const windowWidth = window.innerWidth;
+    const contMaxWidth = 1200; // 컨텐츠 최대 너비
+    const padding = 32; // 양쪽 패딩 (1rem * 2 = 16px * 2)
+    const gap = 16; // 슬라이드 간격
+    
+    // 실제 사용 가능한 컨텐츠 너비 계산
+    const availableWidth = Math.min(windowWidth, contMaxWidth) - padding;
+    
+    // breakpoint별 기본 slidesPerView
+    let slidesPerView;
+    if (windowWidth <= 650) {
+      // phone: 1.5개
+      slidesPerView = 1.5;
+    } else if (windowWidth <= 765) {
+      // mobile: 1.5 ~ 2개 (너비에 따라 조정)
+      slidesPerView = Math.min(2, Math.max(1.5, availableWidth / 320));
+    } else if (windowWidth < contMaxWidth) {
+      // 컨텐츠 너비 미만: 2 ~ 3개 (너비에 따라 조정)
+      slidesPerView = Math.min(3, Math.max(2, availableWidth / 400));
+    } else {
+      // 컨텐츠 너비 이상: Swiper 비활성화
+      return null;
+    }
+    
+    return slidesPerView;
+  };
 
-      // disable link when drag end
-      a.addEventListener("dragend", (e) => {
-        e.preventDefault();
-        clearTimeout(coro);
-        a.removeEventListener("click", prevent);
-      });
-    });
-    el.addEventListener("touchend", (e) => {
-      const target = e.currentTarget;
-      const nearestItem = [...target.querySelectorAll(".item")].sort((a, b) => {
-        const out =
-          Math.abs(a.getBoundingClientRect().x) -
-          Math.abs(b.getBoundingClientRect().x);
-        return out;
-      });
-      if (nearestItem[0]) {
-        sanim = gsap.to(target, {
-          scrollLeft: nearestItem[0].offsetLeft - 15,
-        });
-      }
-    });
-    el.addEventListener("touchstart", (e) => {
-      if (sanim.stop) sanim.stop();
-    });
+  // 리사이즈 상태 추적 변수
+  let isResizing = false;
+  let resizeTimeout;
 
-    let isMouseDown = false;
-    el.addEventListener("mousedown", (e) => {
-      isMouseDown = true;
-    });
-    const ls = ["mouseup", "mouseout"];
-    ls.forEach((l) => {
-      el.addEventListener(l, (e) => {
-        if (isMouseDown) {
-          const target = e.currentTarget;
-          const nearestItem = [...target.querySelectorAll(".item")].sort(
-            (a, b) => {
-              const out =
-                Math.abs(a.getBoundingClientRect().x) -
-                Math.abs(b.getBoundingClientRect().x);
-              return out;
-            }
-          );
-          if (nearestItem[0]) {
-            sanim = gsap.to(target, {
-              scrollLeft: nearestItem[0].offsetLeft - 15,
+  // Swiper 초기화 함수
+  const initMobileSwiper = (el) => {
+    // 리사이즈 중이면 업데이트하지 않음
+    if (isResizing) {
+      return;
+    }
+
+    const windowWidth = window.innerWidth;
+    const contMaxWidth = 1200; // 컨텐츠 최대 너비
+    const shouldUseSwiper = windowWidth < contMaxWidth; // 컨텐츠 너비 미만에서만 활성화
+    
+    // 컨텐츠 너비 이상인 경우
+    if (!shouldUseSwiper) {
+      // Swiper가 초기화되어 있으면 제거하고 원래 구조로 복원
+      if (el.swiperInstance) {
+        el.swiperInstance.destroy(true, true);
+        el.swiperInstance = null;
+        
+        // 원래 구조로 복원
+        if (el.classList.contains("swiper")) {
+          const wrapper = el.querySelector(".swiper-wrapper");
+          if (wrapper) {
+            const slides = wrapper.querySelectorAll(".swiper-slide");
+            slides.forEach((slide) => {
+              const content = slide.firstElementChild;
+              if (content) {
+                el.appendChild(content);
+              }
             });
+            el.classList.remove("swiper");
+            wrapper.remove();
           }
-          isMouseDown = false;
         }
-      });
-    });
-    el.addEventListener("mousemove", (e) => {
-      // drag
-      if (isMouseDown) {
-        const target = e.currentTarget;
-        target.scrollLeft -= e.movementX;
       }
+      return;
+    }
+
+    // slidesPerView 계산
+    const slidesPerView = calculateSlidesPerView(el);
+    if (!slidesPerView) return;
+
+    // 모바일인 경우 Swiper 초기화
+    // Swiper 구조로 변환
+    if (!el.classList.contains("swiper")) {
+      el.classList.add("swiper");
+      
+      // 기존 자식 요소들을 swiper-wrapper로 감싸기
+      const wrapper = document.createElement("div");
+      wrapper.className = "swiper-wrapper";
+      
+      // 기존 자식 요소들을 swiper-slide로 변환
+      Array.from(el.children).forEach((child) => {
+        const slide = document.createElement("div");
+        slide.className = "swiper-slide";
+        slide.appendChild(child);
+        wrapper.appendChild(slide);
+      });
+      
+      el.innerHTML = "";
+      el.appendChild(wrapper);
+    }
+
+    // Swiper가 이미 초기화되어 있으면 파라미터 업데이트
+    if (el.swiperInstance) {
+      el.swiperInstance.params.slidesPerView = slidesPerView;
+      el.swiperInstance.update();
+      return;
+    }
+
+    // Swiper 초기화
+    const swiper = new Swiper(el, {
+      slidesPerView: slidesPerView,
+      spaceBetween: 16,
+      centeredSlides: true,
+      centeredSlidesBounds: true,
+      slidesOffsetAfter: 16, // 마지막 슬라이드 우측에 패딩 (1rem = 16px)
+      speed: 300,
+      resistance: true,
+      resistanceRatio: 0.85,
+      // 컨텐츠 너비 이상에서 비활성화
+      breakpoints: {
+        1200: {
+          enabled: false,
+        },
+      },
+      // 링크 클릭 허용
+      allowTouchMove: true,
+      // 스냅 효과
+      slideToClickedSlide: false,
     });
+
+    // Swiper 인스턴스를 요소에 저장
+    el.swiperInstance = swiper;
+  };
+
+  // 초기화
+  document.querySelectorAll(".m-hori_scroll").forEach((el) => {
+    initMobileSwiper(el);
+  });
+
+  // 리사이즈 이벤트 핸들러 (디바운스 적용 - 리사이즈 완료 후 일정 시간 경과 시에만 적용)
+  window.addEventListener("resize", () => {
+    // 리사이즈 중 플래그 설정
+    isResizing = true;
+    
+    // 기존 타이머 취소
+    clearTimeout(resizeTimeout);
+    
+    // 리사이즈 완료 후 500ms 경과 시에만 Swiper 갱신
+    resizeTimeout = setTimeout(() => {
+      isResizing = false;
+      document.querySelectorAll(".m-hori_scroll").forEach((el) => {
+        initMobileSwiper(el);
+      });
+    }, 500);
   });
 }
