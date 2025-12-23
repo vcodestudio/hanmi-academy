@@ -622,38 +622,46 @@ function academyInit() {
 
   // Swiper 초기화 함수
   const initMobileSwiper = (el) => {
-    // 리사이즈 중이면 업데이트하지 않음
-    if (isResizing) {
-      return;
-    }
-
     const windowWidth = window.innerWidth;
     const contMaxWidth = 1200; // 컨텐츠 최대 너비
     const shouldUseSwiper = windowWidth < contMaxWidth; // 컨텐츠 너비 미만에서만 활성화
     
-    // 컨텐츠 너비 이상인 경우
+    // 컨텐츠 너비 이상인 경우 (PC로 전환) - 완전히 초기화
     if (!shouldUseSwiper) {
-      // Swiper가 초기화되어 있으면 제거하고 원래 구조로 복원
+      // Swiper가 초기화되어 있으면 완전히 제거하고 원래 구조로 복원
       if (el.swiperInstance) {
-        el.swiperInstance.destroy(true, true);
+        try {
+          el.swiperInstance.destroy(true, true);
+        } catch (e) {
+          console.warn("Swiper destroy error:", e);
+        }
         el.swiperInstance = null;
-        
-        // 원래 구조로 복원
-        if (el.classList.contains("swiper")) {
-          const wrapper = el.querySelector(".swiper-wrapper");
-          if (wrapper) {
-            const slides = wrapper.querySelectorAll(".swiper-slide");
-            slides.forEach((slide) => {
-              const content = slide.firstElementChild;
-              if (content) {
-                el.appendChild(content);
-              }
-            });
-            el.classList.remove("swiper");
-            wrapper.remove();
-          }
+      }
+      
+      // 원래 구조로 완전히 복원
+      if (el.classList.contains("swiper")) {
+        const wrapper = el.querySelector(".swiper-wrapper");
+        if (wrapper) {
+          const slides = wrapper.querySelectorAll(".swiper-slide");
+          const fragment = document.createDocumentFragment();
+          
+          slides.forEach((slide) => {
+            const content = slide.firstElementChild;
+            if (content) {
+              fragment.appendChild(content);
+            }
+          });
+          
+          el.innerHTML = "";
+          el.appendChild(fragment);
+          el.classList.remove("swiper");
         }
       }
+      return;
+    }
+
+    // 리사이즈 중이면 업데이트하지 않음 (모바일 상태일 때만)
+    if (isResizing) {
       return;
     }
 
