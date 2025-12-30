@@ -1203,7 +1203,12 @@
         // 주문 상태 확인
         $order_status = get_field('order_status', $order_post_id);
         if ($order_status !== 'success') {
-            wp_send_json_error(array('message' => '환불 신청 가능한 상태가 아닙니다.'));
+            // 디버깅: 현재 주문 상태를 포함한 에러 메시지
+            $status_label = $order_status ?: '없음';
+            wp_send_json_error(array(
+                'message' => '환불 신청 가능한 상태가 아닙니다. (현재 상태: ' . $status_label . ')',
+                'current_status' => $order_status
+            ));
             return;
         }
         

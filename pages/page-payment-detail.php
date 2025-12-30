@@ -26,15 +26,15 @@ $payment_result = $_SESSION['mainpay_payment_result'] ?? null;
 $order_info = $_SESSION['mainpay_order'] ?? null;
 
 // URL 파라미터에서 주문 ID 가져오기
-$order_id = $_GET['order_id'] ?? ($order_info['mbrRefNo'] ?? 'ORD-001');
-$order_status = $_GET['status'] ?? ($payment_result['status'] ?? 'pending');
+$order_id = $_GET['order_id'] ?? null;
+$order_status = $_GET['status'] ?? null;
 
-// DB에서 주문 정보 가져오기 (우선순위)
+// DB에서 주문 정보 가져오기
 $order_post = null;
-$order_post_id = $_SESSION['mainpay_order_post_id'] ?? null;
+$order_post_id = null;
 
-// mbrRefNo로 주문 검색
-if (!$order_post_id && !empty($order_id)) {
+// URL에 order_id가 있으면 해당 주문을 먼저 찾음
+if (!empty($order_id)) {
     $existing_orders = get_posts(array(
         'post_type' => 'post_order',
         'meta_query' => array(
@@ -52,6 +52,22 @@ if (!$order_post_id && !empty($order_id)) {
         $order_post_id = $existing_orders[0]->ID;
     }
 }
+
+// URL에 order_id가 없으면 세션 정보 확인
+if (!$order_post_id) {
+    $order_post_id = $_SESSION['mainpay_order_post_id'] ?? null;
+    $order_info = $_SESSION['mainpay_order'] ?? null;
+    $payment_result = $_SESSION['mainpay_payment_result'] ?? null;
+    
+    if (!$order_id && isset($order_info['mbrRefNo'])) {
+        $order_id = $order_info['mbrRefNo'];
+    }
+}
+
+// 기본값 설정 (여전히 없으면)
+if (!$order_id) $order_id = 'ORD-001';
+if (!$order_status && isset($payment_result['status'])) $order_status = $payment_result['status'];
+if (!$order_status) $order_status = 'pending';
 
 // DB에서 주문 정보 가져오기
 if ($order_post_id) {
@@ -463,6 +479,38 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
     align-items: center;
 }
 
+.payment-status {
+    border-radius: 0.25rem;
+    margin-left: auto;
+    text-align: right;
+    width: fit-content;
+}
+
+.payment-status p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.payment-status-detail {
+    margin: 0.5rem 0 0 0 !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.payment-status.cancelled {
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+}
+
+.payment-status.cancelled p {
+    color: #856404;
+}
+
+.payment-status.cancelled .payment-status-detail {
+    color: #856404;
+}
+
 @media (max-width: 765px) {
     .payment-detail-order-item {
         flex-direction: column;
@@ -525,6 +573,12 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
         
         .payment-detail-payment-date-row .payment-detail-refund-button-wrapper button {
             width: 100%;
+        }
+        
+        .payment-status {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
         }
     }
 }
@@ -695,39 +749,38 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
                     <div class="payment-detail-info-item-value">
                         <p><?= esc_html($payment['date']) ?></p>
                     </div>
-                    
-                    <!-- 환불 신청 버튼 (결제 완료 상태일 때만 표시, 환불 신청 상태 제외) - Figma 디자인 기준 오른쪽 정렬 -->
-                    <?php
-                    // 오직 '결제 완료' 상태일 때만 버튼 노출
-                    if ($order_status === 'success'):
-                        // 1. 유료 주문: 환불신청 버튼 (무료 주문 제외)
-                        if (!empty($payment['ref_no']) && !$payment['is_free']):
-                    ?>
-                    <div class="payment-detail-refund-button-wrapper" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%);">
-                        <button id="refund-request" style="padding: 0.75rem 2rem; background-color: #000000; border: 1px solid #000000; font-size: 1rem; font-weight: 700; color: #FFFFFF; white-space: nowrap; border-radius: 4px;">환불신청</button>
-                    </div>
-                    <?php 
-                        endif;
-                    endif; 
-                    ?>
                 </div>
             </div>
         </div>
         
+        <div class="payment-detail-divider"></div>
+        
+        <!-- 환불 신청 버튼 (결제 완료 상태일 때만 표시, 환불 신청 상태 제외) - Figma 디자인 기준 오른쪽 정렬 -->
+        <?php
+            // 오직 '결제 완료' 상태이고, 결제 대기나 환불 신청/완료 상태가 아닐 때만 버튼 노출
+            $show_refund_button = ($order_status === 'success' && !$is_waiting && !$is_refund_requested && !$is_refunded && !empty($payment['ref_no']) && !$payment['is_free']);
+            if ($show_refund_button):
+        ?>
+        <div class="payment-detail-section flex w-full !items-end">
+            <div class="payment-detail-refund-button-wrapper">
+                <button id="refund-request" class="button" style="white-space: nowrap;">환불신청</button>
+            </div>
+        </div>
+        <?php endif; ?>
         <!-- 결제 상태 표시 -->
         <?php if ($is_cancelled): ?>
-        <div class="payment-status" style="margin-top: 2rem; padding: 1rem; background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 0.25rem;">
-            <p style="margin: 0; font-size: 1rem; font-weight: 700; color: #856404;">결제가 취소되었습니다.</p>
+        <div class="payment-status cancelled">
+            <p>결제가 취소되었습니다.</p>
             <?php if (isset($payment_result['cancelDate'])): ?>
-            <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #856404;">취소일시: <?= date('Y.m.d H:i', strtotime($payment_result['cancelDate'])) ?></p>
+            <p class="payment-status-detail">취소일시: <?= date('Y.m.d H:i', strtotime($payment_result['cancelDate'])) ?></p>
             <?php endif; ?>
         </div>
         <?php endif; ?>
         
         <!-- 환불 신청 상태 안내 -->
         <?php if ($is_refund_requested): ?>
-        <div class="payment-status" style="margin-top: 2rem; padding: 1rem; background-color: #e7f3ff; border: 1px solid #2196F3; border-radius: 0.25rem;">
-            <p style="margin: 0; font-size: 1rem; font-weight: 700; color: #1976D2;">환불 신청이 접수되었습니다.</p>
+        <div class="payment-status">
+            <p>환불 신청이 접수되었습니다.</p>
             <?php
             $refund_request_date = get_field('order_refund_request_date', $order_post_id);
             $refund_request_amount = get_field('order_refund_request_amount', $order_post_id);
@@ -743,9 +796,9 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
                     $formatted_date .= ' ' . $hour . ':' . $minute;
                 }
             ?>
-            <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #1976D2;">신청일시: <?= esc_html($formatted_date) ?></p>
+            <p class="payment-status-detail">신청일시: <?= esc_html($formatted_date) ?></p>
             <?php if ($refund_request_amount): ?>
-            <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #1976D2;">신청 금액: <?= number_format($refund_request_amount) ?>원</p>
+            <p class="payment-status-detail">신청 금액: <?= number_format($refund_request_amount) ?>원</p>
             <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -754,8 +807,241 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
 </div>
 
 <script>
+// 환불 신청 팝업 표시 (Figma 디자인 기준) - 전역 함수로 이동
+function showRefundRequestPopup(refundInfo) {
+    const popup = document.createElement('div');
+    popup.id = 'refund-request-popup';
+    popup.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;';
+    
+    const popupContent = document.createElement('div');
+    popupContent.style.cssText = 'background: #FFFFFF; padding: 32px; border-radius: 8px; max-width: 480px; width: 90%; position: relative;';
+    
+    // X 버튼 (원본 close 아이콘 사용)
+    const closeBtn = document.createElement('button');
+    const closeIconUrl = '<?= esc_js(SRC_MODULE . "/imgs/icons/close.svg") ?>';
+    closeBtn.innerHTML = `<img src="${closeIconUrl}" alt="닫기" style="width: 24px; height: 24px; display: block;" />`;
+    closeBtn.style.cssText = 'position: absolute; top: 16px; right: 16px; background: none; border: none; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;';
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+    });
+    
+    const title = document.createElement('h2');
+    title.textContent = '환불신청';
+    title.style.cssText = 'font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 20px; line-height: 28px; color: #000000; margin: 0 0 24px 0;';
+    
+    // 메시지 영역 (Figma 디자인 기준 - 중앙 정렬)
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = 'margin-bottom: 24px; text-align: center;';
+    messageDiv.innerHTML = `
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+            확인을 누르면 환불 절차가 진행됩니다.
+        </p>
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
+            환불을 신청하시겠습니까?
+        </p>
+    `;
+    
+    // 환불 사유 입력란 (일반 환불 팝업에만 표시)
+    const reasonLabel = document.createElement('label');
+    reasonLabel.textContent = '환불 사유 (선택사항)';
+    reasonLabel.style.cssText = 'display: block; font-family: "Pretendard Variable", sans-serif; font-size: 14px; line-height: 20px; color: #000000; margin-bottom: 8px; text-align: left;';
+    
+    const reasonInput = document.createElement('textarea');
+    reasonInput.id = 'refund-reason-input';
+    reasonInput.placeholder = '환불 사유를 입력해주세요.';
+    reasonInput.style.cssText = 'width: 100%; min-height: 80px; padding: 12px; border: 1px solid #E0E0E0; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-size: 14px; line-height: 20px; resize: vertical; box-sizing: border-box; margin-bottom: 24px;';
+    
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = '확인';
+    confirmBtn.style.cssText = 'width: 100%; padding: 14px; background-color: #000000; color: #FFFFFF; border: none; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; cursor: pointer;';
+    confirmBtn.addEventListener('click', function() {
+        const reason = reasonInput.value.trim();
+        
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = '처리 중...';
+        
+        fetch('<?= admin_url('admin-ajax.php') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'mainpay_refund_request',
+                order_id: '<?= esc_js($order_id) ?>',
+                refund_reason: reason
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 기존 환불 신청 팝업 닫기
+            const existingPopup = document.getElementById('refund-request-popup');
+            if (existingPopup) {
+                document.body.removeChild(existingPopup);
+            }
+            
+            if (data.success) {
+                showMessagePopup('환불신청', '환불 신청이 완료되었습니다.', function() {
+                    window.location.reload();
+                });
+            } else {
+                showMessagePopup('환불신청', '환불 신청 실패: ' + (data.data?.message || '알 수 없는 오류'), function() {
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = '확인';
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // 기존 환불 신청 팝업 닫기
+            const existingPopup = document.getElementById('refund-request-popup');
+            if (existingPopup) {
+                document.body.removeChild(existingPopup);
+            }
+            showMessagePopup('환불신청', '처리 중 오류가 발생했습니다.', function() {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = '확인';
+            });
+        });
+    });
+    
+    popupContent.appendChild(closeBtn);
+    popupContent.appendChild(title);
+    popupContent.appendChild(messageDiv);
+    popupContent.appendChild(reasonLabel);
+    popupContent.appendChild(reasonInput);
+    popupContent.appendChild(confirmBtn);
+    popup.appendChild(popupContent);
+    
+    document.body.appendChild(popup);
+    
+    // 팝업 외부 클릭 시 닫기
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            document.body.removeChild(popup);
+        }
+    });
+}
+
+// 메시지 팝업 표시 함수 (성공/실패 공통)
+function showMessagePopup(title, message, onConfirm) {
+    const popup = document.createElement('div');
+    popup.id = 'message-popup';
+    popup.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;';
+    
+    const popupContent = document.createElement('div');
+    popupContent.style.cssText = 'background: #FFFFFF; padding: 32px; border-radius: 8px; max-width: 480px; width: 90%; position: relative;';
+    
+    // X 버튼
+    const closeBtn = document.createElement('button');
+    const closeIconUrl = '<?= esc_js(SRC_MODULE . "/imgs/icons/close.svg") ?>';
+    closeBtn.innerHTML = `<img src="${closeIconUrl}" alt="닫기" style="width: 24px; height: 24px; display: block;" />`;
+    closeBtn.style.cssText = 'position: absolute; top: 16px; right: 16px; background: none; border: none; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;';
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+        if (onConfirm) onConfirm();
+    });
+    
+    const titleEl = document.createElement('h2');
+    titleEl.textContent = title;
+    titleEl.style.cssText = 'font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 20px; line-height: 28px; color: #000000; margin: 0 0 24px 0;';
+    
+    // 메시지 영역
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = 'margin-bottom: 24px; text-align: center;';
+    messageDiv.innerHTML = `<p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">${message}</p>`;
+    
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = '확인';
+    confirmBtn.style.cssText = 'width: 100%; padding: 14px; background-color: #000000; color: #FFFFFF; border: none; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; cursor: pointer;';
+    confirmBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+        if (onConfirm) onConfirm();
+    });
+    
+    popupContent.appendChild(closeBtn);
+    popupContent.appendChild(titleEl);
+    popupContent.appendChild(messageDiv);
+    popupContent.appendChild(confirmBtn);
+    popup.appendChild(popupContent);
+    
+    document.body.appendChild(popup);
+    
+    // 팝업 외부 클릭 시 닫기
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            document.body.removeChild(popup);
+            if (onConfirm) onConfirm();
+        }
+    });
+}
+
+// 환불 불가 안내 팝업 (Figma 디자인 기준) - 전역 함수로 이동
+function showRefundNotAvailablePopup(reason) {
+    const phoneNumber = '<?= esc_js(get_field("footer_phone_number", "option") ?: "02-722-1315") ?>';
+    
+    const popup = document.createElement('div');
+    popup.id = 'refund-not-available-popup';
+    popup.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;';
+    
+    const popupContent = document.createElement('div');
+    popupContent.style.cssText = 'background: #FFFFFF; padding: 32px; border-radius: 8px; max-width: 480px; width: 90%; position: relative;';
+    
+    // X 버튼 (원본 close 아이콘 사용)
+    const closeBtn = document.createElement('button');
+    const closeIconUrl = '<?= esc_js(SRC_MODULE . "/imgs/icons/close.svg") ?>';
+    closeBtn.innerHTML = `<img src="${closeIconUrl}" alt="닫기" style="width: 24px; height: 24px; display: block;" />`;
+    closeBtn.style.cssText = 'position: absolute; top: 16px; right: 16px; background: none; border: none; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer;';
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+    });
+    
+    const title = document.createElement('h2');
+    title.textContent = '환불신청';
+    title.style.cssText = 'font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 20px; line-height: 28px; color: #000000; margin: 0 0 24px 0;';
+    
+    // 메시지 영역 (Figma 디자인 기준 - 중앙 정렬)
+    const message = document.createElement('div');
+    message.style.cssText = 'margin-bottom: 24px; text-align: center;';
+    message.innerHTML = `
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+            해당 상품은 환불 규정에 따라
+        </p>
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+            웹사이트에서 환불을 진행하실 수 없습니다.
+        </p>
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+            자세한 내용은 뮤지엄한미 아카데미(${phoneNumber})로
+        </p>
+        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
+            연락주시면 안내드리겠습니다.
+        </p>
+    `;
+    
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = '확인';
+    confirmBtn.style.cssText = 'width: 100%; padding: 14px; background-color: #000000; color: #FFFFFF; border: none; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 16px; line-height: 24px; cursor: pointer;';
+    confirmBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+    });
+    
+    popupContent.appendChild(closeBtn);
+    popupContent.appendChild(title);
+    popupContent.appendChild(message);
+    popupContent.appendChild(confirmBtn);
+    popup.appendChild(popupContent);
+    
+    document.body.appendChild(popup);
+    
+    // 팝업 외부 클릭 시 닫기
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            document.body.removeChild(popup);
+        }
+    });
+}
+
+// 환불 신청 버튼 이벤트 리스너
 document.addEventListener('DOMContentLoaded', function() {
-    // 환불 신청 버튼 이벤트
     const refundRequestButton = document.getElementById('refund-request');
     
     if (refundRequestButton) {
@@ -785,179 +1071,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         showRefundRequestPopup(refundInfo);
                     }
                 } else {
-                    alert('환불 정보 조회 실패: ' + (data.data?.message || '알 수 없는 오류'));
+                    showMessagePopup('환불신청', '환불 정보 조회 실패: ' + (data.data?.message || '알 수 없는 오류'));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
+                showMessagePopup('환불신청', '처리 중 오류가 발생했습니다.');
             });
-        });
-    }
-    
-    // 환불 신청 팝업 표시 (Figma 디자인 기준)
-    function showRefundRequestPopup(refundInfo) {
-        const popup = document.createElement('div');
-        popup.id = 'refund-request-popup';
-        popup.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;';
-        
-        const popupContent = document.createElement('div');
-        popupContent.style.cssText = 'background: #FFFFFF; padding: 32px; border-radius: 8px; max-width: 480px; width: 90%; position: relative;';
-        
-        // X 버튼 (원본 close 아이콘 사용)
-        const closeBtn = document.createElement('button');
-        const closeIconUrl = '<?= esc_js(SRC_MODULE . "/imgs/icons/close.svg") ?>';
-        closeBtn.innerHTML = `<img src="${closeIconUrl}" alt="닫기" style="width: 24px; height: 24px; display: block;" />`;
-        closeBtn.style.cssText = 'position: absolute; top: 16px; right: 16px; background: none; border: none; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;';
-        closeBtn.addEventListener('click', function() {
-            document.body.removeChild(popup);
-        });
-        
-        const title = document.createElement('h2');
-        title.textContent = '환불신청';
-        title.style.cssText = 'font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 20px; line-height: 28px; color: #000000; margin: 0 0 24px 0;';
-        
-        // 메시지 영역 (Figma 디자인 기준)
-        const messageDiv = document.createElement('div');
-        messageDiv.style.cssText = 'margin-bottom: 24px; text-align: center;';
-        messageDiv.innerHTML = `
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
-                확인을 누르면 환불 절차가 진행됩니다.
-            </p>
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
-                환불을 신청하시겠습니까?
-            </p>
-        `;
-        
-        // 환불 사유 입력란 (일반 환불 팝업에만 표시)
-        const reasonLabel = document.createElement('label');
-        reasonLabel.textContent = '환불 사유 (선택사항)';
-        reasonLabel.style.cssText = 'display: block; font-family: "Pretendard Variable", sans-serif; font-size: 14px; line-height: 20px; color: #000000; margin-bottom: 8px; text-align: left;';
-        
-        const reasonInput = document.createElement('textarea');
-        reasonInput.id = 'refund-reason-input';
-        reasonInput.placeholder = '환불 사유를 입력해주세요.';
-        reasonInput.style.cssText = 'width: 100%; min-height: 80px; padding: 12px; border: 1px solid #E0E0E0; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-size: 14px; line-height: 20px; resize: vertical; box-sizing: border-box; margin-bottom: 24px;';
-        
-        const confirmBtn = document.createElement('button');
-        confirmBtn.textContent = '확인';
-        confirmBtn.style.cssText = 'width: 100%; padding: 14px; background-color: #000000; color: #FFFFFF; border: none; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 16px; line-height: 24px;';
-        confirmBtn.addEventListener('click', function() {
-            const reason = reasonInput.value.trim();
-            
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = '처리 중...';
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    action: 'mainpay_refund_request',
-                    order_id: '<?= esc_js($order_id) ?>',
-                    refund_reason: reason
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('환불 신청이 완료되었습니다.');
-                    window.location.reload();
-                } else {
-                    alert('환불 신청 실패: ' + (data.data?.message || '알 수 없는 오류'));
-                    confirmBtn.disabled = false;
-                    confirmBtn.textContent = '확인';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = '확인';
-            });
-        });
-        
-        popupContent.appendChild(closeBtn);
-        popupContent.appendChild(title);
-        popupContent.appendChild(messageDiv);
-        popupContent.appendChild(reasonLabel);
-        popupContent.appendChild(reasonInput);
-        popupContent.appendChild(confirmBtn);
-        popup.appendChild(popupContent);
-        
-        document.body.appendChild(popup);
-        
-        // 팝업 외부 클릭 시 닫기
-        popup.addEventListener('click', function(e) {
-            if (e.target === popup) {
-                document.body.removeChild(popup);
-            }
-        });
-    }
-    
-    // 환불 불가 안내 팝업 (Figma 디자인 기준)
-    function showRefundNotAvailablePopup(reason) {
-        const phoneNumber = '<?= esc_js(get_field("footer_phone_number", "option") ?: "02-722-1315") ?>';
-        
-        const popup = document.createElement('div');
-        popup.id = 'refund-not-available-popup';
-        popup.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;';
-        
-        const popupContent = document.createElement('div');
-        popupContent.style.cssText = 'background: #FFFFFF; padding: 32px; border-radius: 8px; max-width: 480px; width: 90%; position: relative;';
-        
-        // X 버튼 (원본 close 아이콘 사용)
-        const closeBtn = document.createElement('button');
-        const closeIconUrl = '<?= esc_js(SRC_MODULE . "/imgs/icons/close.svg") ?>';
-        closeBtn.innerHTML = `<img src="${closeIconUrl}" alt="닫기" style="width: 24px; height: 24px; display: block;" />`;
-        closeBtn.style.cssText = 'position: absolute; top: 16px; right: 16px; background: none; border: none; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;';
-        closeBtn.addEventListener('click', function() {
-            document.body.removeChild(popup);
-        });
-        
-        const title = document.createElement('h2');
-        title.textContent = '환불신청';
-        title.style.cssText = 'font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 20px; line-height: 28px; color: #000000; margin: 0 0 24px 0;';
-        
-        // 메시지 영역 (Figma 디자인 기준)
-        const message = document.createElement('div');
-        message.style.cssText = 'margin-bottom: 24px; text-align: center;';
-        message.innerHTML = `
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
-                해당 상품은 환불 규정에 따라
-            </p>
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
-                웹사이트에서 환불을 진행하실 수 없습니다.
-            </p>
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
-                자세한 내용은 뮤지엄한미 아카데미(${phoneNumber})으로
-            </p>
-            <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
-                연락주시면 안내드리겠습니다.
-            </p>
-        `;
-        
-        const confirmBtn = document.createElement('button');
-        confirmBtn.textContent = '확인';
-        confirmBtn.style.cssText = 'width: 100%; padding: 14px; background-color: #000000; color: #FFFFFF; border: none; border-radius: 4px; font-family: "Pretendard Variable", sans-serif; font-weight: 700; font-size: 16px; line-height: 24px;';
-        confirmBtn.addEventListener('click', function() {
-            document.body.removeChild(popup);
-        });
-        
-        popupContent.appendChild(closeBtn);
-        popupContent.appendChild(title);
-        popupContent.appendChild(message);
-        popupContent.appendChild(confirmBtn);
-        popup.appendChild(popupContent);
-        
-        document.body.appendChild(popup);
-        
-        // 팝업 외부 클릭 시 닫기
-        popup.addEventListener('click', function(e) {
-            if (e.target === popup) {
-                document.body.removeChild(popup);
-            }
         });
     }
     
