@@ -19,10 +19,10 @@
 	
 	// 기본 탭 메뉴 (필터를 통해 수정 가능)
 	$default_tabs = [
+		["payment-history","결제내역"],
 		["account","계정정보 수정"],
 		["password-change","비밀번호 변경"],
-		["delete-account","회원탈퇴"],
-		["payment-history","결제내역"]
+		["delete-account","회원탈퇴"]
 	];
 	
 	// 필터를 통해 탭 메뉴 커스터마이징 가능
