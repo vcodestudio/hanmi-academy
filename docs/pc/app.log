@@ -1,0 +1,186 @@
+[2025-12-30 12:21:17.695997] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:21:17.696248] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => https://상점도메인/pc/_3_approval.php
+    [closeUrl] => https://상점도메인/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301221172470
+    [signature] => c7986b4acd76b7a81910218529da6e7a72132ed8963505268202b26cd0d4824d
+)
+
+[2025-12-30 12:21:17.797412] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4&key=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4&key=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4&key=aid1c1c8f9df6cd45e5ac808f10c697c8d3d02c4","createTime":"2025-12-30T12:21:17.834","expireTime":"2025-12-30T12:36:17.834"}}
+[2025-12-30 12:24:02.271422] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:24:02.272012] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301224025071
+    [signature] => 8baaffc7fe145643c97a6be1dd6d6e31b34b93d2a2c9a27510b82eae44637e3a
+)
+
+[2025-12-30 12:24:02.323184] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid7dac596ed4144cef9eae0ecb64a81e0b68353","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid7dac596ed4144cef9eae0ecb64a81e0b68353&key=aid7dac596ed4144cef9eae0ecb64a81e0b68353","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid7dac596ed4144cef9eae0ecb64a81e0b68353&key=aid7dac596ed4144cef9eae0ecb64a81e0b68353","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid7dac596ed4144cef9eae0ecb64a81e0b68353&key=aid7dac596ed4144cef9eae0ecb64a81e0b68353","createTime":"2025-12-30T12:24:02.359","expireTime":"2025-12-30T12:39:02.359"}}
+[2025-12-30 12:25:28.438160] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:25:28.438282] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301225280351
+    [signature] => 37c731e51d013f3e959428d05d6d90e691b8a31815c2e50c7994c531d3b72e53
+)
+
+[2025-12-30 12:25:28.533554] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid05bc6137c1d8416f90568816122aa80f20237","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid05bc6137c1d8416f90568816122aa80f20237&key=aid05bc6137c1d8416f90568816122aa80f20237","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid05bc6137c1d8416f90568816122aa80f20237&key=aid05bc6137c1d8416f90568816122aa80f20237","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid05bc6137c1d8416f90568816122aa80f20237&key=aid05bc6137c1d8416f90568816122aa80f20237","createTime":"2025-12-30T12:25:28.570","expireTime":"2025-12-30T12:40:28.570"}}
+[2025-12-30 12:25:38.702823] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:25:38.703160] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301225382168
+    [signature] => 1c77ba04a3e3a38c51ce95bf9fc9419f0816c13826637719d3ed03fe28ade302
+)
+
+[2025-12-30 12:25:38.752017] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aida4666ba577364989ae9adf192cb603d072d90","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aida4666ba577364989ae9adf192cb603d072d90&key=aida4666ba577364989ae9adf192cb603d072d90","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aida4666ba577364989ae9adf192cb603d072d90&key=aida4666ba577364989ae9adf192cb603d072d90","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aida4666ba577364989ae9adf192cb603d072d90&key=aida4666ba577364989ae9adf192cb603d072d90","createTime":"2025-12-30T12:25:38.788","expireTime":"2025-12-30T12:40:38.788"}}
+[2025-12-30 12:26:13.986907] RECEIVE-PARAM: ## 인증결과수신 ## aid:aida4666ba577364989ae9adf192cb603d072d90, authToken:AUTH7a6f7afd07134a3886a3f079335b5dc61694
+[2025-12-30 12:26:13.987125] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 12:26:13.987221] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301226136103
+    [signature] => 157718a2635dcb9831673577f90b82f686c5d1d1b83446cf7218759d8b3afc71
+    [aid] => aida4666ba577364989ae9adf192cb603d072d90
+    [authToken] => AUTH7a6f7afd07134a3886a3f079335b5dc61694
+    [merchantData] => 
+    [payType] => A
+)
+
+[2025-12-30 12:26:14.115094] RESPONSE: {"resultCode":"ma","resultMessage":"가맹점 주문번호 중복","developerMessage":"","detailResultCode":"","data":""}
+[2025-12-30 12:26:27.661853] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:26:27.662279] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301226279031
+    [signature] => 016dbe5c604db1f7cc229f5d01687cc2f66590c9ac1d487eedf3a20d54c2cbc1
+)
+
+[2025-12-30 12:26:27.710968] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidc78256bed801458bbd0798a628ebb6719f47f","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidc78256bed801458bbd0798a628ebb6719f47f&key=aidc78256bed801458bbd0798a628ebb6719f47f","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidc78256bed801458bbd0798a628ebb6719f47f&key=aidc78256bed801458bbd0798a628ebb6719f47f","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidc78256bed801458bbd0798a628ebb6719f47f&key=aidc78256bed801458bbd0798a628ebb6719f47f","createTime":"2025-12-30T12:26:27.747","expireTime":"2025-12-30T12:41:27.747"}}
+[2025-12-30 12:26:50.513321] RECEIVE-PARAM: ## 인증결과수신 ## aid:aidc78256bed801458bbd0798a628ebb6719f47f, authToken:AUTHc6555484c7924183bd6ba1fc495de47930ca
+[2025-12-30 12:26:50.513521] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 12:26:50.513619] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P000010001
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301226503651
+    [signature] => 5c91127a4c39ccea62405ae731b078dd24ced88a664322a357f56bab3fc9549e
+    [aid] => aidc78256bed801458bbd0798a628ebb6719f47f
+    [authToken] => AUTHc6555484c7924183bd6ba1fc495de47930ca
+    [merchantData] => 
+    [payType] => A
+)
+
+[2025-12-30 12:26:50.616835] RESPONSE: {"resultCode":"ma","resultMessage":"가맹점 주문번호 중복","developerMessage":"","detailResultCode":"","data":""}
+[2025-12-30 12:27:48.122044] READY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:27:48.122437] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P695346b41dc50
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php?mbrRefNo=P695346b41dc50
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301227488076
+    [signature] => ab84aaf71e136047e00e3f3417734d07c73b5f083824ff3b846cb432f69adad9
+)
+
+[2025-12-30 12:27:48.167440] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid6f75f751fb1b4c4a8786887597ca45b39aac8","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid6f75f751fb1b4c4a8786887597ca45b39aac8&key=aid6f75f751fb1b4c4a8786887597ca45b39aac8","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid6f75f751fb1b4c4a8786887597ca45b39aac8&key=aid6f75f751fb1b4c4a8786887597ca45b39aac8","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid6f75f751fb1b4c4a8786887597ca45b39aac8&key=aid6f75f751fb1b4c4a8786887597ca45b39aac8","createTime":"2025-12-30T12:27:48.204","expireTime":"2025-12-30T12:42:48.204"}}
+[2025-12-30 12:28:08.682472] RECEIVE-PARAM: ## 인증결과수신 ## aid:aid6f75f751fb1b4c4a8786887597ca45b39aac8, authToken:AUTH3298a687d4404bef8001e41e8ca501e30987
+[2025-12-30 12:28:08.682775] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 12:28:08.682936] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => P695346b41dc50
+    [paymethod] => CARD
+    [amount] => 1004
+    [goodsName] => 카약-슬라이더406
+    [goodsCode] => GOOD0001
+    [approvalUrl] => http://localhost:8000/pc/_3_approval.php
+    [closeUrl] => http://localhost:8000/pc/_3_close.php
+    [customerName] => 고객명
+    [customerEmail] => test@spc.co.kr
+    [timestamp] => 202512301228081026
+    [signature] => c25f6e451e85506e5aaa2cca6b500230ce98a95ce42a49efac1be28f5a24558b
+    [aid] => aid6f75f751fb1b4c4a8786887597ca45b39aac8
+    [authToken] => AUTH3298a687d4404bef8001e41e8ca501e30987
+    [merchantData] => 
+    [payType] => A
+)
+
+[2025-12-30 12:28:08.866125] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"P695346b41dc50","refNo":"1230KO764562","tranDate":"251230","tranTime":"122808","goodsName":"카약-슬라이더406","amount":1004,"taxAmount":91,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"고객명","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"고객명","custommerTelNo":""}}

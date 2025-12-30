@@ -82,3 +82,976 @@
     [mbrRefNo] => 10001164bf318c0efdf
 )
 
+[2025-12-28 18:15:40.550000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:15:40.551000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f53c86470
+    [amount] => 50000
+    [timestamp] => 202512281815408947
+    [signature] => 1ca8111ee10525dd5285dfecb05180e78225734a80cd367557025e5e268dee62
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:15:40.610000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## paymethod ##  must not be blank [mbrNo=100011, mbrRefNo=1000116950f53c86470]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 18:16:06.924000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:16:06.924000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f556e1960
+    [amount] => 200000
+    [timestamp] => 202512281816063507
+    [signature] => 1d9545bdce7f40075542153399448d5a77644a5581a4c159f2cdce7d17112490
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:16:06.971000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## paymethod ##  must not be blank [mbrNo=100011, mbrRefNo=1000116950f556e1960]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 18:19:26.856000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:19:26.856000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f61ed0fc0
+    [amount] => 50000
+    [paymethod] => VACCT
+    [timestamp] => 202512281819268024
+    [signature] => 864dddbf8a69a58687c2585907a9707d0d8e06a9d78163380287a7ca97057f68
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:19:27.086000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"invalid signature [mbrNo=100011, mbrRefNo=1000116950f61ed0fc0]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 18:19:40.851000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:19:40.852000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f62ccfc38
+    [amount] => 50000
+    [paymethod] => KAKAOPAY
+    [timestamp] => 202512281819400379
+    [signature] => 0497ee1b857969643a69a1e30a81de67a541c56a824a1078107badb491322668
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:19:40.903000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## paymethod ##  must match \"CARD|ACCT|VACCT|HPP|CULT\" [mbrNo=100011, mbrRefNo=1000116950f62ccfc38]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 18:23:19.467000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:23:19.467000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f70772038
+    [amount] => 50000
+    [paymethod] => CARD
+    [timestamp] => 202512281823192149
+    [signature] => 1c72d0d006e60da4ae599bfcbc3ad4d00038037cb7020ef35f080d9d8f323c44
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:23:19.620000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid4974d6711af3481c844ccb5fe35f0de7d90c8","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid4974d6711af3481c844ccb5fe35f0de7d90c8&key=aid4974d6711af3481c844ccb5fe35f0de7d90c8","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid4974d6711af3481c844ccb5fe35f0de7d90c8&key=aid4974d6711af3481c844ccb5fe35f0de7d90c8","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid4974d6711af3481c844ccb5fe35f0de7d90c8&key=aid4974d6711af3481c844ccb5fe35f0de7d90c8","createTime":"2025-12-28T18:23:19.794","expireTime":"2025-12-28T18:38:19.794"}}
+[2025-12-28 18:23:32.707000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:23:32.707000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f714ac9b8
+    [amount] => 50000
+    [paymethod] => CARD
+    [timestamp] => 202512281823328629
+    [signature] => bb3825ab86c8abc59cf610f2613c5faa1c6cd5c33b1c7248fe7259e3d1f5862a
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:23:32.758000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid0559332b1b104e36a5673cc35dad9f25e8109","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid0559332b1b104e36a5673cc35dad9f25e8109&key=aid0559332b1b104e36a5673cc35dad9f25e8109","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid0559332b1b104e36a5673cc35dad9f25e8109&key=aid0559332b1b104e36a5673cc35dad9f25e8109","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid0559332b1b104e36a5673cc35dad9f25e8109&key=aid0559332b1b104e36a5673cc35dad9f25e8109","createTime":"2025-12-28T18:23:32.936","expireTime":"2025-12-28T18:38:32.936"}}
+[2025-12-28 18:24:48.271000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:24:48.271000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f76042298
+    [amount] => 50000
+    [paymethod] => CARD
+    [timestamp] => 202512281824486510
+    [signature] => c2573d76d2517ea12cd90d6aafd3019e6670335870d0b96ffd53c6fd7ba20d84
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 김한미
+    [buyerEmail] => abc1234@abc.com
+    [buyerTel] => 010 1234 5678
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:24:48.327000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid7ef76f6134fe4697aa69985aa74b72d52d5e2","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid7ef76f6134fe4697aa69985aa74b72d52d5e2&key=aid7ef76f6134fe4697aa69985aa74b72d52d5e2","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid7ef76f6134fe4697aa69985aa74b72d52d5e2&key=aid7ef76f6134fe4697aa69985aa74b72d52d5e2","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid7ef76f6134fe4697aa69985aa74b72d52d5e2&key=aid7ef76f6134fe4697aa69985aa74b72d52d5e2","createTime":"2025-12-28T18:24:48.507","expireTime":"2025-12-28T18:39:48.507"}}
+[2025-12-28 18:33:07.254000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:33:07.254000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f9533e030
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512281833076512
+    [signature] => b72a2fd5f97777daca8d144268649139be5cf6ffe3afc17da153f0448d923e7a
+    [goodsName] => 프로그램 신청
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:33:07.348000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidfee96d4395294e78b10d889f4650be289ba02","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidfee96d4395294e78b10d889f4650be289ba02&key=aidfee96d4395294e78b10d889f4650be289ba02","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidfee96d4395294e78b10d889f4650be289ba02&key=aidfee96d4395294e78b10d889f4650be289ba02","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidfee96d4395294e78b10d889f4650be289ba02&key=aidfee96d4395294e78b10d889f4650be289ba02","createTime":"2025-12-28T18:33:07.548","expireTime":"2025-12-28T18:48:07.548"}}
+[2025-12-28 18:33:21.735000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:33:21.735000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f961b3718
+    [amount] => 5000
+    [paymethod] => ACCT
+    [timestamp] => 202512281833216207
+    [signature] => d9f4715452a228fef0742a5071e7522ae2098a6d1d86c13ac03b1d28fbdacd23
+    [goodsName] => 프로그램 신청
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:33:21.890000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidb71b12de272b4148aaf7ece5d049443a86825","nextMobileUrl":"https://test-ui-acct.mainpay.co.kr/mobile?aid=aidb71b12de272b4148aaf7ece5d049443a86825&key=aidb71b12de272b4148aaf7ece5d049443a86825","nextPcUrl":"https://test-ui-acct.mainpay.co.kr/pc?aid=aidb71b12de272b4148aaf7ece5d049443a86825&key=aidb71b12de272b4148aaf7ece5d049443a86825","nextAppUrl":"https://test-ui-acct.mainpay.co.kr/app?aid=aidb71b12de272b4148aaf7ece5d049443a86825&key=aidb71b12de272b4148aaf7ece5d049443a86825","createTime":"2025-12-28T18:33:22.091","expireTime":"2025-12-28T18:48:22.091"}}
+[2025-12-28 18:34:08.441000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:34:08.441000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f9906baa8
+    [amount] => 5000
+    [paymethod] => ACCT
+    [timestamp] => 202512281834083089
+    [signature] => bc0f3408419a62fd59cfa6c78f81069597c22f78aba466beed2d691f918b7dfb
+    [goodsName] => 프로그램 신청
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:34:08.493000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aide2471383f9c24783ac51b60274d3ef664f161","nextMobileUrl":"https://test-ui-acct.mainpay.co.kr/mobile?aid=aide2471383f9c24783ac51b60274d3ef664f161&key=aide2471383f9c24783ac51b60274d3ef664f161","nextPcUrl":"https://test-ui-acct.mainpay.co.kr/pc?aid=aide2471383f9c24783ac51b60274d3ef664f161&key=aide2471383f9c24783ac51b60274d3ef664f161","nextAppUrl":"https://test-ui-acct.mainpay.co.kr/app?aid=aide2471383f9c24783ac51b60274d3ef664f161&key=aide2471383f9c24783ac51b60274d3ef664f161","createTime":"2025-12-28T18:34:08.697","expireTime":"2025-12-28T18:49:08.697"}}
+[2025-12-28 18:34:45.326000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:34:45.326000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950f9b54f970
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512281834453768
+    [signature] => 6960faf18f9e52ae6df7fad1d35b2131a1866d8fb2ee081eabd17fd2846d8aea
+    [goodsName] => 프로그램 신청
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:34:45.386000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483&key=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483&key=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483&key=aid1b5cc1f177f44f7c8f44342a6b1d2b97c9483","createTime":"2025-12-28T18:34:45.590","expireTime":"2025-12-28T18:49:45.590"}}
+[2025-12-28 18:46:36.419000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:46:36.419000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950fc7c65ce8
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512281846360698
+    [signature] => d4e751b89de0eca3edbdbef061f7ada22f3368efdd338ddbdce30b4d006ff950
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:46:36.538000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidd2ef2823837c40d6a28818f9d3110c869910d","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidd2ef2823837c40d6a28818f9d3110c869910d&key=aidd2ef2823837c40d6a28818f9d3110c869910d","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidd2ef2823837c40d6a28818f9d3110c869910d&key=aidd2ef2823837c40d6a28818f9d3110c869910d","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidd2ef2823837c40d6a28818f9d3110c869910d&key=aidd2ef2823837c40d6a28818f9d3110c869910d","createTime":"2025-12-28T18:46:36.579","expireTime":"2025-12-28T19:01:36.579"}}
+[2025-12-28 18:46:48.240000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:46:48.240000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950fc883a598
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512281846486871
+    [signature] => 7b72e8e8cb9d1f445b5bcb840013595a04f5af2276c9eb3ac4deb5bc82544608
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:46:48.296000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid09a486ff1f79463188db19e6beaada020323a","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid09a486ff1f79463188db19e6beaada020323a&key=aid09a486ff1f79463188db19e6beaada020323a","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid09a486ff1f79463188db19e6beaada020323a&key=aid09a486ff1f79463188db19e6beaada020323a","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid09a486ff1f79463188db19e6beaada020323a&key=aid09a486ff1f79463188db19e6beaada020323a","createTime":"2025-12-28T18:46:48.331","expireTime":"2025-12-28T19:01:48.331"}}
+[2025-12-28 18:47:21.759000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 18:47:21.759000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116950fca9b8d08
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512281847216418
+    [signature] => 7c2751bbddfe0f9ba4725a8ea8a6923c46f618de91cf4945238fc9d286b2d145
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 18:47:21.820000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid7f036a9df3aa4ba9889e5131aa3ae89a04350","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid7f036a9df3aa4ba9889e5131aa3ae89a04350&key=aid7f036a9df3aa4ba9889e5131aa3ae89a04350","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid7f036a9df3aa4ba9889e5131aa3ae89a04350&key=aid7f036a9df3aa4ba9889e5131aa3ae89a04350","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid7f036a9df3aa4ba9889e5131aa3ae89a04350&key=aid7f036a9df3aa4ba9889e5131aa3ae89a04350","createTime":"2025-12-28T18:47:21.859","expireTime":"2025-12-28T19:02:21.859"}}
+[2025-12-28 22:06:17.392000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 22:06:17.392000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169512b495f758
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282206171867
+    [signature] => 4f2b12b9ecdbec86f28936ad01a66d249e9e41470bae3158c8c3d7ac45ec247b
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 22:06:17.522000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidec384c39189545f9850e7fb37804ba8204923","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidec384c39189545f9850e7fb37804ba8204923&key=aidec384c39189545f9850e7fb37804ba8204923","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidec384c39189545f9850e7fb37804ba8204923&key=aidec384c39189545f9850e7fb37804ba8204923","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidec384c39189545f9850e7fb37804ba8204923&key=aidec384c39189545f9850e7fb37804ba8204923","createTime":"2025-12-28T22:06:17.612","expireTime":"2025-12-28T22:21:17.612"}}
+[2025-12-28 23:06:32.540000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:06:32.541000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116951396883978
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282306323657
+    [signature] => 3a0d296efd74e8b171e43a67b22c7d83ab8ba20382659c53e7147a48ee0ca5f0
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval
+    [closeUrl] => http://localhost:8883/payment-close
+)
+
+[2025-12-28 23:06:32.665000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid6afc05e2f07742a581e6bff2d56ac37f5673f","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid6afc05e2f07742a581e6bff2d56ac37f5673f&key=aid6afc05e2f07742a581e6bff2d56ac37f5673f","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid6afc05e2f07742a581e6bff2d56ac37f5673f&key=aid6afc05e2f07742a581e6bff2d56ac37f5673f","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid6afc05e2f07742a581e6bff2d56ac37f5673f&key=aid6afc05e2f07742a581e6bff2d56ac37f5673f","createTime":"2025-12-28T23:06:32.706","expireTime":"2025-12-28T23:21:32.706"}}
+[2025-12-28 23:11:17.914000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:11:17.914000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513a85dea80
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282311178924
+    [signature] => 3330a1cd83ae80ff95ebd915e9c4cf6709d6ae06df3f249a72632454d22cb878
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:11:18.015000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid3bd871797c3a4c6d9933a09242281dd8b1488","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid3bd871797c3a4c6d9933a09242281dd8b1488&key=aid3bd871797c3a4c6d9933a09242281dd8b1488","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid3bd871797c3a4c6d9933a09242281dd8b1488&key=aid3bd871797c3a4c6d9933a09242281dd8b1488","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid3bd871797c3a4c6d9933a09242281dd8b1488&key=aid3bd871797c3a4c6d9933a09242281dd8b1488","createTime":"2025-12-28T23:11:18.063","expireTime":"2025-12-28T23:26:18.063"}}
+[2025-12-28 23:11:42.392000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid3bd871797c3a4c6d9933a09242281dd8b1488
+    [authToken] => AUTHf5b53c93960e41a7a1a9b98a603d3a9b1612
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169513a85dea80
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-28 23:13:07.109000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:13:07.109000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513af31a5e0
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282313078915
+    [signature] => cf315416b296f634da16a4ab07c5af1b65e86ea6d445eb2e28f7486e3090a940
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:13:07.177000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidd2f600d8c5bf401ba6966d5aa7d78ac18239d","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d&key=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d&key=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d&key=aidd2f600d8c5bf401ba6966d5aa7d78ac18239d","createTime":"2025-12-28T23:13:07.223","expireTime":"2025-12-28T23:28:07.223"}}
+[2025-12-28 23:14:04.321000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:14:04.321000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513b2c4e200
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282314047630
+    [signature] => 0c337f0ea62a392d23e2d0db4b2173ba095f3629091a910ea0a647fe6ac3fc21
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:14:04.385000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid4c721d9d5643443ba321c60eb074be8cc517a","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid4c721d9d5643443ba321c60eb074be8cc517a&key=aid4c721d9d5643443ba321c60eb074be8cc517a","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid4c721d9d5643443ba321c60eb074be8cc517a&key=aid4c721d9d5643443ba321c60eb074be8cc517a","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid4c721d9d5643443ba321c60eb074be8cc517a&key=aid4c721d9d5643443ba321c60eb074be8cc517a","createTime":"2025-12-28T23:14:04.432","expireTime":"2025-12-28T23:29:04.432"}}
+[2025-12-28 23:14:25.199000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid4c721d9d5643443ba321c60eb074be8cc517a
+    [authToken] => AUTH54a9833aea8f4ea39fff9fe5baba702af19f
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169513b2c4e200
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-28 23:14:25.200000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-28 23:14:25.200000] PARAM: Array
+(
+    [mchtId] => 100011
+    [refNo] => aid4c721d9d5643443ba321c60eb074be8cc517a
+    [mbrRefNo] => 10001169513b2c4e200
+    [authCode] => AUTH54a9833aea8f4ea39fff9fe5baba702af19f
+    [amount] => 5000
+    [timestamp] => 202512282314251234
+    [signature] => 6126aa0031bb4fa2f7f66765a4299c8a48c0974f8eeb3987fafda2c49833804a
+)
+
+[2025-12-28 23:14:25.839000] RESPONSE: {"resultCode":"500 INTERNAL_SERVER_ERROR","resultMessage":"INTERNAL_SERVER_ERROR","developerMessage":"org.springframework.validation.BeanPropertyBindingResult: 3 errors\nField error in object 'payForm' on field 'mbrNo': rejected value [null]; codes [NotBlank.payForm.mbrNo,NotBlank.mbrNo,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [payForm.mbrNo,mbrNo]; arguments []; default message [mbrNo]]; default message [must not be blank]\nField error in object 'payForm' on field 'authToken': rejected value [null]; codes [NotBlank.payForm.authToken,NotBlank.authToken,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [payForm.authToken,authToken]; arguments []; default message [authToken]]; default message [must not be blank]\nField error in object 'payForm' on field 'aid': rejected value [null]; codes [NotBlank.payForm.aid,NotBlank.aid,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [payForm.aid,aid]; arguments []; default message [aid]]; default message [must not be blank] [mbrNo=blank, mbrRefNo=10001169513b2c4e200]","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 23:15:21.492000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:15:21.492000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513b7977df8
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282315213502
+    [signature] => 32ccacd1cee4a0354db67d4c31bd4c5e93707064146e80cfebde8a5e63adfee9
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:15:21.595000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aide4061a99ea5a4de79b13cd3d46afa15b7cc9d","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d&key=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d&key=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d&key=aide4061a99ea5a4de79b13cd3d46afa15b7cc9d","createTime":"2025-12-28T23:15:21.643","expireTime":"2025-12-28T23:30:21.643"}}
+[2025-12-28 23:15:39.178000] APPROVAL-INCOMING: Array
+(
+    [aid] => aide4061a99ea5a4de79b13cd3d46afa15b7cc9d
+    [authToken] => AUTHec527c604e7e4134ac0353b4ef1ac2576547
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169513b7977df8
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-28 23:15:39.178000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-28 23:15:39.179000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aide4061a99ea5a4de79b13cd3d46afa15b7cc9d
+    [mbrRefNo] => 10001169513b7977df8
+    [authToken] => AUTHec527c604e7e4134ac0353b4ef1ac2576547
+    [amount] => 5000
+    [timestamp] => 202512282315397359
+    [signature] => 690ad60b9bb4b2cc28c05a3aa97d57b253fc869ebc0eca6044d77247831ed2f8
+)
+
+[2025-12-28 23:15:39.596000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"10001169513b7977df8","refNo":"1228KO764385","tranDate":"251228","tranTime":"231539","goodsName":"큐레이터가 알려주는..","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"","custommerTelNo":""}}
+[2025-12-28 23:17:34.060000] CANCEL-API: https://test-api-std.mainpay.co.kr/v1/payment/cancel
+[2025-12-28 23:17:34.060000] PARAM: Array
+(
+    [mchtId] => 100011
+    [refNo] => 1228KO764385
+    [mbrRefNo] => 10001169513b7977df8
+    [cancelAmount] => 5000
+    [cancelReason] => 고객 요청
+    [timestamp] => 202512282317347643
+    [signature] => fa812a3efaa0d1e552052e9600004e916390d8da4bae8d260910c62662c611e4
+)
+
+[2025-12-28 23:17:34.114000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## orgRefNo ##  must not be empty [mbrNo=blank, mbrRefNo=10001169513b7977df8]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-28 23:29:23.613000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:29:23.613000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513ec3952b8
+    [amount] => 5000
+    [paymethod] => ACCT
+    [timestamp] => 202512282329230975
+    [signature] => c1db39f34b444339e4b268a65f750a8e1122559e1dc321d94f8d9ac404d94d97
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:29:23.705000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid26b4292f649747e190cc7c6e03b11604cc41a","nextMobileUrl":"https://test-ui-acct.mainpay.co.kr/mobile?aid=aid26b4292f649747e190cc7c6e03b11604cc41a&key=aid26b4292f649747e190cc7c6e03b11604cc41a","nextPcUrl":"https://test-ui-acct.mainpay.co.kr/pc?aid=aid26b4292f649747e190cc7c6e03b11604cc41a&key=aid26b4292f649747e190cc7c6e03b11604cc41a","nextAppUrl":"https://test-ui-acct.mainpay.co.kr/app?aid=aid26b4292f649747e190cc7c6e03b11604cc41a&key=aid26b4292f649747e190cc7c6e03b11604cc41a","createTime":"2025-12-28T23:29:23.745","expireTime":"2025-12-28T23:44:23.745"}}
+[2025-12-28 23:30:05.115000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:30:05.115000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513eed1b968
+    [amount] => 5000
+    [paymethod] => VACCT
+    [timestamp] => 202512282330055803
+    [signature] => 0a7e00846aa47b998bd6e7bf6b34928f75707f02284d3594aefcd8de09da8913
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:30:05.185000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid8c995749501340598efa3285953885526b5bf","nextMobileUrl":"https://test-ui-vacct.mainpay.co.kr/mobile?aid=aid8c995749501340598efa3285953885526b5bf&key=aid8c995749501340598efa3285953885526b5bf","nextPcUrl":"https://test-ui-vacct.mainpay.co.kr/pc?aid=aid8c995749501340598efa3285953885526b5bf&key=aid8c995749501340598efa3285953885526b5bf","nextAppUrl":"https://test-ui-vacct.mainpay.co.kr/app?aid=aid8c995749501340598efa3285953885526b5bf&key=aid8c995749501340598efa3285953885526b5bf","createTime":"2025-12-28T23:30:05.224","expireTime":"2025-12-28T23:45:05.224"}}
+[2025-12-28 23:31:01.348000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-28 23:31:01.348000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169513f2554790
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512282331011467
+    [signature] => 01ed0ce253fa2754b38c756614a5455cdacbee2cbce091bfb77284c6907671ec
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-28 23:31:01.446000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid2ffb85df5b3b4c138f3c21c915eb35ef29249","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid2ffb85df5b3b4c138f3c21c915eb35ef29249&key=aid2ffb85df5b3b4c138f3c21c915eb35ef29249","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid2ffb85df5b3b4c138f3c21c915eb35ef29249&key=aid2ffb85df5b3b4c138f3c21c915eb35ef29249","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid2ffb85df5b3b4c138f3c21c915eb35ef29249&key=aid2ffb85df5b3b4c138f3c21c915eb35ef29249","createTime":"2025-12-28T23:31:01.483","expireTime":"2025-12-28T23:46:01.483"}}
+[2025-12-28 23:31:35.247000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid2ffb85df5b3b4c138f3c21c915eb35ef29249
+    [authToken] => AUTHbe8d0107ce63445b9db91b160bf78e8c1a69
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169513f2554790
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-28 23:31:35.247000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-28 23:31:35.247000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aid2ffb85df5b3b4c138f3c21c915eb35ef29249
+    [mbrRefNo] => 10001169513f2554790
+    [authToken] => AUTHbe8d0107ce63445b9db91b160bf78e8c1a69
+    [amount] => 5000
+    [timestamp] => 202512282331350964
+    [signature] => 4a824057bcd26789ff4162323711184eb2dbffd327c7abb6a75ec0d98e2a6ea2
+)
+
+[2025-12-28 23:31:35.515000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"10001169513f2554790","refNo":"1228KO764386","tranDate":"251228","tranTime":"233135","goodsName":"큐레이터가 알려주는..","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"","custommerTelNo":""}}
+[2025-12-28 23:31:53.866000] CANCEL-API: https://test-api-std.mainpay.co.kr/v1/payment/cancel
+[2025-12-28 23:31:53.866000] PARAM: Array
+(
+    [mchtId] => 100011
+    [refNo] => 1228KO764386
+    [mbrRefNo] => 10001169513f2554790
+    [cancelAmount] => 5000
+    [cancelReason] => 고객 요청
+    [timestamp] => 202512282331539348
+    [signature] => f0203ef03a246b30abdfa4c30199da41ce6a34b74f5ee5e6a09612ba47c77ddf
+)
+
+[2025-12-28 23:31:54.439000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## orgTranDate ##  size must be between 6 and 6 [mbrNo=blank, mbrRefNo=10001169513f2554790]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-29 02:17:11.758000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-29 02:17:11.758000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169516617b8d08
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 202512290217111853
+    [signature] => dd688f35f4a512860b549c71a8cae7f24a1c7d29ce8442af9a2f58dac57c2730
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => 뮤지엄한미1
+    [buyerEmail] => chos443@gmail.com
+    [buyerTel] => 01048416497
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-29 02:17:11.876000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid715b263d4d0d464580fa112cc5e6075e5ba91","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid715b263d4d0d464580fa112cc5e6075e5ba91&key=aid715b263d4d0d464580fa112cc5e6075e5ba91","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid715b263d4d0d464580fa112cc5e6075e5ba91&key=aid715b263d4d0d464580fa112cc5e6075e5ba91","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid715b263d4d0d464580fa112cc5e6075e5ba91&key=aid715b263d4d0d464580fa112cc5e6075e5ba91","createTime":"2025-12-29T02:17:11.947","expireTime":"2025-12-29T02:32:11.947"}}
+[2025-12-29 02:19:07.241000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid715b263d4d0d464580fa112cc5e6075e5ba91
+    [authToken] => AUTHa1710757c16741cca502abf4ef98c986e814
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169516617b8d08
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-29 02:19:07.241000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-29 02:19:07.241000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aid715b263d4d0d464580fa112cc5e6075e5ba91
+    [mbrRefNo] => 10001169516617b8d08
+    [authToken] => AUTHa1710757c16741cca502abf4ef98c986e814
+    [amount] => 5000
+    [timestamp] => 202512290219074258
+    [signature] => 61832b8287ebdc02299cb8ee98073e2e26da8668572d99a3f8777db7d1684f59
+)
+
+[2025-12-29 02:19:07.799000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"10001169516617b8d08","refNo":"1229KO764389","tranDate":"251229","tranTime":"021907","goodsName":"큐레이터가 알려주는..","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"","custommerTelNo":""}}
+[2025-12-29 02:19:25.331000] CANCEL-API: https://test-api-std.mainpay.co.kr/v1/payment/cancel
+[2025-12-29 02:19:25.331000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [orgRefNo] => 1229KO764389
+    [orgTranDate] => 
+    [paymethod] => 
+    [mbrRefNo] => 10001169516617b8d08
+    [cancelAmount] => 5000
+    [cancelReason] => 고객 요청
+    [timestamp] => 202512290219251578
+    [signature] => c9e04239415df43a90312e89717872304f5873a9a74250cd25d681d6e231e148
+)
+
+[2025-12-29 02:19:25.385000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## paymethod ##  must match \"CARD|ACCT|VACCT|HPP|CULT\" [mbrNo=100011, mbrRefNo=10001169516617b8d08]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-29 18:52:15.032000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-29 18:52:15.032000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169524f4f07530
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 251229185215029
+    [signature] => b6528c04c076be81e6cbdc7d066b70ea91be07a4e96e4ab8528870a9a3d74697
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-29 18:52:15.151000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidfda292eaac804343a5790d8d19a592dcb7143","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidfda292eaac804343a5790d8d19a592dcb7143&key=aidfda292eaac804343a5790d8d19a592dcb7143","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidfda292eaac804343a5790d8d19a592dcb7143&key=aidfda292eaac804343a5790d8d19a592dcb7143","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidfda292eaac804343a5790d8d19a592dcb7143&key=aidfda292eaac804343a5790d8d19a592dcb7143","createTime":"2025-12-29T18:52:15.420","expireTime":"2025-12-29T19:07:15.420"}}
+[2025-12-29 18:55:51.601000] APPROVAL-INCOMING: Array
+(
+    [aid] => aidfda292eaac804343a5790d8d19a592dcb7143
+    [authToken] => AUTH9b643e66d947454ca2ed5ac9cae6e60298d7
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 10001169524f4f07530
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-29 18:55:51.601000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-29 18:55:51.601000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aidfda292eaac804343a5790d8d19a592dcb7143
+    [mbrRefNo] => 10001169524f4f07530
+    [authToken] => AUTH9b643e66d947454ca2ed5ac9cae6e60298d7
+    [amount] => 5000
+    [timestamp] => 251229185551601
+    [signature] => 2265f850f89540d779fc787e5dcf5dea062b81a076b56495ffe70f9706a9ebc0
+)
+
+[2025-12-29 18:55:52.123000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"10001169524f4f07530","refNo":"1229KO764507","tranDate":"251229","tranTime":"185553","goodsName":"큐레이터가 알려주는..","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"","custommerTelNo":""}}
+[2025-12-29 18:56:13.285000] CANCEL-API: https://test-api-std.mainpay.co.kr/v1/payment/cancel
+[2025-12-29 18:56:13.285000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [orgRefNo] => 1229KO764507
+    [orgTranDate] => 
+    [paymethod] => 
+    [mbrRefNo] => 10001169524f4f07530
+    [cancelAmount] => 5000
+    [cancelReason] => 고객 요청
+    [timestamp] => 251229185613285
+    [signature] => ab12eec920b93f6eba6cbe721956029b87a5233d9a2555e041dd7ffc870c69a3
+)
+
+[2025-12-29 18:56:13.342000] RESPONSE: {"resultCode":"400 BAD_REQUEST","resultMessage":"## paymethod ##  must match \"CARD|ACCT|VACCT|HPP|CULT\" [mbrNo=100011, mbrRefNo=10001169524f4f07530]","developerMessage":"BAD_REQUEST","detailResultCode":"","charset":"UTF-8","data":""}
+[2025-12-29 18:59:33.162000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-29 18:59:33.163000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169525105274e8
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 251229185933161
+    [signature] => d6d7e1da68de633e434d601880588b1225d1d0745a76894c9a82dc3cdd2b048f
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-29 18:59:33.282000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid89de5069f6f44efb83b3986e89e12582e0f22","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid89de5069f6f44efb83b3986e89e12582e0f22&key=aid89de5069f6f44efb83b3986e89e12582e0f22","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid89de5069f6f44efb83b3986e89e12582e0f22&key=aid89de5069f6f44efb83b3986e89e12582e0f22","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid89de5069f6f44efb83b3986e89e12582e0f22&key=aid89de5069f6f44efb83b3986e89e12582e0f22","createTime":"2025-12-29T18:59:35.310","expireTime":"2025-12-29T19:14:35.310"}}
+[2025-12-29 18:59:40.378000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-29 18:59:40.378000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116952510c5c0a8
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 251229185940377
+    [signature] => 538b86b1d282cdc909189279d449f011b400af42c220f0cd6d2704b1ee2aca73
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-29 18:59:40.438000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidfc169871d88046c79c11894ad4339f058a4f4","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidfc169871d88046c79c11894ad4339f058a4f4&key=aidfc169871d88046c79c11894ad4339f058a4f4","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidfc169871d88046c79c11894ad4339f058a4f4&key=aidfc169871d88046c79c11894ad4339f058a4f4","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidfc169871d88046c79c11894ad4339f058a4f4&key=aidfc169871d88046c79c11894ad4339f058a4f4","createTime":"2025-12-29T18:59:42.481","expireTime":"2025-12-29T19:14:42.481"}}
+[2025-12-29 19:01:19.332000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-29 19:01:19.332000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116952516f50910
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 251229190119329
+    [signature] => 730d498ff9895e0fd7f46def8304970fe2e21db4c62b654a12fe193a08605758
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-29 19:01:19.387000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid92b416931d3c48edb9ba6c47999bd7f130332","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aid92b416931d3c48edb9ba6c47999bd7f130332&key=aid92b416931d3c48edb9ba6c47999bd7f130332","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aid92b416931d3c48edb9ba6c47999bd7f130332&key=aid92b416931d3c48edb9ba6c47999bd7f130332","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aid92b416931d3c48edb9ba6c47999bd7f130332&key=aid92b416931d3c48edb9ba6c47999bd7f130332","createTime":"2025-12-29T19:01:21.428","expireTime":"2025-12-29T19:16:21.428"}}
+[2025-12-29 19:01:50.857000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid92b416931d3c48edb9ba6c47999bd7f130332
+    [authToken] => AUTH843a8c0f8d06424cb7c0f261bb24cb204ed6
+    [paymethod] => CARD
+    [payType] => A
+    [mbrRefNo] => 1000116952516f50910
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-29 19:01:50.857000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-29 19:01:50.857000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aid92b416931d3c48edb9ba6c47999bd7f130332
+    [mbrRefNo] => 1000116952516f50910
+    [authToken] => AUTH843a8c0f8d06424cb7c0f261bb24cb204ed6
+    [amount] => 5000
+    [timestamp] => 251229190150857
+    [signature] => 81154f3d4bab916bea332487c7387d8e8e6869c6c473ee920a537a6c7b027f2c
+)
+
+[2025-12-29 19:01:51.167000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","mbrRefNo":"1000116952516f50910","refNo":"1229KO764509","tranDate":"251229","tranTime":"190153","goodsName":"큐레이터가 알려주는..","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"greenDepositAmount":0,"installment":"","customerName":"","customerTelNo":"","applNo":"","cardNo":"","issueCompanyNo":"","issueCompanyName":"","issueCardName":"","acqCompanyNo":"","acqCompanyName":"","payType":"A","custommerName":"","custommerTelNo":""}}
+[2025-12-30 12:38:02.852000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:38:02.853000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [mbrRefNo] => 1000116953491acfc38
+    [amount] => 5000
+    [paymethod] => ACCT
+    [timestamp] => 251230123802851
+    [signature] => 00027cfa4e21b666688a1a719e037f731f99670498cab5d642179210ce419ba6
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-30 12:38:02.974000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid841b9bab7a7544beb2a456978151e96742777","nextMobileUrl":"https://test-ui-acct.mainpay.co.kr/mobile?aid=aid841b9bab7a7544beb2a456978151e96742777&key=aid841b9bab7a7544beb2a456978151e96742777","nextPcUrl":"https://test-ui-acct.mainpay.co.kr/pc?aid=aid841b9bab7a7544beb2a456978151e96742777&key=aid841b9bab7a7544beb2a456978151e96742777","nextAppUrl":"https://test-ui-acct.mainpay.co.kr/app?aid=aid841b9bab7a7544beb2a456978151e96742777&key=aid841b9bab7a7544beb2a456978151e96742777","createTime":"2025-12-30T12:38:03.004","expireTime":"2025-12-30T12:53:03.004"}}
+[2025-12-30 12:41:14.992000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:41:14.992000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => 100011695349daf1b30
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 251230124114990
+    [signature] => 79191d80feaa44fae2ee8187dca6edff305f25e051445f4d0b7d9c4cc74f49c1
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-30 12:41:15.104000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidec2e8c3486294675a0da6092be72189a44627","nextMobileUrl":"https://test-ui-card.mainpay.co.kr/mobile?aid=aidec2e8c3486294675a0da6092be72189a44627&key=aidec2e8c3486294675a0da6092be72189a44627","nextPcUrl":"https://test-ui-card.mainpay.co.kr/pc?aid=aidec2e8c3486294675a0da6092be72189a44627&key=aidec2e8c3486294675a0da6092be72189a44627","nextAppUrl":"https://test-ui-card.mainpay.co.kr/app?aid=aidec2e8c3486294675a0da6092be72189a44627&key=aidec2e8c3486294675a0da6092be72189a44627","createTime":"2025-12-30T12:41:15.131","expireTime":"2025-12-30T12:56:15.131"}}
+[2025-12-30 12:41:34.759000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:41:34.760000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => 100011695349eeb90f0
+    [amount] => 5000
+    [paymethod] => ACCT
+    [timestamp] => 251230124134757
+    [signature] => 89fc93162de97dcfb9d00bafbf00508989d5ff1499b065e658f6591eec2702e4
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-30 12:41:34.834000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aide9cee9cdf7894a36a02333065fe6fef7367b6","nextMobileUrl":"https://test-ui-acct.mainpay.co.kr/mobile?aid=aide9cee9cdf7894a36a02333065fe6fef7367b6&key=aide9cee9cdf7894a36a02333065fe6fef7367b6","nextPcUrl":"https://test-ui-acct.mainpay.co.kr/pc?aid=aide9cee9cdf7894a36a02333065fe6fef7367b6&key=aide9cee9cdf7894a36a02333065fe6fef7367b6","nextAppUrl":"https://test-ui-acct.mainpay.co.kr/app?aid=aide9cee9cdf7894a36a02333065fe6fef7367b6&key=aide9cee9cdf7894a36a02333065fe6fef7367b6","createTime":"2025-12-30T12:41:34.866","expireTime":"2025-12-30T12:56:34.866"}}
+[2025-12-30 12:45:17.241000] APPROVAL-INCOMING: Array
+(
+    [aid] => aide9cee9cdf7894a36a02333065fe6fef7367b6
+    [authToken] => AUTH02b8ed5f22bd4794856bb0c62161e5cbb656
+    [paymethod] => ACCT
+    [payType] => 
+    [mbrRefNo] => 100011695349eeb90f0
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-30 12:45:17.241000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 12:45:17.241000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aide9cee9cdf7894a36a02333065fe6fef7367b6
+    [mbrRefNo] => 100011695349eeb90f0
+    [authToken] => AUTH02b8ed5f22bd4794856bb0c62161e5cbb656
+    [amount] => 5000
+    [timestamp] => 251230124517240
+    [signature] => 323e0443d602d88c2935e3ef8810973aa80841b59516efc1c0098cb4d49a4c09
+)
+
+[2025-12-30 12:45:20.433000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"100011","refNo":"1230RA965220","tranDate":"251230","tranTime":"124520","mbrRefNo":"100011695349eeb90f0","bankCode":"092","bankName":"토스뱅크","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"cashReceiptIssued":"N"}}
+[2025-12-30 12:46:49.236000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 12:46:49.236000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169534b2939210
+    [amount] => 5000
+    [paymethod] => VACCT
+    [timestamp] => 251230124649233
+    [signature] => f12367f9619e17b553b5d450182281b8c0d73aa81703fa0ca9200e28dcffed24
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+)
+
+[2025-12-30 12:46:49.306000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidb0c78faacf1649c5b48d9e738a71ce4373798","nextMobileUrl":"https://test-ui-vacct.mainpay.co.kr/mobile?aid=aidb0c78faacf1649c5b48d9e738a71ce4373798&key=aidb0c78faacf1649c5b48d9e738a71ce4373798","nextPcUrl":"https://test-ui-vacct.mainpay.co.kr/pc?aid=aidb0c78faacf1649c5b48d9e738a71ce4373798&key=aidb0c78faacf1649c5b48d9e738a71ce4373798","nextAppUrl":"https://test-ui-vacct.mainpay.co.kr/app?aid=aidb0c78faacf1649c5b48d9e738a71ce4373798&key=aidb0c78faacf1649c5b48d9e738a71ce4373798","createTime":"2025-12-30T12:46:49.338","expireTime":"2025-12-30T13:01:49.338"}}
+[2025-12-30 12:47:14.571000] APPROVAL-INCOMING: Array
+(
+    [aid] => aidb0c78faacf1649c5b48d9e738a71ce4373798
+    [authToken] => AUTH7b21d720f7d4474993f458a2edf0c1fc4bcd
+    [paymethod] => VACCT
+    [payType] => 
+    [mbrRefNo] => 10001169534b2939210
+    [merchantData] => 
+    [result_code] => 0000
+    [result_message] => 성공
+    [key] => aidb0c78faacf1649c5b48d9e738a71ce4373798
+    [extra_data] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-30 12:47:14.571000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 12:47:14.571000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aidb0c78faacf1649c5b48d9e738a71ce4373798
+    [mbrRefNo] => 10001169534b2939210
+    [authToken] => AUTH7b21d720f7d4474993f458a2edf0c1fc4bcd
+    [amount] => 5000
+    [timestamp] => 251230124714571
+    [signature] => 6d877774bc9668704d07e857598b9f6345dad2ba047c00d781d46a78873e8fd5
+)
+
+[2025-12-30 12:47:15.815000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"1230VA965221","tranDate":"251230","tranTime":"124715","mbrRefNo":"10001169534b2939210","mbrNo":"100011","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"bankCode":"20","accountNo":"22297426718347","accountCloseDate":"260101","cashReceiptIssued":"N"}}
+[2025-12-30 13:00:49.298000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 13:00:49.298000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169534e7148828
+    [amount] => 5000
+    [paymethod] => VACCT
+    [timestamp] => 251230130049296
+    [signature] => 9a502d39293680fe3a1b04b41a186e825aed3fa13968dcbd0f4c737dac963179
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2025-12-30 13:00:49.393000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aide806c71bacb548abb65127898f8ca4746d9d7","nextMobileUrl":"https://test-ui-vacct.mainpay.co.kr/mobile?aid=aide806c71bacb548abb65127898f8ca4746d9d7&key=aide806c71bacb548abb65127898f8ca4746d9d7","nextPcUrl":"https://test-ui-vacct.mainpay.co.kr/pc?aid=aide806c71bacb548abb65127898f8ca4746d9d7&key=aide806c71bacb548abb65127898f8ca4746d9d7","nextAppUrl":"https://test-ui-vacct.mainpay.co.kr/app?aid=aide806c71bacb548abb65127898f8ca4746d9d7&key=aide806c71bacb548abb65127898f8ca4746d9d7","createTime":"2025-12-30T13:00:49.419","expireTime":"2025-12-30T13:15:49.419"}}
+[2025-12-30 13:01:02.273000] APPROVAL-INCOMING: Array
+(
+    [aid] => aide806c71bacb548abb65127898f8ca4746d9d7
+    [authToken] => AUTH0ee3b90a137546d5aa9e9fb5a5a694928ec1
+    [paymethod] => VACCT
+    [payType] => 
+    [mbrRefNo] => 10001169534e7148828
+    [merchantData] => 
+    [result_code] => 0000
+    [result_message] => 성공
+    [key] => aide806c71bacb548abb65127898f8ca4746d9d7
+    [extra_data] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-30 13:01:02.273000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 13:01:02.273000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aide806c71bacb548abb65127898f8ca4746d9d7
+    [mbrRefNo] => 10001169534e7148828
+    [authToken] => AUTH0ee3b90a137546d5aa9e9fb5a5a694928ec1
+    [amount] => 5000
+    [timestamp] => 251230130102273
+    [signature] => cbbee3fd2a1324d8d8c0abcfae864e84ffa4bc172987476ec1725bff80037aaf
+)
+
+[2025-12-30 13:01:02.980000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"1230VA965222","tranDate":"251230","tranTime":"130103","mbrRefNo":"10001169534e7148828","mbrNo":"100011","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"bankCode":"20","accountNo":"22297426718353","accountCloseDate":"260101","cashReceiptIssued":"N"}}
+[2025-12-30 13:03:58.165000] PAY-API: https://test-api-std.mainpay.co.kr/v1/payment/ready
+[2025-12-30 13:03:58.165000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 100011
+    [mbrRefNo] => 10001169534f2e280a0
+    [amount] => 5000
+    [paymethod] => HPP
+    [timestamp] => 251230130358164
+    [signature] => 829220471abd2260a711afc7efe53e70f90d7715d39fdbb777ea67ff2a074ab6
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2025-12-30 13:03:58.383000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidfbde0cecab45485cbce860911dc49c1d42fd8","nextMobileUrl":"https://test-ui-hpp.mainpay.co.kr/mobile?aid=aidfbde0cecab45485cbce860911dc49c1d42fd8&key=aidfbde0cecab45485cbce860911dc49c1d42fd8","nextPcUrl":"https://test-ui-hpp.mainpay.co.kr/pc?aid=aidfbde0cecab45485cbce860911dc49c1d42fd8&key=aidfbde0cecab45485cbce860911dc49c1d42fd8","nextAppUrl":"https://test-ui-hpp.mainpay.co.kr/app?aid=aidfbde0cecab45485cbce860911dc49c1d42fd8&key=aidfbde0cecab45485cbce860911dc49c1d42fd8","createTime":"2025-12-30T13:03:58.408","expireTime":"2025-12-30T13:18:58.408"}}
+[2025-12-30 13:04:33.086000] APPROVAL-INCOMING: Array
+(
+    [paymethod] => HPP
+    [mbrRefNo] => 10001169534f2e280a0
+    [aid] => aidfbde0cecab45485cbce860911dc49c1d42fd8
+    [authToken] => AUTH95bd725ffb284469a9a6f384e895cba83a40
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2025-12-30 13:04:33.086000] APPROVAL-API: https://test-api-std.mainpay.co.kr/v1/payment/pay
+[2025-12-30 13:04:33.087000] PARAM: Array
+(
+    [mbrNo] => 100011
+    [aid] => aidfbde0cecab45485cbce860911dc49c1d42fd8
+    [mbrRefNo] => 10001169534f2e280a0
+    [authToken] => AUTH95bd725ffb284469a9a6f384e895cba83a40
+    [amount] => 5000
+    [timestamp] => 251230130433085
+    [signature] => 61380265fcc72b4b4468206a233c6404e1ef40f00906532b15c25b39b53ac427
+)
+
+[2025-12-30 13:04:34.858000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"1230P1764565","tranDate":"251230","tranTime":"130434","mbrRefNo":"10001169534f2e280a0","mbrNo":"100011","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"billkey":""}}

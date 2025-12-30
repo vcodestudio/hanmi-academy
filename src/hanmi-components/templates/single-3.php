@@ -1,14 +1,49 @@
 <?php
-$product = _acf("product");
-// get woocommerce product info from id
-$product = wc_get_product($product);
+// 프로그램 ID
+$program_id = get_the_ID();
 
-// get price of it
-// $price = $product->get_price();
-// get stack of it
-// $stock = $product->get_stock_quantity();
-// get buy link of it
-// $link = $product->add_to_cart_url();
+// ACF 필드에서 상품 정보 가져오기
+$product_price = intval(_acf("product_price") ?? 0);
+$product_purchasable = _acf("product_purchasable") ?? false;
+$product_stock = intval(_acf("product_stock") ?? 0); // 수강인원 제한
+
+// 현재 신청자 수 가져오기
+$current_applicants = intval(get_post_meta($program_id, 'program_applicants_count', true) ?? 0);
+
+// 상품 정보가 있는지 확인 (판매 가능 체크박스가 체크되어 있으면 상품 정보 있음)
+$has_product_info = $product_purchasable;
+
+// 로그인 체크
+$is_logged_in = is_user_logged_in();
+$current_user = $is_logged_in ? wp_get_current_user() : null;
+
+// 신청하기 버튼 URL 및 상태 결정
+$order_url = home_url('/order?program_id=' . $program_id);
+$can_apply = false;
+$apply_message = '';
+
+if (!$is_logged_in) {
+    // 로그인하지 않은 경우
+    $login_url = home_url('/login?redirect_to=' . urlencode($order_url));
+    $order_url = $login_url;
+    $apply_message = '로그인이 필요합니다.';
+} elseif (!$has_product_info) {
+    // 상품 정보가 없는 경우
+    $order_url = 'javascript:void(0)';
+    $apply_message = '상품 정보가 없습니다.';
+} else {
+    // 정상적인 경우
+    $can_apply = true;
+    // 상품이 판매 가능한지 확인
+    if (!$product_purchasable) {
+        $apply_message = '현재 신청할 수 없는 상품입니다.';
+        $can_apply = false;
+    } elseif ($product_stock > 0 && $current_applicants >= $product_stock) {
+        // 수강인원 제한이 있고, 현재 신청자 수가 제한을 초과한 경우
+        $apply_message = '수강인원이 초과되어 마감되었습니다.';
+        $can_apply = false;
+    }
+}
 ?>
 <div class="row gap-32 page-wrap detail">
     <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: (_acf("thumb") ? [_acf("thumb")] : []), "forceSlider" => true, "showBullets" => true]) ?>
@@ -19,7 +54,11 @@ $product = wc_get_product($product);
                 <h6 class="light"><?= getDateRange() ?></h6>
             </div>
             <div class="flex">
-                <a href="/order" class="button">신청하기</a>
+                <?php if ($can_apply): ?>
+                    <a href="<?= esc_url($order_url) ?>" class="button"><?= $is_logged_in ? '신청하기' : '로그인 후 신청하기' ?></a>
+                <?php elseif ($apply_message): ?>
+                    <p style="margin-top: 0; font-size: 0.875rem; color: #888;"><?= esc_html($apply_message) ?></p>
+                <?php endif; ?>
             </div>
         </div>
         <div class="row gap-24">

@@ -2,6 +2,17 @@
 // require_once get_stylesheet_directory()."/src/hanmi-components/php/precomp.php";
 include_once "src/hanmi-components/php/precomp.php";
 
+// WooCommerce 세션 쿠키 경고 억제를 위한 에러 핸들러
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+	// WooCommerce 세션 핸들러의 모든 "Undefined array key" 경고 억제 (key 번호와 무관하게)
+	if (strpos($errfile, 'class-wc-session-handler.php') !== false && 
+	    strpos($errstr, 'Undefined array key') !== false) {
+		return true; // 에러 억제
+	}
+	// 다른 에러는 기본 핸들러로 전달
+	return false;
+}, E_WARNING);
+
 // debug handling
 if (defined('WP_DEBUG') && WP_DEBUG) {
 	ini_set("display_errors", 1);
@@ -180,7 +191,10 @@ function my_front_end_login_fail($username)
 		!strstr($referrer, "wp-login") &&
 		!strstr($referrer, "wp-admin")
 	) {
-		wp_redirect("/login?login=failed"); // let's append some information (login=failed) to the URL for the theme to use
+		// redirect_to 파라미터 유지
+		$redirect_to = isset($_POST['redirect_to']) ? urlencode($_POST['redirect_to']) : '';
+		$redirect_param = $redirect_to ? '&redirect_to=' . $redirect_to : '';
+		wp_redirect("/login?login=failed" . $redirect_param); // let's append some information (login=failed) to the URL for the theme to use
 		exit();
 	}
 }
@@ -257,6 +271,32 @@ function mytheme_add_woocommerce_support()
 	add_theme_support("woocommerce");
 }
 add_action("after_setup_theme", "mytheme_add_woocommerce_support");
+
+/**
+ * WooCommerce 세션 쿠키 경고(Undefined array key 3) 해결을 위한 필터
+ * 쿠키가 || 로 나뉘었을 때 4개 미만의 파트만 있으면 강제로 제거하여 에러 방지
+ * plugins_loaded 훅을 사용하여 WooCommerce가 로드되기 전에 실행
+ */
+add_action('plugins_loaded', function() {
+    if (isset($_COOKIE) && is_array($_COOKIE)) {
+        foreach ($_COOKIE as $key => $value) {
+            if (is_string($key) && strpos($key, 'wp_woocommerce_session_') === 0 && is_string($value)) {
+                $cookie_parts = explode('||', $value);
+                if (count($cookie_parts) < 4) {
+                    // 잘못된 형식의 쿠키 제거
+                    $cookie_path = defined('COOKIEPATH') ? COOKIEPATH : '/';
+                    $cookie_domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+                    setcookie($key, '', time() - 3600, $cookie_path, $cookie_domain);
+                    if (defined('SITECOOKIEPATH') && SITECOOKIEPATH !== $cookie_path) {
+                        setcookie($key, '', time() - 3600, SITECOOKIEPATH, $cookie_domain);
+                    }
+                    unset($_COOKIE[$key]);
+                }
+            }
+        }
+    }
+}, 1);
+
 add_filter("product_type_options", function ($options) {
 	// remove "Virtual" checkbox
 	// if( isset( $options[ 'virtual' ] ) ) {
@@ -376,21 +416,28 @@ function acf_location_rule_match_page_slug($match, $rule, $options) {
 }
 
 // 커스텀 라우팅: /order, /payment-detail
-add_action('template_redirect', 'custom_page_routing');
+add_action('template_redirect', 'custom_page_routing', 1);
 function custom_page_routing() {
-	$request_uri = $_SERVER['REQUEST_URI'];
-	$request_uri = strtok($request_uri, '?'); // 쿼리 스트링 제거
+	// REQUEST_URI에서 경로 추출
+	$request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 	
-	if ($request_uri === '/order' || $request_uri === '/order/') {
-		$page_path = get_stylesheet_directory() . '/pages/page-order.php';
-		if (file_exists($page_path)) {
-			require $page_path;
-			exit;
-		}
-	}
+	// 쿼리 스트링 제거 및 경로 정규화
+	$path = parse_url($request_uri, PHP_URL_PATH);
+	$path = rtrim($path, '/'); // 끝의 슬래시 제거
 	
-	if ($request_uri === '/payment-detail' || $request_uri === '/payment-detail/') {
-		$page_path = get_stylesheet_directory() . '/pages/page-payment-detail.php';
+	// 경로 매핑
+	$routes = [
+		'/order' => 'page-order.php',
+		'/payment-approval' => 'page-payment-approval.php',
+		'/payment-close' => 'page-payment-close.php',
+		'/payment-detail' => 'page-payment-detail.php',
+	];
+	
+	// 매칭되는 경로 확인
+	if (isset($routes[$path])) {
+		$page_file = $routes[$path];
+		$page_path = get_stylesheet_directory() . '/pages/' . $page_file;
+		
 		if (file_exists($page_path)) {
 			require $page_path;
 			exit;
@@ -398,6 +445,46 @@ function custom_page_routing() {
 	}
 }
 
+
+// 커스텀 페이지 rewrite rule 추가
+add_action('init', 'add_custom_page_rewrite_rules');
+function add_custom_page_rewrite_rules() {
+	add_rewrite_rule('^order/?$', 'index.php?custom_page=order', 'top');
+	add_rewrite_rule('^payment-approval/?$', 'index.php?custom_page=payment-approval', 'top');
+	add_rewrite_rule('^payment-close/?$', 'index.php?custom_page=payment-close', 'top');
+	add_rewrite_rule('^payment-detail/?$', 'index.php?custom_page=payment-detail', 'top');
+	add_rewrite_rule('^payment-noti/?$', 'index.php?custom_page=payment-noti', 'top');
+}
+
+// 커스텀 쿼리 변수 등록
+add_filter('query_vars', 'add_custom_page_query_vars');
+function add_custom_page_query_vars($vars) {
+	$vars[] = 'custom_page';
+	return $vars;
+}
+
+// 커스텀 페이지 템플릿 로드
+add_action('template_redirect', 'load_custom_page_template', 0);
+function load_custom_page_template() {
+	$custom_page = get_query_var('custom_page');
+	if ($custom_page) {
+		$page_map = [
+			'order' => 'page-order.php',
+			'payment-approval' => 'page-payment-approval.php',
+			'payment-close' => 'page-payment-close.php',
+			'payment-detail' => 'page-payment-detail.php',
+			'payment-noti' => 'page-payment-noti.php',
+		];
+		
+		if (isset($page_map[$custom_page])) {
+			$page_path = get_stylesheet_directory() . '/pages/' . $page_map[$custom_page];
+			if (file_exists($page_path)) {
+				require $page_path;
+				exit;
+			}
+		}
+	}
+}
 
 // WooCommerce account 엔드포인트 등록
 add_action('init', 'add_payment_history_endpoint');
@@ -413,13 +500,21 @@ function payment_history_endpoint_title($title, $endpoint) {
 
 include DIR_SRC . "/php/ajax.php";
 
-// Filter out deprecated warnings from output
+// Filter out deprecated warnings and specific WooCommerce session warnings from output
 add_action("template_redirect", function() {
 	ob_start(function($buffer) {
 		if ($buffer) {
 			// Remove deprecated warnings from HTML output
 			$buffer = preg_replace("/<b>Deprecated<\/b>.*?<br \/>/is", "", $buffer);
 			$buffer = preg_replace("/Deprecated:.*?on line.*?<br \/>/is", "", $buffer);
+			
+			// Remove specific WooCommerce session handler warnings (모든 array key 번호 대응)
+			$buffer = preg_replace("/<b>Warning<\/b>:.*?Undefined array key \d+.*?class-wc-session-handler\.php.*?<br \/>/is", "", $buffer);
+			$buffer = preg_replace("/Warning:.*?Undefined array key \d+.*?class-wc-session-handler\.php.*?on line.*?<br \/>/is", "", $buffer);
+			$buffer = preg_replace("/Warning:.*?Undefined array key \d+.*?class-wc-session-handler\.php.*?\n/is", "", $buffer);
+			$buffer = preg_replace("/<b>Warning<\/b>:.*?Undefined array key \d+.*?class-wc-session-handler\.php.*?\n/is", "", $buffer);
+			// HTML 태그 없이 직접 출력되는 경우
+			$buffer = preg_replace("/Warning: Undefined array key \d+ in.*?class-wc-session-handler\.php.*?on line \d+.*?\n?/is", "", $buffer);
 		}
 		return $buffer;
 	});
@@ -433,3 +528,171 @@ add_action("shutdown", function() {
 include DIR_SRC . "/php/acf_fields.php";
 include DIR_SRC . "/php/post_types.php";
 include DIR_SRC . "/php/taxonomies.php";
+include DIR_SRC . "/php/refund_calculator.php";
+
+// 관리자 메뉴 "프로그램 신청자현황" 추가
+add_action('admin_menu', 'add_program_applicants_menu');
+function add_program_applicants_menu() {
+    add_menu_page(
+        '프로그램 신청자현황',
+        '프로그램 신청자현황',
+        'manage_options',
+        'program-applicants',
+        'display_program_applicants_page',
+        'dashicons-groups',
+        30
+    );
+}
+
+// 프로그램 신청자 현황 페이지에서 WordPress 알림 제거
+add_action('admin_head', 'remove_admin_notices_on_program_applicants');
+function remove_admin_notices_on_program_applicants() {
+    $screen = get_current_screen();
+    if ($screen && $screen->id === 'toplevel_page_program-applicants') {
+        // 모든 admin_notices 액션 제거
+        remove_all_actions('admin_notices');
+    }
+}
+
+// 프로그램 신청자 현황 페이지 콜백 함수
+function display_program_applicants_page() {
+    require_once(get_stylesheet_directory() . '/admin/program-applicants.php');
+}
+
+// 관리자 주문 목록 개선: 커스텀 컬럼 추가
+add_filter('manage_post_order_posts_columns', 'add_order_admin_columns');
+function add_order_admin_columns($columns) {
+    // 기존 컬럼 재정렬
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['title'] = '주문 제목';
+    $new_columns['order_mbr_ref_no'] = '주문번호';
+    $new_columns['order_buyer'] = '주문자';
+    $new_columns['order_amount'] = '결제금액';
+    $new_columns['order_status'] = '주문 상태';
+    $new_columns['order_program'] = '프로그램';
+    $new_columns['date'] = '주문일자';
+    
+    return $new_columns;
+}
+
+// 관리자 주문 목록: 커스텀 컬럼 내용 출력
+add_action('manage_post_order_posts_custom_column', 'display_order_admin_column_content', 10, 2);
+function display_order_admin_column_content($column, $post_id) {
+    switch ($column) {
+        case 'order_mbr_ref_no':
+            $mbr_ref_no = get_field('order_mbr_ref_no', $post_id);
+            echo $mbr_ref_no ? esc_html($mbr_ref_no) : '—';
+            break;
+            
+        case 'order_buyer':
+            $buyer_name = get_field('order_buyer_name', $post_id);
+            $buyer_email = get_field('order_buyer_email', $post_id);
+            if ($buyer_name) {
+                echo esc_html($buyer_name);
+                if ($buyer_email) {
+                    echo '<br><small style="color: #666;">' . esc_html($buyer_email) . '</small>';
+                }
+            } else {
+                echo '—';
+            }
+            break;
+            
+        case 'order_amount':
+            $amount = get_field('order_amount', $post_id);
+            $quantity = get_field('order_quantity', $post_id) ?: 1;
+            if ($amount !== null && $amount !== '') {
+                echo number_format(intval($amount)) . '원';
+                if ($quantity > 1) {
+                    echo '<br><small style="color: #666;">수량: ' . $quantity . '</small>';
+                }
+            } else {
+                echo '—';
+            }
+            break;
+            
+        case 'order_status':
+            $status = get_field('order_status', $post_id);
+            $status_labels = array(
+                'success' => '결제 완료',
+                'cancelled' => '취소됨',
+                'refunded' => '환불됨',
+                'pending' => '대기중'
+            );
+            $status_label = $status_labels[$status] ?? $status ?? '—';
+            $status_colors = array(
+                'success' => '#28a745',
+                'cancelled' => '#dc3545',
+                'refunded' => '#ffc107',
+                'pending' => '#6c757d'
+            );
+            $status_color = $status_colors[$status] ?? '#6c757d';
+            echo '<span style="color: ' . esc_attr($status_color) . '; font-weight: 700;">' . esc_html($status_label) . '</span>';
+            break;
+            
+        case 'order_program':
+            $program_id = get_field('order_program_id', $post_id);
+            if ($program_id) {
+                $program_title = get_the_title($program_id);
+                if ($program_title) {
+                    echo '<a href="' . esc_url(get_edit_post_link($program_id)) . '">' . esc_html($program_title) . '</a>';
+                } else {
+                    echo '—';
+                }
+            } else {
+                echo '—';
+            }
+            break;
+    }
+}
+
+// 관리자 주문 목록: 정렬 가능한 컬럼 설정
+add_filter('manage_edit-post_order_sortable_columns', 'make_order_columns_sortable');
+function make_order_columns_sortable($columns) {
+    $columns['order_mbr_ref_no'] = 'order_mbr_ref_no';
+    $columns['order_amount'] = 'order_amount';
+    $columns['order_status'] = 'order_status';
+    $columns['date'] = 'date';
+    return $columns;
+}
+
+// 관리자 주문 목록: 주문 상태 필터 추가
+add_action('restrict_manage_posts', 'add_order_status_filter');
+function add_order_status_filter() {
+    global $typenow;
+    
+    if ($typenow === 'post_order') {
+        $selected = isset($_GET['order_status_filter']) ? $_GET['order_status_filter'] : '';
+        
+        $statuses = array(
+            '' => '모든 상태',
+            'success' => '결제 완료',
+            'cancelled' => '취소됨',
+            'refunded' => '환불됨',
+            'refund_requested' => '환불 요청',
+            'pending' => '대기중'
+        );
+        
+        echo '<select name="order_status_filter">';
+        foreach ($statuses as $value => $label) {
+            printf(
+                '<option value="%s"%s>%s</option>',
+                esc_attr($value),
+                selected($selected, $value, false),
+                esc_html($label)
+            );
+        }
+        echo '</select>';
+    }
+}
+
+// 관리자 주문 목록: 필터 쿼리 적용
+add_filter('parse_query', 'filter_orders_by_status');
+function filter_orders_by_status($query) {
+    global $pagenow, $typenow;
+    
+    if ($pagenow === 'edit.php' && $typenow === 'post_order' && isset($_GET['order_status_filter']) && $_GET['order_status_filter'] !== '') {
+        $query->query_vars['meta_key'] = 'order_status';
+        $query->query_vars['meta_value'] = sanitize_text_field($_GET['order_status_filter']);
+    }
+}

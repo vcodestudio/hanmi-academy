@@ -22,7 +22,7 @@
             
             if ($has_tags):
             ?>
-            <div class="inline-flex gap-2">
+            <div class="inline-flex gap-2 flex-wrap">
                 <?php
                 foreach ($terms as $term):
                     if ($f = _acf($term)): ?>

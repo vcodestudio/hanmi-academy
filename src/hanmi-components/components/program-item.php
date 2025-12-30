@@ -55,7 +55,7 @@
             
             if ($has_tags):
             ?>
-            <div class="inline-flex gap-2">
+            <div class="inline-flex gap-2 flex-wrap">
                 <?php
                 foreach ($tax_tags as $tax_tag):
                     $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);

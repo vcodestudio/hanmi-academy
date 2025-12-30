@@ -1,28 +1,147 @@
 <?php
 get_header();
 
-// 더미 데이터
+// 로그인 체크
+if (!is_user_logged_in()) {
+    // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+    $current_url = home_url(add_query_arg(null, null));
+    $login_url = home_url('/login?redirect_to=' . urlencode($current_url));
+    wp_redirect($login_url);
+    exit;
+}
+
+// URL 파라미터에서 프로그램 ID 가져오기
+$program_id = intval($_GET['program_id'] ?? 0);
+
+// 프로그램 정보 가져오기
+$program = null;
+$product = null;
+$order_item = null;
+$orderer = null;
+
+if ($program_id) {
+    $program = get_post($program_id);
+    if ($program && $program->post_type === 'post_program') {
+        // ACF 필드에서 상품 정보 가져오기
+        $product_price = intval(get_field('product_price', $program_id) ?? 0);
+        $product_purchasable = get_field('product_purchasable', $program_id) ?? false;
+        $product_stock = intval(get_field('product_stock', $program_id) ?? 0); // 수강인원 제한
+        
+        // 현재 신청자 수 가져오기
+        $current_applicants = intval(get_post_meta($program_id, 'program_applicants_count', true) ?? 0);
+        
+        // 프로그램 정보 설정
+        $thumb = get_field('thumb', $program_id);
+        $schedule = get_field('schedule', $program_id);
+        
+        // 날짜 범위 가져오기
+        $start_date = get_field('start', $program_id);
+        $end_date = get_field('end', $program_id);
+        $date_range = '';
+        if ($start_date) {
+            $date_range = $start_date;
+            if ($end_date && $end_date !== $start_date) {
+                $date_range .= ' ~ ' . $end_date;
+            }
+        } elseif ($schedule) {
+            $date_range = $schedule;
+        }
+        
+        // 썸네일 이미지 URL 가져오기
+        $image_url = getImg('empty.svg');
+        if ($thumb) {
+            if (is_array($thumb) && isset($thumb['url'])) {
+                $image_url = $thumb['url'];
+            } elseif (is_numeric($thumb)) {
+                $image_url = wp_get_attachment_image_url($thumb, 'large');
+            }
+        } elseif (has_post_thumbnail($program_id)) {
+            $image_url = get_the_post_thumbnail_url($program_id, 'large');
+        }
+        
+        // 상품명은 포스트 제목 사용
+        $product_title = get_the_title($program_id);
+        
+        // product_id는 프로그램 ID 기반으로 생성
+        $product_id = $program_id;
+        
+        $order_item = [
+            'title' => $product_title,
+            'schedule' => $date_range,
+            'image' => $image_url,
+            'quantity' => 1,
+            'price' => $product_price,
+            'program_id' => $program_id,
+            'product_id' => $product_id,
+            'product_purchasable' => $product_purchasable,
+            'product_stock' => $product_stock,
+            'current_applicants' => $current_applicants
+        ];
+        
+        // 판매 가능 여부 확인
+        if (!$product_purchasable) {
+            ?>
+            <div class="page-wrap" style="padding: 2rem; text-align: center;">
+                <h2>유효하지 않은 접근입니다</h2>
+                <p>현재 신청할 수 없는 상품입니다.</p>
+                <a href="javascript:history.back();" class="button" style="margin-top: 1rem; display: inline-block; padding: 0.75rem 2rem; background-color: #000; color: #fff; text-decoration: none;">이전 페이지로 돌아가기</a>
+            </div>
+            <?php
+            get_footer();
+            exit;
+        }
+    }
+}
+
+// 재고 확인 (수강인원 제한이 있고 초과된 경우) - 수량 1개 기준으로 체크 (실제 결제 시 수량 고려)
+if ($order_item && isset($order_item['product_stock']) && $order_item['product_stock'] > 0) {
+    if ($order_item['current_applicants'] >= $order_item['product_stock']) {
+        ?>
+        <div class="page-wrap" style="padding: 2rem; text-align: center;">
+            <h2>수강인원이 초과되어 마감되었습니다</h2>
+            <p>현재 신청자 수: <?= $order_item['current_applicants'] ?>명 / 제한 인원: <?= $order_item['product_stock'] ?>명</p>
+            <a href="javascript:history.back();" class="button" style="margin-top: 1rem; display: inline-block; padding: 0.75rem 2rem; background-color: #000; color: #fff; text-decoration: none;">이전 페이지로 돌아가기</a>
+        </div>
+        <?php
+        get_footer();
+        exit;
+    }
+}
+
+// 상품 정보가 없으면 에러 메시지 표시 및 리다이렉트
+if (!$order_item || empty($order_item['title']) || $order_item['price'] < 0) {
+    ?>
+    <div class="page-wrap" style="padding: 2rem; text-align: center;">
+        <h2>상품 정보를 찾을 수 없습니다</h2>
+        <p>연동된 상품 정보가 없거나 잘못된 접근입니다.</p>
+        <a href="<?= home_url() ?>" class="button" style="margin-top: 1rem; display: inline-block; padding: 0.75rem 2rem; background-color: #000; color: #fff; text-decoration: none;">홈으로 돌아가기</a>
+    </div>
+    <?php
+    get_footer();
+    exit;
+}
+
+// 현재 로그인한 사용자 정보 가져오기 (이미 로그인 체크 완료)
+$current_user = wp_get_current_user();
+$user_meta = get_user_meta($current_user->ID);
+
+// 회원 정보 가져오기
 $orderer = [
-    'name' => '김한미',
-    'email' => 'abc1234@abc.com',
-    'phone' => '010 1234 5678'
+    'name' => $current_user->display_name ?: ($user_meta['first_name'][0] ?? '') . ' ' . ($user_meta['last_name'][0] ?? ''),
+    'email' => $current_user->user_email,
+    'phone' => $user_meta['billing_phone'][0] ?? $user_meta['phone'][0] ?? ''
 ];
 
-$order_item = [
-    'title' => '큐레이터가 알려주는 미술작품 보는 법',
-    'schedule' => '매주 수요일 · 오후 3시',
-    'image' => getImg('empty.svg'),
-    'quantity' => 1,
-    'price' => 50000
-];
+// 이름이 비어있으면 사용자명 사용
+if (empty($orderer['name']) || trim($orderer['name']) === '') {
+    $orderer['name'] = $current_user->user_login;
+}
 
+// 메인페이에서 지원하는 결제수단만 표시 (CARD|ACCT|VACCT|HPP|CULT)
 $payment_methods = [
-    ['id' => 'kakao', 'name' => '카카오페이', 'subname' => '(KAKAO PAY)'],
-    ['id' => 'payco', 'name' => '페이코', 'subname' => '(PAYCO)'],
-    ['id' => 'bank', 'name' => '무통장 입금'],
     ['id' => 'card', 'name' => '신용카드'],
     ['id' => 'transfer', 'name' => '실시간', 'subname' => '계좌이체'],
-    ['id' => 'naver', 'name' => '네이버페이', 'subname' => '(NAVER PAY)'],
+    ['id' => 'bank', 'name' => '가상계좌'],
     ['id' => 'mobile', 'name' => '휴대폰 결제'],
 ];
 
@@ -84,7 +203,8 @@ $total_price = $order_item['price'] * $order_item['quantity'];
             <!-- 구분선 -->
             <div style="height: 0.0625rem; background-color: rgba(0,0,0,0.1); width: 100%;"></div>
             
-            <!-- 결제 수단 선택 섹션 -->
+            <!-- 결제 수단 선택 섹션 (유료 상품일 때만 표시) -->
+            <?php if ($total_price > 0): ?>
             <div class="flex flex-col" style="gap: 1.25rem;">
                 <h4 class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;">결제 수단</h4>
                 <div class="flex flex-wrap payment-methods-container" style="gap: 0; width: 45.625rem; max-width: 100%;">
@@ -104,6 +224,7 @@ $total_price = $order_item['price'] * $order_item['quantity'];
                     <?php endforeach; ?>
                 </div>
             </div>
+            <?php endif; ?>
             
             <!-- 구분선 -->
             <div style="height: 0.0625rem; background-color: rgba(0,0,0,0.1); width: 100%;"></div>
@@ -111,13 +232,13 @@ $total_price = $order_item['price'] * $order_item['quantity'];
             <!-- 총 결제 예상 금액 -->
             <div class="flex items-center justify-between" style="width: 100%;">
                 <h4 class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;">총 결제 예상 금액</h4>
-                <h4 class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;"><?= number_format($total_price) ?>원</h4>
+                <h4 class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;"><?= $total_price > 0 ? number_format($total_price) . '원' : '무료' ?></h4>
             </div>
             
             <!-- 취소하기/결제하기 버튼 (모바일용) -->
             <div class="flex gap-5 w-full mobile-buttons" style="gap: 1.25rem; display: none;">
                 <button class="button flex-1 bg-black text-white rounded" style="padding: 0.125rem 4.6875rem; font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -0.0125rem; border-radius: 0.25rem;">취소하기</button>
-                <button class="button flex-1 bg-black text-white rounded" style="padding: 0.125rem 4.6875rem; font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -0.0125rem; border-radius: 0.25rem;">결제하기</button>
+                <button class="button flex-1 bg-black text-white rounded payment-submit-btn" style="padding: 0.125rem 4.6875rem; font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -0.0125rem; border-radius: 0.25rem;"><?= $total_price > 0 ? '결제하기' : '신청하기' ?></button>
             </div>
         </div>
         
@@ -127,10 +248,31 @@ $total_price = $order_item['price'] * $order_item['quantity'];
             <div class="flex flex-col shrink-0 sticky-payment-box" style="width: 100%; gap: 1.25rem; padding-left: 1.25rem; align-self: flex-start;">
                 <div class="flex items-start justify-between" style="width: 100%;">
                     <span class="bold" style="font-size: 1rem; line-height: 1.75rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;">결제 금액</span>
-                    <span class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;"><?= number_format($total_price) ?>원</span>
+                    <span class="bold" style="font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; letter-spacing: -0.0125rem; color: #000;"><?= $total_price > 0 ? number_format($total_price) . '원' : '무료' ?></span>
                 </div>
-                <button class="button w-full bg-black text-white rounded" style="padding: 0.125rem 4.6875rem; font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -0.0125rem; border-radius: 0.25rem;">결제하기</button>
+                <button class="button w-full bg-black text-white rounded payment-submit-btn" style="padding: 0.125rem 4.6875rem; font-size: 0.875rem; line-height: 1.5rem; font-weight: 700; letter-spacing: -0.0125rem; border-radius: 0.25rem;"><?= $total_price > 0 ? '결제하기' : '신청하기' ?></button>
             </div>
+        </div>
+    </div>
+
+    <!-- 환불 규정 섹션 -->
+    <div class="flex flex-col refund-policy-section" style="gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.1); margin-bottom: 2rem;">
+        <div class="flex flex-col" style="gap: 0.75rem;">
+            <h4 class="bold" style="font-size: 1.25rem; line-height: 1.875rem; font-weight: 700; color: #000;">정규과정</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1rem; line-height: 1.625rem; color: #333;">
+                <li>개강 전 전액 환불</li>
+                <li>개강 후 3주 이전 70% 환불</li>
+                <li>개강 후 4주 이후 환불 불가</li>
+            </ul>
+        </div>
+        
+        <div class="flex flex-col" style="gap: 0.75rem;">
+            <h4 class="bold" style="font-size: 1.25rem; line-height: 1.875rem; font-weight: 700; color: #000;">단기과정(6주 이내)</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1rem; line-height: 1.625rem; color: #333;">
+                <li>개강 전 전액 환불</li>
+                <li>개강 후 2주 이전 70% 환불</li>
+                <li>개강 후 3주 이후 환불 불가</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -315,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 총 결제 예상 금액 업데이트
         const totalPrice = pricePerItem * quantity;
-        const formattedPrice = totalPrice.toLocaleString('ko-KR');
+        const displayPrice = totalPrice > 0 ? totalPrice.toLocaleString('ko-KR') + '원' : '무료';
         
         // 좌측 총 결제 예상 금액 업데이트
         const leftTotalElements = document.querySelectorAll('.order-left-column h4.bold');
@@ -323,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (el.textContent.includes('총 결제 예상 금액')) {
                 const nextSibling = el.nextElementSibling;
                 if (nextSibling && nextSibling.classList.contains('bold')) {
-                    nextSibling.textContent = formattedPrice + '원';
+                    nextSibling.textContent = displayPrice;
                 }
             }
         });
@@ -333,9 +475,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rightPaymentBox) {
             const rightAmount = rightPaymentBox.querySelector('span.bold:last-child');
             if (rightAmount) {
-                rightAmount.textContent = formattedPrice + '원';
+                rightAmount.textContent = displayPrice;
+            }
+            
+            // 버튼 텍스트 업데이트
+            const submitButton = rightPaymentBox.querySelector('.payment-submit-btn');
+            if (submitButton) {
+                submitButton.textContent = totalPrice > 0 ? '결제하기' : '신청하기';
             }
         }
+        
+        // 모바일 버튼 텍스트 업데이트
+        const mobileButtons = document.querySelectorAll('.mobile-buttons .payment-submit-btn');
+        mobileButtons.forEach(btn => {
+            btn.textContent = totalPrice > 0 ? '결제하기' : '신청하기';
+        });
     }
     
     decreaseBtn.addEventListener('click', function(e) {
@@ -347,6 +501,151 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         updateQuantity(quantity + 1);
     });
+    
+    // 결제하기/신청하기 버튼 이벤트
+    function initPaymentButton() {
+        const paymentButtons = document.querySelectorAll('.payment-submit-btn');
+        
+        paymentButtons.forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const currentQuantity = parseInt(quantityValue.textContent) || 1;
+                const totalPrice = pricePerItem * currentQuantity;
+                
+                // 무료 상품인 경우 바로 신청 처리
+                if (totalPrice === 0) {
+                    if (!confirm('신청하시겠습니까?')) {
+                        return;
+                    }
+                    
+                    button.disabled = true;
+                    button.textContent = '처리 중...';
+                    
+                    const freeOrderData = {
+                        action: 'mainpay_free_order',
+                        program_id: <?= $order_item['program_id'] ?? 0 ?>,
+                        quantity: currentQuantity,
+                        buyer_name: '<?= esc_js($orderer['name']) ?>',
+                        buyer_email: '<?= esc_js($orderer['email']) ?>',
+                        buyer_tel: '<?= esc_js($orderer['phone']) ?>'
+                    };
+                    
+                    fetch('<?= admin_url('admin-ajax.php') ?>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams(freeOrderData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('신청이 완료되었습니다.');
+                            window.location.href = '<?= home_url('/payment-detail?order_id=' . ($order_item['program_id'] ?? '') . '&status=success&free=1') ?>';
+                        } else {
+                            alert('신청 실패: ' + (data.data?.message || '알 수 없는 오류가 발생했습니다.'));
+                            button.disabled = false;
+                            button.textContent = '신청하기';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('처리 중 오류가 발생했습니다: ' + error.message);
+                        button.disabled = false;
+                        button.textContent = '신청하기';
+                    });
+                    return;
+                }
+                
+                // 유료 상품인 경우 결제 프로세스 진행
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+                if (totalPrice > 0 && !paymentMethod) {
+                    alert('결제 수단을 선택해주세요.');
+                    return;
+                }
+
+                // 메인페이 paymethod 매핑 (CARD|ACCT|VACCT|HPP|CULT 중 하나)
+                const paymethodMap = {
+                    'card': 'CARD',        // 신용카드
+                    'transfer': 'ACCT',    // 계좌이체
+                    'bank': 'VACCT',       // 가상계좌
+                    'mobile': 'HPP',       // 휴대폰 결제
+                };
+                const paymethod = paymethodMap[paymentMethod.value] || 'CARD';
+                
+                const paymentData = {
+                    action: 'mainpay_payment_ready',
+                    amount: totalPrice,
+                    paymethod,
+                    buyer_name: '<?= esc_js($orderer['name']) ?>',
+                    buyer_email: '<?= esc_js($orderer['email']) ?>',
+                    buyer_tel: '<?= esc_js($orderer['phone']) ?>',
+                    program_id: <?= $order_item['program_id'] ?? 0 ?>,
+                    quantity: currentQuantity
+                };
+                
+                // 버튼 비활성화
+                button.disabled = true;
+                button.textContent = '처리 중...';
+                
+                // AJAX 요청
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(paymentData)
+                })
+                .then(response => {
+                    // Content-Type 확인
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        return response.text().then(text => {
+                            console.error('Non-JSON response:', text);
+                            throw new Error('서버에서 JSON이 아닌 응답을 받았습니다.');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // 결제창으로 리다이렉트 (팝업 대신 현재 창에서 이동)
+                        window.location.href = data.data.payUrl;
+                    } else {
+                        alert('결제 준비 실패: ' + (data.data?.message || '알 수 없는 오류가 발생했습니다.'));
+                        button.disabled = false;
+                        button.textContent = '결제하기';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('결제 처리 중 오류가 발생했습니다: ' + error.message);
+                    button.disabled = false;
+                    button.textContent = '결제하기';
+                });
+            });
+        });
+    }
+    
+    // 취소하기 버튼 이벤트
+    function initCancelButton() {
+        const cancelButtons = document.querySelectorAll('.mobile-buttons button:first-child');
+        
+        cancelButtons.forEach(function(button) {
+            if (button.textContent.includes('취소하기')) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('주문을 취소하시겠습니까?')) {
+                        window.location.href = '<?= home_url() ?>';
+                    }
+                });
+            }
+        });
+    }
+    
+    initPaymentButton();
+    initCancelButton();
     
     // 우측 패널 스티키 처리
     const stickyBox = document.querySelector('.sticky-payment-box');

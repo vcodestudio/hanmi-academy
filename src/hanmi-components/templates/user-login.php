@@ -28,6 +28,12 @@
 						<?php
 							endif;
 						?>
+						<?php
+							// redirect_to 파라미터가 있으면 hidden 필드로 유지
+							if(isset($_GET["redirect_to"]) && !empty($_GET["redirect_to"])):
+								$redirect_to = esc_url_raw($_GET["redirect_to"]);
+							endif;
+						?>
 					<div class="row gap-1r">
 						<div class="gap-8 row">
 							<p class="bold">아이디</p>
