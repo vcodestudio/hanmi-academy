@@ -22,8 +22,7 @@
 				<img src="<?= HM::$logo_w ?>" />
 			</div>
 			<p>
-				가현문화재단이 개관한 국내 최초 사진전문 미술관으로 시작한 한미사진미술관은, <br />
-				국내 사진사의 체계화와 사진문화예술의 활성화를 위해 최선의 노력을 다해왔습니다.
+				<?= get_field("footer_description", "option") ?>
 			</p>
 		</div>
 		<div class="flex mobile:flex-col gap-28 footer-menu-wrapper">
