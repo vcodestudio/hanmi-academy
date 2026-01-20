@@ -1055,3 +1055,695 @@
 )
 
 [2025-12-30 13:04:34.858000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"1230P1764565","tranDate":"251230","tranTime":"130434","mbrRefNo":"10001169534f2e280a0","mbrNo":"100011","amount":5000,"taxAmount":455,"feeAmount":0,"taxFreeAmount":0,"billkey":""}}
+[2026-01-20 22:24:05.344000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-20 22:24:05.344000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696f81f5537f0
+    [amount] => 5000
+    [paymethod] => CARD
+    [timestamp] => 260120222405342
+    [signature] => a92ba43f8d8580f2b2c366136e2078d8e805e5f6b6e14d108513d544666997e2
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-20 22:24:05.470000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidc62fa2bad07b456fa952cfbe2894d55edc707","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aidc62fa2bad07b456fa952cfbe2894d55edc707&key=aidc62fa2bad07b456fa952cfbe2894d55edc707","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aidc62fa2bad07b456fa952cfbe2894d55edc707&key=aidc62fa2bad07b456fa952cfbe2894d55edc707","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aidc62fa2bad07b456fa952cfbe2894d55edc707&key=aidc62fa2bad07b456fa952cfbe2894d55edc707","createTime":"2026-01-20T22:24:05.543","expireTime":"2026-01-20T22:39:05.543"}}
+[2026-01-20 22:26:23.524000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-20 22:26:23.525000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696f827f7faf8
+    [amount] => 1000
+    [paymethod] => CARD
+    [timestamp] => 260120222623523
+    [signature] => a354ff514c9cd12974a11ee267b88df02e1bdda12555d67fd8ef85f9b55baeb7
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-20 22:26:23.575000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aid06a7e7d3170349fab8960f99b354a4e0c2fc8","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aid06a7e7d3170349fab8960f99b354a4e0c2fc8&key=aid06a7e7d3170349fab8960f99b354a4e0c2fc8","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aid06a7e7d3170349fab8960f99b354a4e0c2fc8&key=aid06a7e7d3170349fab8960f99b354a4e0c2fc8","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aid06a7e7d3170349fab8960f99b354a4e0c2fc8&key=aid06a7e7d3170349fab8960f99b354a4e0c2fc8","createTime":"2026-01-20T22:26:23.650","expireTime":"2026-01-20T22:41:23.650"}}
+[2026-01-20 22:27:10.216000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid06a7e7d3170349fab8960f99b354a4e0c2fc8
+    [authToken] => AUTH806441881c504518aa0be491d722d16c3cab
+    [paymethod] => CARD
+    [payType] => V
+    [mbrRefNo] => 113120696f827f7faf8
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2026-01-20 22:27:10.217000] APPROVAL-API: https://api-std.mainpay.co.kr/v1/payment/pay
+[2026-01-20 22:27:10.217000] PARAM: Array
+(
+    [mbrNo] => 113120
+    [aid] => aid06a7e7d3170349fab8960f99b354a4e0c2fc8
+    [mbrRefNo] => 113120696f827f7faf8
+    [authToken] => AUTH806441881c504518aa0be491d722d16c3cab
+    [amount] => 1000
+    [timestamp] => 260120222710217
+    [signature] => 82740c228f710bdba8a48d1cb01d83c35de498ad54d38140d5811755c4cd8659
+)
+
+[2026-01-20 22:27:11.228000] RESPONSE: {"resultCode":"21","resultMessage":"비밀번호 오류횟수 초과","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-20 22:27:52.964000] APPROVAL-INCOMING: Array
+(
+    [aid] => aid06a7e7d3170349fab8960f99b354a4e0c2fc8
+    [authToken] => AUTH806441881c504518aa0be491d722d16c3cab
+    [paymethod] => CARD
+    [payType] => V
+    [mbrRefNo] => 113120696f827f7faf8
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2026-01-20 22:27:52.964000] APPROVAL-API: https://api-std.mainpay.co.kr/v1/payment/pay
+[2026-01-20 22:27:52.964000] PARAM: Array
+(
+    [mbrNo] => 113120
+    [aid] => aid06a7e7d3170349fab8960f99b354a4e0c2fc8
+    [mbrRefNo] => 113120696f827f7faf8
+    [authToken] => AUTH806441881c504518aa0be491d722d16c3cab
+    [amount] => 1000
+    [timestamp] => 260120222752963
+    [signature] => c7577056551ca640cca7a03f271bb12efc4baef714c2285770da887c502ab034
+)
+
+[2026-01-20 22:27:53.934000] RESPONSE: {"resultCode":"21","resultMessage":"비밀번호 오류횟수 초과","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-20 22:30:48.907000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-20 22:30:48.907000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696f8388dcf28
+    [amount] => 1000
+    [paymethod] => CARD
+    [timestamp] => 260120223048904
+    [signature] => 0eba2c5c0c6b5b9e9721f74197e2c2b3a486cae2dee6e20870a7d9229be2c044
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-20 22:30:49.004000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidffab7ae6cf8d45a28639e0b4660ef5e770ab2","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2&key=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2&key=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2&key=aidffab7ae6cf8d45a28639e0b4660ef5e770ab2","createTime":"2026-01-20T22:30:49.086","expireTime":"2026-01-20T22:45:49.087"}}
+[2026-01-20 22:32:18.294000] APPROVAL-INCOMING: Array
+(
+    [aid] => aidffab7ae6cf8d45a28639e0b4660ef5e770ab2
+    [authToken] => AUTHeb7b2723ac7040e1ab75a5e7d6f63b3d9a69
+    [paymethod] => CARD
+    [payType] => V
+    [mbrRefNo] => 113120696f8388dcf28
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2026-01-20 22:32:18.294000] APPROVAL-API: https://api-std.mainpay.co.kr/v1/payment/pay
+[2026-01-20 22:32:18.294000] PARAM: Array
+(
+    [mbrNo] => 113120
+    [aid] => aidffab7ae6cf8d45a28639e0b4660ef5e770ab2
+    [mbrRefNo] => 113120696f8388dcf28
+    [authToken] => AUTHeb7b2723ac7040e1ab75a5e7d6f63b3d9a69
+    [amount] => 1000
+    [timestamp] => 260120223218293
+    [signature] => 97b536019ae0b59318290bb0bddaa4afb12d08dea3be8a2a855108b128efbc7a
+)
+
+[2026-01-20 22:32:20.709000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"113120","mbrRefNo":"113120696f8388dcf28","refNo":"0120C3634527","tranDate":"260120","tranTime":"223218","goodsName":"큐레이터가 알려주는..","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"cardPointAmount":0,"greenDepositAmount":0,"discountAmount":0,"installment":"0","customerName":"admin","customerTelNo":"","applNo":"09400901","cardNo":"532750******7652","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)","payType":"V","cardPointApplNo":"","custommerName":"admin","custommerTelNo":""}}
+[2026-01-21 00:07:19.157000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768921639113120696f8388dcf28
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121000719157
+    [signature] => 1d1ac833c9ce11e9555189a603f4f70b447c92fdf0fc7494729683ca39af7b17
+)
+
+[2026-01-21 00:07:19.727000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:10:31.566000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768921831113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121001031565
+    [signature] => 2819f70872a81c8e4732e08eb62581c10ee5d1629d0e1de2afd93140e46619e2
+)
+
+[2026-01-21 00:10:32.088000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:10:38.196000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768921838113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121001038196
+    [signature] => 5a97100e806f1e6a3ebc6a5cfc7cb26fd272de3128e108ab71701f65e12e704d
+)
+
+[2026-01-21 00:10:38.807000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:26:09.277000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768922769113120696f8388dcf28
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121002609276
+    [signature] => 499124e4a8141899cb08e2660844314a6715ba139c77d4c26d99d412f12af9f2
+)
+
+[2026-01-21 00:26:09.719000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:27:13.529000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768922833113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121002713529
+    [signature] => 0b9fff3676ba3367be1f61bc1cf7f4ae9b2dc6b29af5f9efa76a52aeffad1419
+)
+
+[2026-01-21 00:27:14.122000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:27:37.105000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768922857113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121002737105
+    [signature] => 3572926468fa625cf374c9259dcf51dd6ad9bd5aaed2e2567378abe98759ccdd
+)
+
+[2026-01-21 00:27:37.804000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:27:54.096000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768922874113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121002754095
+    [signature] => d6f84ee166d5d8ac6fa6405f2c03223213fb1c731db5bdc91e2518c92ca8d504
+)
+
+[2026-01-21 00:27:54.518000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:29:45.766000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768922985113120696f8388dcf28
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121002945766
+    [signature] => a157036ed0ec484986beab514cb1fcb19ec63a946f685abac1bc2aae8224315a
+)
+
+[2026-01-21 00:29:46.250000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:32:24.775000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768923144113120696f8388dcf28
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121003224775
+    [signature] => 7f1a180952c3e560e6097924478c416e0dd53b8d03db947da53810c571ab28c5
+)
+
+[2026-01-21 00:32:25.209000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:35:03.971000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => R1768923303436
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121003503970
+    [signature] => 653415b00be054e82b008e9f11194e7adf4072034e6e8d5bcb12c80bec625e06
+)
+
+[2026-01-21 00:35:04.483000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:35:16.887000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => R1768923316785
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121003516887
+    [signature] => 6eb940ea21ac55228f4a13aa0b34ec5b3c3ddb3f3738d32ffd4de043dc1af770
+)
+
+[2026-01-21 00:35:17.346000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:35:51.811000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => R1768923351199
+    [cancelAmount] => 500
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121003551811
+    [signature] => 260e410649e0b7336e7ae4854ccbdc9dd5327d07fe3198be4c335650a3df0a0b
+)
+
+[2026-01-21 00:35:52.248000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:41:14.114000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [mbrRefNo] => R1768923674373
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121004114114
+    [signature] => 5dd8f74b196b2522893cc5faf46645cc34e44285ab400c93f3305744019b856d
+)
+
+[2026-01-21 00:41:14.579000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 00:58:50.211000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 00:58:50.211000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fa63a33068
+    [amount] => 1000
+    [paymethod] => CARD
+    [timestamp] => 260121005850209
+    [signature] => 2221295f4892b82048b581268761d094fe20f75ef438fc544a068e48d4aa972e
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 00:58:50.320000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidd21b3acb51704f5f8b970a5d5b89b1486caf5","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aidd21b3acb51704f5f8b970a5d5b89b1486caf5&key=aidd21b3acb51704f5f8b970a5d5b89b1486caf5","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aidd21b3acb51704f5f8b970a5d5b89b1486caf5&key=aidd21b3acb51704f5f8b970a5d5b89b1486caf5","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aidd21b3acb51704f5f8b970a5d5b89b1486caf5&key=aidd21b3acb51704f5f8b970a5d5b89b1486caf5","createTime":"2026-01-21T00:58:50.450","expireTime":"2026-01-21T01:13:50.450"}}
+[2026-01-21 00:59:25.890000] APPROVAL-INCOMING: Array
+(
+    [aid] => aidd21b3acb51704f5f8b970a5d5b89b1486caf5
+    [authToken] => AUTH2761c1f0c72840648de0a990d5286d6d3b69
+    [paymethod] => CARD
+    [payType] => V
+    [mbrRefNo] => 113120696fa63a33068
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2026-01-21 00:59:25.891000] APPROVAL-API: https://api-std.mainpay.co.kr/v1/payment/pay
+[2026-01-21 00:59:25.891000] PARAM: Array
+(
+    [mbrNo] => 113120
+    [aid] => aidd21b3acb51704f5f8b970a5d5b89b1486caf5
+    [mbrRefNo] => 113120696fa63a33068
+    [authToken] => AUTH2761c1f0c72840648de0a990d5286d6d3b69
+    [amount] => 1000
+    [timestamp] => 260121005925891
+    [signature] => 77e2ea9921ceacc25e9ede62a16f668bfec3439a58e9a46d2d4363457485c82b
+)
+
+[2026-01-21 00:59:27.271000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"113120","mbrRefNo":"113120696fa63a33068","refNo":"0121C3637337","tranDate":"260121","tranTime":"005926","goodsName":"큐레이터가 알려주는..","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"cardPointAmount":0,"greenDepositAmount":0,"discountAmount":0,"installment":"0","customerName":"admin","customerTelNo":"","applNo":"10401001","cardNo":"532750******7652","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)","payType":"V","cardPointApplNo":"","custommerName":"admin","custommerTelNo":""}}
+[2026-01-21 00:59:53.127000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0121C3637337
+    [orgTranDate] => 260121
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768924793113120696fa63a33068
+    [cancelAmount] => 1000
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121005953127
+    [signature] => 0d6ac9aad3fe0b272fa0feaa1f333dd0b8779e3aac886c8ce7bb456358ad9c42
+)
+
+[2026-01-21 00:59:53.692000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 01:02:44.083000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0121C3637337
+    [orgTranDate] => 260121
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768924964113120696fa63a33068
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121010244082
+    [signature] => f9ad3305f4bdf99c7d95d08998b31d2d2217695372624ffc89c922e83efc4565
+)
+
+[2026-01-21 01:02:44.656000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 01:11:33.563000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:11:33.563000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fa93588f68
+    [amount] => 1000
+    [paymethod] => CARD
+    [timestamp] => 260121011133561
+    [signature] => 13913b36be9516beaaa58dec0a4dba09fb9e7a87ed23e2db52604aa6d771bcf9
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:11:33.699000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aide8c37ba1908d450580d84f6d7f0a69dc0f195","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aide8c37ba1908d450580d84f6d7f0a69dc0f195&key=aide8c37ba1908d450580d84f6d7f0a69dc0f195","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aide8c37ba1908d450580d84f6d7f0a69dc0f195&key=aide8c37ba1908d450580d84f6d7f0a69dc0f195","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aide8c37ba1908d450580d84f6d7f0a69dc0f195&key=aide8c37ba1908d450580d84f6d7f0a69dc0f195","createTime":"2026-01-21T01:11:33.777","expireTime":"2026-01-21T01:26:33.777"}}
+[2026-01-21 01:14:27.015000] APPROVAL-INCOMING: Array
+(
+    [aid] => aide8c37ba1908d450580d84f6d7f0a69dc0f195
+    [authToken] => AUTHacb84bb008804c9c97f4fc904d5228a0c59e
+    [paymethod] => CARD
+    [payType] => V
+    [mbrRefNo] => 113120696fa93588f68
+    [merchantData] => 
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+
+[2026-01-21 01:14:27.015000] APPROVAL-API: https://api-std.mainpay.co.kr/v1/payment/pay
+[2026-01-21 01:14:27.015000] PARAM: Array
+(
+    [mbrNo] => 113120
+    [aid] => aide8c37ba1908d450580d84f6d7f0a69dc0f195
+    [mbrRefNo] => 113120696fa93588f68
+    [authToken] => AUTHacb84bb008804c9c97f4fc904d5228a0c59e
+    [amount] => 1000
+    [timestamp] => 260121011427015
+    [signature] => 7efe3bf936b426fc8fd5bbabf4af8f42060f0db29babfa2b54d88e124ac93dda
+)
+
+[2026-01-21 01:14:28.511000] RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"mbrNo":"113120","mbrRefNo":"113120696fa93588f68","refNo":"0121C3637516","tranDate":"260121","tranTime":"011427","goodsName":"큐레이터가 알려주는..","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"cardPointAmount":0,"greenDepositAmount":0,"discountAmount":0,"installment":"0","customerName":"admin","customerTelNo":"","applNo":"11401001","cardNo":"532750******7652","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)","payType":"V","cardPointApplNo":"","custommerName":"admin","custommerTelNo":""}}
+[2026-01-21 01:14:56.201000] REFUND-API-PARAM: Array
+(
+    [mbrNo] => 113120
+    [orgRefNo] => 0121C3637516
+    [orgTranDate] => 260121
+    [paymethod] => CARD
+    [mbrRefNo] => REF1768925696113120696fa93588f68
+    [cancelAmount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [payType] => V
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121011456200
+    [signature] => 5789e258b4f814d20a8e05d1c881d9c974a7a2b871f7f668300f2ed480ebc565
+)
+
+[2026-01-21 01:14:56.743000] REFUND-API-RESPONSE: {"resultCode":"F5","resultMessage":"취소금액불일치","developerMessage":"","detailResultCode":"","data":""}
+[2026-01-21 01:25:39.831000] REFUND-API-PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => REF1768926339113120696fa93588f68
+    [orgRefNo] => 0121C3637516
+    [orgTranDate] => 260121
+    [paymethod] => CARD
+    [amount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [payType] => V
+    [isNetCancel] => N
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121012539831
+    [signature] => ec5ed06e93b515b9b50ddfc4a5d2cf87e851de9d6a90007484ce140e7d422990
+)
+
+[2026-01-21 01:25:40.966000] REFUND-API-RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"0121C3637651","tranDate":"260121","tranTime":"012540","mbrRefNo":"REF1768926339113120696fa93588f68","mbrNo":"113120","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"discountAmount":0,"orgRefNo":"0121C3637516","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)"}}
+[2026-01-21 01:30:34.515000] REFUND-API-PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => REF1768926634113120696fa63a33068
+    [orgRefNo] => 0121C3637337
+    [orgTranDate] => 260121
+    [paymethod] => CARD
+    [amount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [payType] => 
+    [isNetCancel] => N
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121013034515
+    [signature] => 67c9e9c07b3d29dd1b21f577a516f2db66d98f543708d2f3dcb800fcea43eba5
+)
+
+[2026-01-21 01:30:35.547000] REFUND-API-RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"0121C3637699","tranDate":"260121","tranTime":"013034","mbrRefNo":"REF1768926634113120696fa63a33068","mbrNo":"113120","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"discountAmount":0,"orgRefNo":"0121C3637337","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)"}}
+[2026-01-21 01:30:39.542000] REFUND-API-PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => REF1768926639113120696f8388dcf28
+    [orgRefNo] => 0120C3634527
+    [orgTranDate] => 260120
+    [paymethod] => CARD
+    [amount] => 1000
+    [taxAmount] => 0
+    [taxFreeAmount] => 0
+    [payType] => 
+    [isNetCancel] => N
+    [cancelReason] => 관리자 환불 처리
+    [timestamp] => 260121013039542
+    [signature] => 3b03924c16bc0097b24226e1b170701c5cd44f0f4f4f77426bc5deb09af0ae6d
+)
+
+[2026-01-21 01:30:40.411000] REFUND-API-RESPONSE: {"resultCode":"200","resultMessage":"정상처리","developerMessage":"","detailResultCode":"","data":{"refNo":"0121C3637701","tranDate":"260121","tranTime":"013039","mbrRefNo":"REF1768926639113120696f8388dcf28","mbrNo":"113120","amount":1000,"taxAmount":0,"feeAmount":0,"taxFreeAmount":0,"discountAmount":0,"orgRefNo":"0120C3634527","issueCompanyNo":"27","issueCompanyName":"하나","issueCardName":"토스뱅크","acqCompanyNo":"08","acqCompanyName":"하나(외환)"}}
+[2026-01-21 01:31:03.650000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:31:03.650000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fadc79e340
+    [amount] => 1000
+    [paymethod] => VACCT
+    [timestamp] => 260121013103648
+    [signature] => e868559b43a3ed600a58444483b23bd95f11cfad752d43dd4416a73575fd9b06
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:31:03.752000] RESPONSE: {"resultCode":"700","resultMessage":"## global ##  가상계좌  사용등록이 필요합니다.[mbrInfoTbl] [mbrNo=113120, mbrRefNo=113120696fadc79e340]","developerMessage":"Validtion check fail","detailResultCode":"","charset":"UTF-8","data":""}
+[2026-01-21 01:31:08.617000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:31:08.617000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fadcc96258
+    [amount] => 1000
+    [paymethod] => ACCT
+    [timestamp] => 260121013108615
+    [signature] => 9c7fc4f8c32fdab970e06da433bcabafab26e8d20cf88587bf20f4923e922bcd
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:31:09.003000] RESPONSE: {"resultCode":"700","resultMessage":"## global ##  계좌이체  사용등록이 필요합니다.[mbrInfoTbl] [mbrNo=113120, mbrRefNo=113120696fadcc96258]","developerMessage":"Validtion check fail","detailResultCode":"","charset":"UTF-8","data":""}
+[2026-01-21 01:31:16.395000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:31:16.395000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fadd45ff28
+    [amount] => 1000
+    [paymethod] => HPP
+    [timestamp] => 260121013116392
+    [signature] => b5f28af25f60f9151156325556f65593bd1551e5eefded0d527ee32dab7283c7
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:31:16.490000] RESPONSE: {"resultCode":"700","resultMessage":"## global ##  휴대폰소액결제  사용등록이 필요합니다.[mbrInfoTbl] [mbrNo=113120, mbrRefNo=113120696fadd45ff28]","developerMessage":"Validtion check fail","detailResultCode":"","charset":"UTF-8","data":""}
+[2026-01-21 01:31:19.826000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:31:19.826000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fadd7c92c0
+    [amount] => 1000
+    [paymethod] => CARD
+    [timestamp] => 260121013119823
+    [signature] => 5206f1c08b2f3ba9d7b855ee5d909bd2b88287ff2238e052c8c3c86fc4e6fb31
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:31:19.965000] RESPONSE: {"resultCode":"200","resultMessage":"OK","developerMessage":"","detailResultCode":"","data":{"aid":"aidcab65fab3f6e475f99a2f009ae98274b2acdf","nextMobileUrl":"https://ui-card.mainpay.co.kr/mobile?aid=aidcab65fab3f6e475f99a2f009ae98274b2acdf&key=aidcab65fab3f6e475f99a2f009ae98274b2acdf","nextPcUrl":"https://ui-card.mainpay.co.kr/pc?aid=aidcab65fab3f6e475f99a2f009ae98274b2acdf&key=aidcab65fab3f6e475f99a2f009ae98274b2acdf","nextAppUrl":"https://ui-card.mainpay.co.kr/app?aid=aidcab65fab3f6e475f99a2f009ae98274b2acdf&key=aidcab65fab3f6e475f99a2f009ae98274b2acdf","createTime":"2026-01-21T01:31:20.006","expireTime":"2026-01-21T01:46:20.006"}}
+[2026-01-21 01:32:35.026000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:32:35.027000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fae23061a8
+    [amount] => 1000
+    [paymethod] => ACCT
+    [timestamp] => 260121013235025
+    [signature] => 8d97d7b5d49059b33476011750a1a13fbfc665618b4261cec32fe0b3638e44f8
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:32:35.078000] RESPONSE: {"resultCode":"700","resultMessage":"## global ##  계좌이체  사용등록이 필요합니다.[mbrInfoTbl] [mbrNo=113120, mbrRefNo=113120696fae23061a8]","developerMessage":"Validtion check fail","detailResultCode":"","charset":"UTF-8","data":""}
+[2026-01-21 01:32:46.168000] PAY-API: https://api-std.mainpay.co.kr/v1/payment/ready
+[2026-01-21 01:32:46.168000] PARAM: Array
+(
+    [version] => V001
+    [mbrNo] => 113120
+    [mbrRefNo] => 113120696fae2e28870
+    [amount] => 1000
+    [paymethod] => VACCT
+    [timestamp] => 260121013246165
+    [signature] => 2e2347b62e9127c710f33f115fe7150cfbeb62229ffaffed40292b84eb96f20a
+    [goodsName] => 큐레이터가 알려주는 미술작품 보는 법
+    [buyerName] => admin
+    [buyerEmail] => admin@localhost.com
+    [buyerTel] => 
+    [customerName] => admin
+    [customerEmail] => admin@localhost.com
+    [customerTelNo] => 
+    [LGD_BUYER] => admin
+    [approvalUrl] => http://localhost:8883/payment-approval/
+    [closeUrl] => http://localhost:8883/payment-close/
+    [notiUrl] => http://localhost:8883/payment-noti/
+)
+
+[2026-01-21 01:32:46.213000] RESPONSE: {"resultCode":"700","resultMessage":"## global ##  가상계좌  사용등록이 필요합니다.[mbrInfoTbl] [mbrNo=113120, mbrRefNo=113120696fae2e28870]","developerMessage":"Validtion check fail","detailResultCode":"","charset":"UTF-8","data":""}

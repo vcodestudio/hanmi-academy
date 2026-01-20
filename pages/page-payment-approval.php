@@ -4,6 +4,18 @@ get_header();
 require_once(get_stylesheet_directory() . '/src/mainpay/config.php');
 require_once(get_stylesheet_directory() . '/src/mainpay/utils.php');
 
+?>
+<style>
+    @media (min-width: 1024px) {
+        .payment-approval .content_wrap {
+            min-height: 430px;
+            display: flex;
+            align-items: center;
+        }
+    }
+</style>
+<?php
+
 // 세션 시작 (안전하게)
 if (session_status() === PHP_SESSION_NONE) {
     // 세션 디렉토리 확인 및 생성
@@ -136,13 +148,13 @@ if ($obj && isset($obj->resultCode) && $obj->resultCode == "200") {
     
     // 결제 수단 한글명 매핑
     $paymethodNames = array(
-        'CARD' => '신용카드',
+        'CARD' => '카드결제',
         'ACCT' => '실시간 계좌이체',
         'VACCT' => '가상계좌',
         'HPP' => '휴대폰 결제',
         'CULT' => '문화상품권'
     );
-    $paymethodName = $paymethodNames[$paymethod] ?? '신용카드';
+    $paymethodName = $paymethodNames[$paymethod] ?? '카드결제';
     
     // 가상계좌(VACCT)인 경우 상태를 'waiting'으로 설정
     $status = ($paymethod === 'VACCT') ? 'waiting' : 'success';
@@ -166,6 +178,9 @@ if ($obj && isset($obj->resultCode) && $obj->resultCode == "200") {
         'paymethodName' => $paymethodName,
         'installment' => $obj->data->installment ?? 0,
         'status' => $status,
+        'taxAmount' => $obj->data->taxAmount ?? 0,
+        'taxFreeAmount' => $obj->data->taxFreeAmount ?? 0,
+        'payType' => $obj->data->payType ?? '',
         // 가상계좌 추가 정보
         'bankCode' => $obj->data->bankCode ?? '',
         'accountNo' => $obj->data->accountNo ?? '',

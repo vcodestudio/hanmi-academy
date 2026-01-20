@@ -35,11 +35,14 @@
         </a>
         <div class="flex flex-col gap-[0.5rem]">
             <?php
+            $tag_items = [];
+            if (_acf("product_purchasable")) {
+                $tag_items[] = [
+                    "text" => "신청중",
+                    "link" => "?date=before"
+                ];
+            }
             $tax_tags = [
-                [
-                    "slug" => "application",
-                    "label" => "신청중"
-                ],
                 [
                     "slug" => "course",
                     "label" => null
@@ -49,7 +52,6 @@
                     "label" => null
                 ]
             ];
-            $tag_items = [];
             foreach ($tax_tags as $tax_tag):
                 $terms = get_the_terms(get_the_ID(), $tax_tag["slug"]);
                 if ($terms && !is_wp_error($terms)):

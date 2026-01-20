@@ -226,16 +226,16 @@ $buyer = [
 ];
 
 // 결제 수단 정보 가져오기
-$paymethodName = $payment_result['paymethodName'] ?? '신용카드';
+$paymethodName = $payment_result['paymethodName'] ?? '카드결제';
 if (empty($paymethodName) && isset($payment_result['paymethod'])) {
     $paymethodNames = array(
-        'CARD' => '신용카드',
+        'CARD' => '카드결제',
         'ACCT' => '실시간 계좌이체',
         'VACCT' => '가상계좌',
         'HPP' => '휴대폰 결제',
         'CULT' => '문화상품권'
     );
-    $paymethodName = $paymethodNames[$payment_result['paymethod']] ?? '신용카드';
+    $paymethodName = $paymethodNames[$payment_result['paymethod']] ?? '카드결제';
 }
 
 $payment_amount = intval($payment_result['amount'] ?? $order_info['amount'] ?? 0);
@@ -766,6 +766,12 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
                 <button id="refund-request" class="button" style="white-space: nowrap;">환불신청</button>
             </div>
         </div>
+        <?php elseif ($is_refunded): ?>
+        <div class="payment-detail-section flex w-full !items-end">
+            <div class="payment-detail-refund-button-wrapper">
+                <button class="button" style="white-space: nowrap; background-color: #ececec; color: #888; border: none; cursor: not-allowed;" disabled>환불완료</button>
+            </div>
+        </div>
         <?php endif; ?>
         <!-- 결제 상태 표시 -->
         <?php if ($is_cancelled): ?>
@@ -803,6 +809,26 @@ $payment_result['bankName'] = $bank_names[$payment_result['bankCode'] ?? ''] ?? 
             <?php endif; ?>
         </div>
         <?php endif; ?>
+
+        <!-- 환불 안내 -->
+        <div class="payment-detail-divider" style="margin-top: 1rem;"></div>
+        <div class="refund-policy-section" style="padding: 1rem 0; color: #999; font-size: 0.75rem;">
+            <p style="font-weight: 700; color: #999; margin-bottom: 0.5rem;">환불안내</p>
+            
+            <div style="margin-bottom: 0.625rem;">
+                <p style="font-weight: 700; margin-bottom: 0.125rem;">정규과정</p>
+                <p style="margin: 0; line-height: 1.4;">개강 전 전액 환불</p>
+                <p style="margin: 0; line-height: 1.4;">개강 후 3주 이전 70% 환불</p>
+                <p style="margin: 0; line-height: 1.4;">개강 후 4주 이후 환불 불가</p>
+            </div>
+            
+            <div>
+                <p style="font-weight: 700; margin-bottom: 0.125rem;">단기과정(6주 이내)</p>
+                <p style="margin: 0; line-height: 1.4;">개강 전 전액 환불</p>
+                <p style="margin: 0; line-height: 1.4;">개강 후 2주 이전 70% 환불</p>
+                <p style="margin: 0; line-height: 1.4;">개강 후 3주 이후 환불 불가</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1002,17 +1028,24 @@ function showRefundNotAvailablePopup(reason) {
     // 메시지 영역 (Figma 디자인 기준 - 중앙 정렬)
     const message = document.createElement('div');
     message.style.cssText = 'margin-bottom: 24px; text-align: center;';
+    
+    let reasonHtml = '';
+    if (reason) {
+        reasonHtml = `<p style="font-family: 'Pretendard Variable', sans-serif; font-size: 14px; line-height: 20px; color: #d63638; margin: 0 0 16px 0; padding: 10px; background: #fcf0f1; border-radius: 4px;">사유: ${reason}</p>`;
+    }
+
     message.innerHTML = `
-        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+        <p style="font-family: 'Pretendard Variable', sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
             해당 상품은 환불 규정에 따라
         </p>
-        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+        <p style="font-family: 'Pretendard Variable', sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
             웹사이트에서 환불을 진행하실 수 없습니다.
         </p>
-        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
+        ${reasonHtml}
+        <p style="font-family: 'Pretendard Variable', sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0 0 8px 0;">
             자세한 내용은 뮤지엄한미 아카데미(${phoneNumber})로
         </p>
-        <p style="font-family: "Pretendard Variable", sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
+        <p style="font-family: 'Pretendard Variable', sans-serif; font-size: 16px; line-height: 24px; color: #000000; margin: 0;">
             연락주시면 안내드리겠습니다.
         </p>
     `;

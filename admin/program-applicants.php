@@ -309,7 +309,7 @@ if (!empty($orders)) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <button class="button process-refund-btn" 
+                                <button type="button" class="button process-refund-btn" 
                                         data-order-id="<?= $refund_request['post_id'] ?>"
                                         data-mbr-ref-no="<?= esc_attr($refund_request['mbr_ref_no']) ?>"
                                         data-ref-no="<?= esc_attr($refund_request['ref_no']) ?>"
@@ -318,7 +318,7 @@ if (!empty($orders)) {
                                         style="margin-right: 5px;">
                                     환불
                                 </button>
-                                <button class="button cancel-refund-btn" 
+                                <button type="button" class="button cancel-refund-btn" 
                                         data-order-id="<?= $refund_request['post_id'] ?>"
                                         style="background-color: #f0f0f0; color: #000;">
                                     취소
@@ -409,7 +409,7 @@ if (!empty($orders)) {
                         </td>
                         <td>
                             <?php if ($order['status'] === 'success'): ?>
-                                <button class="button process-order-btn" 
+                                <button type="button" class="button process-order-btn" 
                                         data-order-id="<?= $order['post_id'] ?>"
                                         data-mbr-ref-no="<?= esc_attr($order['mbr_ref_no']) ?>"
                                         data-ref-no="<?= esc_attr($order['ref_no']) ?>"
@@ -553,6 +553,19 @@ div[class*="wc-subscriptions"] {
         </div>
     </div>
 </div>
+
+<!-- 공용 확인 모달 -->
+<div id="admin-confirm-modal" style="display: none; position: fixed; z-index: 10001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div style="background-color: #fff; margin: 15% auto; padding: 25px; border-radius: 8px; width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center;">
+        <h2 id="confirm-modal-title" style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; font-family: 'Pretendard Variable', sans-serif;">확인</h2>
+        <div id="confirm-modal-message" style="margin-bottom: 25px; font-size: 15px; line-height: 1.5; color: #333; white-space: pre-wrap; font-family: 'Pretendard Variable', sans-serif;"></div>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <button type="button" id="confirm-modal-ok" class="button button-primary" style="min-width: 80px; padding: 5px 20px; height: auto; line-height: 2;">확인</button>
+            <button type="button" id="confirm-modal-cancel" class="button" style="min-width: 80px; padding: 5px 20px; height: auto; line-height: 2;">취소</button>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // WordPress 알림 배너 강제 숨기기
@@ -580,28 +593,61 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 즉시 실행
     hideNotices();
-    
-    // DOM 변경 감지하여 동적으로 추가되는 알림도 숨기기
-    const observer = new MutationObserver(function(mutations) {
-        hideNotices();
-    });
-    
+    const observer = new MutationObserver(hideNotices);
     const wpbodyContent = document.getElementById('wpbody-content');
     if (wpbodyContent) {
-        observer.observe(wpbodyContent, {
-            childList: true,
-            subtree: true
-        });
+        observer.observe(wpbodyContent, { childList: true, subtree: true });
     }
-    
-    // 추가 안전장치: 주기적으로 확인
     setInterval(hideNotices, 500);
+
+    // 공용 확인/알림 모달 함수
+    function showAdminMsg(title, message, onConfirm, isAlert = false) {
+        const modal = document.getElementById('admin-confirm-modal');
+        document.getElementById('confirm-modal-title').textContent = title;
+        document.getElementById('confirm-modal-message').textContent = message;
+        
+        const okBtn = document.getElementById('confirm-modal-ok');
+        const cancelBtn = document.getElementById('confirm-modal-cancel');
+        
+        cancelBtn.style.display = isAlert ? 'none' : 'inline-block';
+        
+        const closeModal = () => {
+            modal.style.display = 'none';
+            const newOk = okBtn.cloneNode(true);
+            const newCancel = cancelBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newOk, okBtn);
+            cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+        };
+        
+        document.getElementById('confirm-modal-ok').addEventListener('click', function() {
+            closeModal();
+            if (onConfirm) onConfirm();
+        });
+        
+        if (!isAlert) {
+            document.getElementById('confirm-modal-cancel').addEventListener('click', closeModal);
+        }
+        
+        modal.style.display = 'block';
+    }
+
+    // 기존 showAdminConfirm 래퍼
+    function showAdminConfirm(title, message, onConfirm) {
+        showAdminMsg(title, message, onConfirm, false);
+    }
+
+    // 전용 알림 함수 (확인 버튼만 있음)
+    function showAdminAlert(title, message, onConfirm) {
+        showAdminMsg(title, message, onConfirm, true);
+    }
 
     // 주문 처리 버튼 이벤트
     document.querySelectorAll('.process-order-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const orderId = this.getAttribute('data-order-id');
             const mbrRefNo = this.getAttribute('data-mbr-ref-no');
             const refNo = this.getAttribute('data-ref-no');
@@ -717,177 +763,194 @@ document.addEventListener('DOMContentLoaded', function() {
         const programId = modal.getAttribute('data-program-id');
         const quantity = modal.getAttribute('data-quantity');
         const reason = document.getElementById('action-reason').value;
+        const btn = this;
         
-        if (!confirm('정말 처리를 진행하시겠습니까?')) return;
-        
-        this.disabled = true;
-        this.textContent = '처리 중...';
-        
-        if (type === 'carryover') {
-            const targetProgramId = document.getElementById('target-program-id').value;
-            if (!targetProgramId) {
-                alert('이월 대상 프로그램을 선택해주세요.');
-                this.disabled = false;
-                this.textContent = '처리 실행';
-                return;
+        showAdminConfirm('처리 실행', '정말 처리를 진행하시겠습니까?', function() {
+            btn.disabled = true;
+            btn.textContent = '처리 중...';
+            
+            if (type === 'carryover') {
+                const targetProgramId = document.getElementById('target-program-id').value;
+                if (!targetProgramId) {
+                    showAdminAlert('알림', '이월 대상 프로그램을 선택해주세요.', function() {
+                        btn.disabled = false;
+                        btn.textContent = '처리 실행';
+                    });
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_carryover_order');
+                formData.append('order_id', orderId);
+                formData.append('target_program_id', targetProgramId);
+                formData.append('reason', reason);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '이월 처리가 완료되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '실패: ' + (data.data?.message || '오류 발생'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '처리 실행';
+                        });
+                    }
+                });
+            } else {
+                // 환불 처리
+                const refundAmount = document.getElementById('final-refund-amount').value;
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_refund_order');
+                formData.append('order_id', orderId);
+                formData.append('mbr_ref_no', mbrRefNo);
+                formData.append('ref_no', refNo);
+                formData.append('amount', refundAmount);
+                formData.append('program_id', programId);
+                formData.append('quantity', quantity);
+                formData.append('cancel_reason', reason);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '환불 처리가 완료되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '실패: ' + (data.data?.message || '오류 발생'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '처리 실행';
+                        });
+                    }
+                });
             }
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_carryover_order');
-            formData.append('order_id', orderId);
-            formData.append('target_program_id', targetProgramId);
-            formData.append('reason', reason);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('이월 처리가 완료되었습니다.');
-                    location.reload();
-                } else {
-                    alert('실패: ' + (data.data?.message || '오류 발생'));
-                    this.disabled = false;
-                    this.textContent = '처리 실행';
-                }
-            });
-        } else {
-            // 환불 처리
-            const refundAmount = document.getElementById('final-refund-amount').value;
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_refund_order');
-            formData.append('order_id', orderId);
-            formData.append('mbr_ref_no', mbrRefNo);
-            formData.append('ref_no', refNo);
-            formData.append('amount', refundAmount);
-            formData.append('program_id', programId);
-            formData.append('quantity', quantity);
-            formData.append('cancel_reason', reason);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('환불 처리가 완료되었습니다.');
-                    location.reload();
-                } else {
-                    alert('실패: ' + (data.data?.message || '오류 발생'));
-                    this.disabled = false;
-                    this.textContent = '처리 실행';
-                }
-            });
-        }
+        });
     });
 
     // 신청취소 버튼 이벤트
     document.querySelectorAll('.cancel-order-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            if (!confirm('정말 이 신청을 취소하시겠습니까?')) {
-                return;
-            }
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            const orderId = this.getAttribute('data-order-id');
-            const mbrRefNo = this.getAttribute('data-mbr-ref-no');
-            const refNo = this.getAttribute('data-ref-no');
-            const amount = this.getAttribute('data-amount');
-            const programId = this.getAttribute('data-program-id');
-            const quantity = this.getAttribute('data-quantity');
-            
-            btn.disabled = true;
-            btn.textContent = '처리중...';
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_cancel_order');
-            formData.append('order_id', orderId);
-            formData.append('mbr_ref_no', mbrRefNo);
-            formData.append('ref_no', refNo);
-            formData.append('amount', amount);
-            formData.append('program_id', programId);
-            formData.append('quantity', quantity);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('신청이 취소되었습니다.');
-                    location.reload();
-                } else {
-                    alert('취소 실패: ' + (data.data?.message || '알 수 없는 오류'));
-                    btn.disabled = false;
-                    btn.textContent = '신청취소';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
-                btn.disabled = false;
-                btn.textContent = '신청취소';
+            showAdminConfirm('신청 취소', '정말 이 신청을 취소하시겠습니까?', function() {
+                const orderId = btn.getAttribute('data-order-id');
+                const mbrRefNo = btn.getAttribute('data-mbr-ref-no');
+                const refNo = btn.getAttribute('data-ref-no');
+                const amount = btn.getAttribute('data-amount');
+                const programId = btn.getAttribute('data-program-id');
+                const quantity = btn.getAttribute('data-quantity');
+                
+                btn.disabled = true;
+                btn.textContent = '처리중...';
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_cancel_order');
+                formData.append('order_id', orderId);
+                formData.append('mbr_ref_no', mbrRefNo);
+                formData.append('ref_no', refNo);
+                formData.append('amount', amount);
+                formData.append('program_id', programId);
+                formData.append('quantity', quantity);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '신청이 취소되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '취소 실패: ' + (data.data?.message || '알 수 없는 오류'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '신청취소';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAdminAlert('오류', '처리 중 오류가 발생했습니다.', function() {
+                        btn.disabled = false;
+                        btn.textContent = '신청취소';
+                    });
+                });
             });
         });
     });
     
     // 환불 버튼 이벤트
     document.querySelectorAll('.refund-order-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            if (!confirm('정말 이 주문을 환불 처리하시겠습니까?')) {
-                return;
-            }
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            const orderId = this.getAttribute('data-order-id');
-            const mbrRefNo = this.getAttribute('data-mbr-ref-no');
-            const refNo = this.getAttribute('data-ref-no');
-            const amount = this.getAttribute('data-amount');
-            const programId = this.getAttribute('data-program-id');
-            const quantity = this.getAttribute('data-quantity');
-            
-            btn.disabled = true;
-            btn.textContent = '처리중...';
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_refund_order');
-            formData.append('order_id', orderId);
-            formData.append('mbr_ref_no', mbrRefNo);
-            formData.append('ref_no', refNo);
-            formData.append('amount', amount);
-            formData.append('program_id', programId);
-            formData.append('quantity', quantity);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('환불이 처리되었습니다.');
-                    location.reload();
-                } else {
-                    alert('환불 실패: ' + (data.data?.message || '알 수 없는 오류'));
-                    btn.disabled = false;
-                    btn.textContent = '환불';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
-                btn.disabled = false;
-                btn.textContent = '환불';
+            showAdminConfirm('주문 환불', '정말 이 주문을 환불 처리하시겠습니까?', function() {
+                const orderId = btn.getAttribute('data-order-id');
+                const mbrRefNo = btn.getAttribute('data-mbr-ref-no');
+                const refNo = btn.getAttribute('data-ref-no');
+                const amount = btn.getAttribute('data-amount');
+                const programId = btn.getAttribute('data-program-id');
+                const quantity = btn.getAttribute('data-quantity');
+                
+                btn.disabled = true;
+                btn.textContent = '처리중...';
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_refund_order');
+                formData.append('order_id', orderId);
+                formData.append('mbr_ref_no', mbrRefNo);
+                formData.append('ref_no', refNo);
+                formData.append('amount', amount);
+                formData.append('program_id', programId);
+                formData.append('quantity', quantity);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '환불이 처리되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '환불 실패: ' + (data.data?.message || '알 수 없는 오류'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '환불';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAdminAlert('오류', '처리 중 오류가 발생했습니다.', function() {
+                        btn.disabled = false;
+                        btn.textContent = '환불';
+                    });
+                });
             });
         });
     });
     
     // 환불 신청 처리 버튼 이벤트
     document.querySelectorAll('.process-refund-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const orderId = this.getAttribute('data-order-id');
             const mbrRefNo = this.getAttribute('data-mbr-ref-no');
             const refNo = this.getAttribute('data-ref-no');
@@ -899,86 +962,91 @@ document.addEventListener('DOMContentLoaded', function() {
             const refundAmount = parseInt(amountInput.value) || 0;
             
             if (refundAmount <= 0) {
-                alert('환불 금액을 입력해주세요.');
+                showAdminAlert('알림', '환불 금액을 입력해주세요.');
                 return;
             }
             
-            if (!confirm('환불 금액 ' + refundAmount.toLocaleString() + '원을 환불 처리하시겠습니까?')) {
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.textContent = '처리중...';
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_process_refund');
-            formData.append('order_id', orderId);
-            formData.append('mbr_ref_no', mbrRefNo);
-            formData.append('ref_no', refNo);
-            formData.append('amount', refundAmount);
-            formData.append('program_id', programId);
-            formData.append('quantity', quantity);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('환불이 처리되었습니다.');
-                    location.reload();
-                } else {
-                    alert('환불 실패: ' + (data.data?.message || '알 수 없는 오류'));
-                    btn.disabled = false;
-                    btn.textContent = '환불';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
-                btn.disabled = false;
-                btn.textContent = '환불';
+            showAdminConfirm('환불 처리', '환불 금액 ' + refundAmount.toLocaleString() + '원을 환불 처리하시겠습니까?', function() {
+                btn.disabled = true;
+                btn.textContent = '처리중...';
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_process_refund');
+                formData.append('order_id', orderId);
+                formData.append('mbr_ref_no', mbrRefNo);
+                formData.append('ref_no', refNo);
+                formData.append('amount', refundAmount);
+                formData.append('program_id', programId);
+                formData.append('quantity', quantity);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '환불이 처리되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '환불 실패: ' + (data.data?.message || '알 수 없는 오류'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '환불';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAdminAlert('오류', '처리 중 오류가 발생했습니다.', function() {
+                        btn.disabled = false;
+                        btn.textContent = '환불';
+                    });
+                });
             });
         });
     });
     
     // 환불 신청 취소 버튼 이벤트
     document.querySelectorAll('.cancel-refund-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            if (!confirm('환불 신청을 취소하시겠습니까? 주문 상태가 "결제 완료"로 변경됩니다.')) {
-                return;
-            }
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            const orderId = this.getAttribute('data-order-id');
-            
-            btn.disabled = true;
-            btn.textContent = '처리중...';
-            
-            const formData = new FormData();
-            formData.append('action', 'admin_cancel_refund_request');
-            formData.append('order_id', orderId);
-            
-            fetch('<?= admin_url('admin-ajax.php') ?>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('환불 신청이 취소되었습니다.');
-                    location.reload();
-                } else {
-                    alert('취소 실패: ' + (data.data?.message || '알 수 없는 오류'));
-                    btn.disabled = false;
-                    btn.textContent = '취소';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('처리 중 오류가 발생했습니다.');
-                btn.disabled = false;
-                btn.textContent = '취소';
+            showAdminConfirm('환불 신청 취소', '환불 신청을 취소하시겠습니까?\n주문 상태가 "결제 완료"로 변경됩니다.', function() {
+                const orderId = btn.getAttribute('data-order-id');
+                
+                btn.disabled = true;
+                btn.textContent = '처리중...';
+                
+                const formData = new FormData();
+                formData.append('action', 'admin_cancel_refund_request');
+                formData.append('order_id', orderId);
+                
+                fetch('<?= admin_url('admin-ajax.php') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAdminAlert('성공', '환불 신청이 취소되었습니다.', function() {
+                            location.reload();
+                        });
+                    } else {
+                        showAdminAlert('실패', '취소 실패: ' + (data.data?.message || '알 수 없는 오류'), function() {
+                            btn.disabled = false;
+                            btn.textContent = '취소';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAdminAlert('오류', '처리 중 오류가 발생했습니다.', function() {
+                        btn.disabled = false;
+                        btn.textContent = '취소';
+                    });
+                });
             });
         });
     });

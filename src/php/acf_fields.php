@@ -2906,7 +2906,7 @@ if( function_exists('acf_add_local_field_group') ):
 				'name' => 'order_paymethod',
 				'type' => 'select',
 				'choices' => array(
-					'CARD' => '신용카드',
+					'CARD' => '카드결제',
 					'ACCT' => '실시간 계좌이체',
 					'VACCT' => '가상계좌',
 					'HPP' => '휴대폰 결제',

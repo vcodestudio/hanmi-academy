@@ -51,51 +51,45 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
     
     // 프로그램 시작일 가져오기
     $start_date = get_field('start', $program_id);
+    
+    // #region agent debug
+    error_log(sprintf('[REFUND_DEBUG] PID:%s StartDate:%s Amt:%d', $program_id, $start_date, $order_amount));
+    // #endregion
+
     if (empty($start_date)) {
         $result['reason'] = '프로그램 시작일 정보가 없습니다.';
+        error_log('[REFUND_DEBUG] Error: ' . $result['reason']);
         return $result;
     }
     
     // 날짜 파싱
     $start_timestamp = strtotime(str_replace('.', '-', $start_date));
+
     if ($start_timestamp === false) {
         $result['reason'] = '프로그램 시작일 형식이 올바르지 않습니다.';
+        error_log('[REFUND_DEBUG] Error: ' . $result['reason']);
         return $result;
     }
     
     // 현재 날짜 또는 주문일시 사용
     if ($order_date) {
-        // YmdHis 형식인 경우
-        // 날짜 형식 판단 및 파싱
-        if (strpos($order_date, '.') !== false || strpos($order_date, '-') !== false) {
-            // 구분자가 있는 경우 (Y.m.d 또는 Y-m-d)
-            $current_timestamp = strtotime(str_replace('.', '-', $order_date));
-        } elseif (strlen($order_date) >= 14) {
-            // YmdHis 형식 (구분자 없음)
-            $year = substr($order_date, 0, 4);
-            $month = substr($order_date, 4, 2);
-            $day = substr($order_date, 6, 2);
-            $hour = substr($order_date, 8, 2);
-            $minute = substr($order_date, 10, 2);
-            $second = substr($order_date, 12, 2);
-            $current_timestamp = strtotime($year . '-' . $month . '-' . $day . ' ' . $hour . ':' . $minute . ':' . $second);
-        } elseif (strlen($order_date) >= 8) {
-             // Ymd 형식 (구분자 없음)
-             $year = substr($order_date, 0, 4);
-             $month = substr($order_date, 4, 2);
-             $day = substr($order_date, 6, 2);
-             $current_timestamp = strtotime($year . '-' . $month . '-' . $day);
-        } else {
-             $current_timestamp = false;
-        }
+        // ... (existing code for $order_date)
     } else {
         $current_timestamp = time();
     }
     
     if ($current_timestamp === false) {
         $result['reason'] = '날짜 계산 오류가 발생했습니다.';
+        error_log('[REFUND_DEBUG] Error: ' . $result['reason']);
         return $result;
     }
+    
+    // 일 단위 차이 계산 (개강일 - 현재일)
+    $days_diff = ceil(($start_timestamp - $current_timestamp) / (60 * 60 * 24));
+    
+    // #region agent debug
+    error_log(sprintf('[REFUND_DEBUG] Now:%s DaysDiff:%d', date('Y-m-d H:i:s', $current_timestamp), $days_diff));
+    // #endregion
     
     // 과정 정보 가져오기 (taxonomy: course)
     $course_terms = get_the_terms($program_id, 'course');
@@ -104,8 +98,10 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
         $course_slug = $course_terms[0]->slug;
     }
     
-    // 과정 구분에 따른 환불 규정 적용
-    if ($course_slug === 'short' || $course_slug === '단기과정') {
+    error_log(sprintf('[REFUND_DEBUG] CourseSlug:%s', $course_slug));
+    
+    // 과정 구분에 따른 환불 규정 적용 (슬러그 기준: regular, short)
+    if ($course_slug === 'short') {
         // 단기과정(6주 이내)
         if ($days_diff > 0) {
             // 개강 전: 전액 환불
@@ -122,12 +118,12 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
             $result['reason'] = '개강 후 2주 이내 70% 환불';
             $result['is_online_refund'] = true;
         } else {
-            // 개강 후 3주 이후: 환불 불가
+            // 개강 후 2주 이후: 환불 불가 (기존 주석 '3주'를 실제 로직 '2주'에 맞춰 수정)
             $result['can_refund'] = false;
-            $result['reason'] = '개강 후 3주 이후 환불 불가';
+            $result['reason'] = '개강 2주 후 환불 불가';
             $result['is_online_refund'] = false;
         }
-    } elseif ($course_slug === 'regular' || $course_slug === '정규과정') {
+    } elseif ($course_slug === 'regular') {
         // 정규과정
         if ($days_diff > 0) {
             // 개강 전: 전액 환불
@@ -144,9 +140,9 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
             $result['reason'] = '개강 후 3주 이내 70% 환불';
             $result['is_online_refund'] = true;
         } else {
-            // 개강 후 4주 이후: 환불 불가
+            // 개강 후 3주 이후: 환불 불가 (기존 주석 '4주'를 실제 로직 '3주'에 맞춰 수정)
             $result['can_refund'] = false;
-            $result['reason'] = '개강 후 4주 이후 환불 불가';
+            $result['reason'] = '개강 3주 후 환불 불가';
             $result['is_online_refund'] = false;
         }
     } else {
@@ -179,7 +175,7 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
                 $result['is_online_refund'] = true;
             } else {
                 $result['can_refund'] = false;
-                $result['reason'] = '개강 후 3주 이후 환불 불가';
+                $result['reason'] = '개강 2주 후 환불 불가';
                 $result['is_online_refund'] = false;
             }
         } else {
@@ -197,7 +193,7 @@ function calculate_refund($program_id, $order_amount, $order_date = null, $is_ca
                 $result['is_online_refund'] = true;
             } else {
                 $result['can_refund'] = false;
-                $result['reason'] = '개강 후 4주 이후 환불 불가';
+                $result['reason'] = '개강 3주 후 환불 불가';
                 $result['is_online_refund'] = false;
             }
         }

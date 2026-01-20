@@ -139,10 +139,7 @@ if (empty($orderer['name']) || trim($orderer['name']) === '') {
 
 // 메인페이에서 지원하는 결제수단만 표시 (CARD|ACCT|VACCT|HPP|CULT)
 $payment_methods = [
-    ['id' => 'card', 'name' => '신용카드'],
-    ['id' => 'transfer', 'name' => '실시간', 'subname' => '계좌이체'],
-    ['id' => 'bank', 'name' => '가상계좌'],
-    ['id' => 'mobile', 'name' => '휴대폰 결제'],
+    ['id' => 'card', 'name' => '메인페이', 'subname' => '통합결제'],
 ];
 
 $total_price = $order_item['price'] * $order_item['quantity'];
@@ -255,25 +252,6 @@ $total_price = $order_item['price'] * $order_item['quantity'];
         </div>
     </div>
 
-    <!-- 환불 규정 섹션 -->
-    <div class="flex flex-col refund-policy-section" style="gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.1); margin-bottom: 2rem;">
-        <div class="flex flex-col" style="gap: 0.75rem;">
-            <h4 class="bold" style="font-size: 1.25rem; line-height: 1.875rem; font-weight: 700; color: #000;">정규과정</h4>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1rem; line-height: 1.625rem; color: #333;">
-                <li>개강 전 전액 환불</li>
-                <li>개강 후 3주 이전 70% 환불</li>
-                <li>개강 후 4주 이후 환불 불가</li>
-            </ul>
-        </div>
-        
-        <div class="flex flex-col" style="gap: 0.75rem;">
-            <h4 class="bold" style="font-size: 1.25rem; line-height: 1.875rem; font-weight: 700; color: #000;">단기과정(6주 이내)</h4>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1rem; line-height: 1.625rem; color: #333;">
-                <li>개강 전 전액 환불</li>
-                <li>개강 후 2주 이전 70% 환불</li>
-                <li>개강 후 3주 이후 환불 불가</li>
-            </ul>
-        </div>
     </div>
 </div>
 
@@ -356,7 +334,7 @@ $total_price = $order_item['price'] * $order_item['quantity'];
     }
     
     .order-right-wrapper {
-        width: 100% !important;
+        display: none !important;
     }
     
     .sticky-payment-box {
@@ -567,10 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // 메인페이 paymethod 매핑 (CARD|ACCT|VACCT|HPP|CULT 중 하나)
                 const paymethodMap = {
-                    'card': 'CARD',        // 신용카드
-                    'transfer': 'ACCT',    // 계좌이체
-                    'bank': 'VACCT',       // 가상계좌
-                    'mobile': 'HPP',       // 휴대폰 결제
+                    'card': 'CARD',        // 통합결제 (신용카드, 계좌이체 등)
                 };
                 const paymethod = paymethodMap[paymentMethod.value] || 'CARD';
                 

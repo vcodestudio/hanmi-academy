@@ -437,8 +437,11 @@
                     'acqCompanyName' => $result->data->acqCompanyName ?? '',
                     'payType' => $result->data->payType ?? 'K',
                     'paymethod' => 'CARD',
-                    'paymethodName' => '신용카드',
-                    'status' => 'success'
+                    'paymethodName' => '카드결제',
+                    'status' => 'success',
+                    'taxAmount' => $result->data->taxAmount ?? 0,
+                    'taxFreeAmount' => $result->data->taxFreeAmount ?? 0,
+                    'payType' => $result->data->payType ?? 'K'
                 );
                 
                 // 주문 정보에 user_id 추가
@@ -504,19 +507,48 @@
         }
         
         $timestamp = makeTimestamp();
-        $signature = makeSignature($mbrNo, $mbrRefNo, $amount, $apiKey, $timestamp);
+        
+        // 새로운 취소용 mbrRefNo 생성 (중복 방지)
+        $cancel_mbr_ref_no = 'REF' . time() . $mbrRefNo;
+        $signature = makeSignature($mbrNo, $cancel_mbr_ref_no, $amount, $apiKey, $timestamp);
+        
+        // mbrRefNo로 주문 포스트 ID 찾기
+        $order_posts = get_posts(array(
+            'post_type' => 'post_order',
+            'meta_query' => array(
+                array(
+                    'key' => 'order_mbr_ref_no',
+                    'value' => $mbrRefNo,
+                    'compare' => '='
+                )
+            ),
+            'posts_per_page' => 1,
+            'post_status' => 'any'
+        ));
+        
+        $order_id = !empty($order_posts) ? $order_posts[0]->ID : 0;
         
         // orgTranDate 포맷팅 (YYYYMMDD... -> YYMMDD)
         $tranDate = get_field('order_tran_date', $order_id); 
-        $orgTranDate = !empty($tranDate) ? substr($tranDate, 2, 6) : '';
+        $tran_date_clean = preg_replace('/[^0-9]/', '', $tranDate);
+        if (strlen($tran_date_clean) >= 8) {
+            $orgTranDate = substr($tran_date_clean, 2, 6);
+        } else {
+            $orgTranDate = $tran_date_clean;
+        }
         $paymethod = get_field('order_paymethod', $order_id);
+        $original_amount = intval(get_field('order_amount', $order_id) ?: 0);
+        $tax_amount = intval(get_field('order_tax_amount', $order_id) ?: 0);
+        $tax_free_amount = intval(get_field('order_tax_free_amount', $order_id) ?: 0);
+
+        $is_full_cancel = ($amount >= $original_amount);
 
         $parameters = array(
             'mbrNo' => $mbrNo,
             'orgRefNo' => $refNo,
             'orgTranDate' => $orgTranDate,
             'paymethod' => $paymethod,
-            'mbrRefNo' => $mbrRefNo,
+            'mbrRefNo' => $cancel_mbr_ref_no,
             'cancelAmount' => $amount,
             'cancelReason' => $cancelReason,
             'timestamp' => $timestamp,
@@ -837,6 +869,8 @@
         update_field('order_ref_no', $payment_result['refNo'] ?? $orderInfo['refNo'] ?? '', $order_post_id);
         update_field('order_status', $payment_result['status'] ?? 'success', $order_post_id);
         update_field('order_amount', $orderInfo['amount'] ?? $payment_result['amount'] ?? 0, $order_post_id);
+        update_field('order_tax_amount', $payment_result['taxAmount'] ?? 0, $order_post_id);
+        update_field('order_tax_free_amount', $payment_result['taxFreeAmount'] ?? 0, $order_post_id);
         update_field('order_quantity', $orderInfo['quantity'] ?? 1, $order_post_id);
         
         // 결제 정보 저장
@@ -846,6 +880,7 @@
         update_field('order_card_no', $payment_result['cardNo'] ?? '', $order_post_id);
         update_field('order_card_code', $payment_result['cardCode'] ?? '', $order_post_id);
         update_field('order_installment', $payment_result['installment'] ?? 0, $order_post_id);
+        update_field('order_pay_type', $payment_result['payType'] ?? '', $order_post_id);
         
         // 가상계좌 정보 저장
         if (($payment_result['paymethod'] ?? '') === 'VACCT') {
@@ -933,36 +968,53 @@
         // Mainpay 취소 API 호출
         require(get_stylesheet_directory() . '/src/mainpay/config.php');
         
+        // 새로운 취소용 mbrRefNo 생성 (원래 번호 재사용 시 중복 오류 방지)
+        $cancel_mbr_ref_no = 'REF' . time() . $mbr_ref_no;
         $timestamp = makeTimestamp();
-        $signature = makeSignature($mbrNo, $mbr_ref_no, $amount, $apiKey, $timestamp);
+        $signature = makeSignature($mbrNo, $cancel_mbr_ref_no, $amount, $apiKey, $timestamp);
         
         // 결제 정보 가져오기
         $paymethod = get_field('order_paymethod', $order_id);
+        $pay_type = get_field('order_pay_type', $order_id);
+        $original_amount = intval(get_field('order_amount', $order_id) ?: 0);
+        $tax_amount = intval(get_field('order_tax_amount', $order_id) ?: 0);
+        $tax_free_amount = intval(get_field('order_tax_free_amount', $order_id) ?: 0);
         $tran_date = get_field('order_tran_date', $order_id);
         $tran_date_clean = preg_replace('/[^0-9]/', '', $tran_date);
         
         // orgTranDate 포맷팅 (YYYYMMDD... -> YYMMDD) (없으면 오늘 날짜 사용 - 테스트용)
         if (!empty($tran_date_clean)) {
-            $org_tran_date = substr($tran_date_clean, 2, 6);
+            if (strlen($tran_date_clean) >= 8) {
+                $org_tran_date = substr($tran_date_clean, 2, 6);
+            } else {
+                $org_tran_date = $tran_date_clean;
+            }
         } else {
             // 만약 날짜가 없으면 주문 날짜나 오늘 날짜 사용 (테스트 환경 대응)
             $org_tran_date = date('ymd');
             // pintLog("WARNING: order_tran_date is empty for order $order_id. Using today: $org_tran_date", $logPath); // Assuming pintLog is defined elsewhere or commented out if not needed
         }
+
+        $is_full_cancel = ($amount >= $original_amount);
         
         $parameters = array(
+            'version' => 'V001',
             'mbrNo' => $mbrNo,
+            'mbrRefNo' => $cancel_mbr_ref_no,
             'orgRefNo' => $ref_no,
             'orgTranDate' => $org_tran_date,
             'paymethod' => $paymethod,
-            'mbrRefNo' => $mbr_ref_no,
-            'cancelAmount' => $amount,
+            'amount' => $amount,
+            'taxAmount' => $tax_amount,
+            'taxFreeAmount' => $tax_free_amount,
+            'payType' => $pay_type,
+            'isNetCancel' => 'N',
             'cancelReason' => '관리자 취소',
             'timestamp' => $timestamp,
             'signature' => $signature
         );
         
-        $apiUrl = $API_BASE . "/v1/payment/cancel";
+        $apiUrl = $RELAY_BASE . "/v1/api/payments/payment/cancel";
         $result = httpPost($apiUrl, $parameters);
         $obj = json_decode($result);
         
@@ -1021,28 +1073,60 @@
         // Mainpay 취소 API 호출
         require(get_stylesheet_directory() . '/src/mainpay/config.php');
         
+        // 새로운 취소용 mbrRefNo 생성 (원래 번호 재사용 시 중복 오류 방지)
+        $cancel_mbr_ref_no = 'REF' . time() . $mbr_ref_no;
         $timestamp = makeTimestamp();
-        $signature = makeSignature($mbrNo, $mbr_ref_no, $amount, $apiKey, $timestamp);
+        $signature = makeSignature($mbrNo, $cancel_mbr_ref_no, $amount, $apiKey, $timestamp);
         
         // 결제 정보 가져오기
         $paymethod = get_field('order_paymethod', $order_id);
+        $pay_type = get_field('order_pay_type', $order_id);
+        $original_amount = intval(get_field('order_amount', $order_id) ?: 0);
+        $tax_amount = intval(get_field('order_tax_amount', $order_id) ?: 0);
+        $tax_free_amount = intval(get_field('order_tax_free_amount', $order_id) ?: 0);
         $tran_date = get_field('order_tran_date', $order_id);
-        $org_tran_date = !empty($tran_date) ? substr($tran_date, 2, 6) : '';
+        $tran_date_clean = preg_replace('/[^0-9]/', '', $tran_date);
+        
+        if (strlen($tran_date_clean) >= 8) {
+            $org_tran_date = substr($tran_date_clean, 2, 6);
+        } else {
+            $org_tran_date = $tran_date_clean;
+        }
+
+        // 전액 취소 여부 판단
+        $is_full_cancel = ($amount >= $original_amount);
 
         $parameters = array(
+            'version' => 'V001',
             'mbrNo' => $mbrNo,
+            'mbrRefNo' => $cancel_mbr_ref_no,
             'orgRefNo' => $ref_no,
             'orgTranDate' => $org_tran_date,
             'paymethod' => $paymethod,
-            'mbrRefNo' => $mbr_ref_no,
-            'cancelAmount' => $amount,
+            'amount' => $amount,
+            'taxAmount' => $tax_amount,
+            'taxFreeAmount' => $tax_free_amount,
+            'payType' => $pay_type,
+            'isNetCancel' => 'N',
             'cancelReason' => '관리자 환불',
             'timestamp' => $timestamp,
             'signature' => $signature
         );
+
+        // [AGENT_DEBUG] PG사 전송 직전 파라미터 기록
+        pintLog("REFUND-API-PARAM: " . print_r($parameters, TRUE), $logPath);
+
+        // 전액 취소일 경우 일부 PG사 규격에 따라 필요한 추가 파라미터가 있을 수 있음
+        // Mainpay의 경우 취소구분(cancelType) 등을 명시해야 할 수 있으므로 로그 강화
+        error_log(sprintf('[REFUND_API_REQ] ID:%d, Amt:%d/%d, Method:%s, RefNo:%s, Full:%s', 
+            $order_id, $amount, $original_amount, $paymethod, $ref_no, $is_full_cancel ? 'Y' : 'N'));
         
-        $apiUrl = $API_BASE . "/v1/payment/cancel";
+        $apiUrl = $RELAY_BASE . "/v1/api/payments/payment/cancel";
         $result = httpPost($apiUrl, $parameters);
+        
+        // [AGENT_DEBUG] PG사 응답 결과 기록
+        pintLog("REFUND-API-RESPONSE: " . $result, $logPath);
+        
         $obj = json_decode($result);
         
         if ($obj && isset($obj->resultCode) && $obj->resultCode == "200") {
@@ -1128,7 +1212,7 @@
         }
         
         // 환불 금액 계산
-        $refund_calc = calculate_refund($program_id, $order_amount, $tran_date);
+        $refund_calc = calculate_refund($program_id, $order_amount);
         
         if (!$refund_calc['can_refund']) {
             // wp_send_json_error(array(
@@ -1223,7 +1307,7 @@
         }
         
         // 환불 금액 계산
-        $refund_calc = calculate_refund($program_id, $order_amount, $tran_date);
+        $refund_calc = calculate_refund($program_id, $order_amount);
         
         wp_send_json_success($refund_calc);
     }
@@ -1289,9 +1373,21 @@
         
         // 결제 정보 가져오기
         $paymethod = get_field('order_paymethod', $order_id);
+        $pay_type = get_field('order_pay_type', $order_id);
+        $original_amount = intval(get_field('order_amount', $order_id) ?: 0);
+        $tax_amount = intval(get_field('order_tax_amount', $order_id) ?: 0);
+        $tax_free_amount = intval(get_field('order_tax_free_amount', $order_id) ?: 0);
         $tran_date = get_field('order_tran_date', $order_id);
         $tran_date_clean = preg_replace('/[^0-9]/', '', $tran_date);
-        $org_tran_date = !empty($tran_date_clean) ? substr($tran_date_clean, 2, 6) : '';
+        
+        if (strlen($tran_date_clean) >= 8) {
+            // YYYYMMDD... 형식인 경우 YYMMDD만 추출
+            $org_tran_date = substr($tran_date_clean, 2, 6);
+        } else {
+            // 이미 YYMMDD 형식이거나 기타의 경우 그대로 사용
+            $org_tran_date = $tran_date_clean;
+        }
+        
         $ref_no = get_field('order_ref_no', $order_id);
         $mbr_ref_no = get_field('order_mbr_ref_no', $order_id);
         
@@ -1300,20 +1396,37 @@
         $timestamp = makeTimestamp();
         $signature = makeSignature($mbrNo, $cancel_mbr_ref_no, $refund_amount, $apiKey, $timestamp);
 
+        $is_full_cancel = ($refund_amount >= $original_amount);
+
         $parameters = array(
+            'version' => 'V001',
             'mbrNo' => $mbrNo,
+            'mbrRefNo' => $cancel_mbr_ref_no,
             'orgRefNo' => $ref_no,
             'orgTranDate' => $org_tran_date,
             'paymethod' => $paymethod,
-            'mbrRefNo' => $cancel_mbr_ref_no,
-            'cancelAmount' => $refund_amount,
+            'amount' => $refund_amount,
+            'taxAmount' => $tax_amount,
+            'taxFreeAmount' => $tax_free_amount,
+            'payType' => $pay_type,
+            'isNetCancel' => 'N',
             'cancelReason' => '관리자 환불 처리',
             'timestamp' => $timestamp,
             'signature' => $signature
         );
         
-        $apiUrl = $API_BASE . "/v1/payment/cancel";
+        // [AGENT_DEBUG] PG사 전송 직전 파라미터 기록
+        pintLog("REFUND-API-PARAM: " . print_r($parameters, TRUE), $logPath);
+        
+        error_log(sprintf('[REFUND_PROCESS_REQ] ID:%d, Amt:%d/%d, Method:%s, RefNo:%s', 
+            $order_id, $refund_amount, $original_amount, $paymethod, $ref_no));
+        
+        $apiUrl = $RELAY_BASE . "/v1/api/payments/payment/cancel";
         $result = httpPost($apiUrl, $parameters);
+        
+        // [AGENT_DEBUG] PG사 응답 결과 기록
+        pintLog("REFUND-API-RESPONSE: " . $result, $logPath);
+        
         $obj = json_decode($result);
         
         if ($obj && isset($obj->resultCode) && $obj->resultCode == "200") {

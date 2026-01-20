@@ -24,10 +24,9 @@ if ($date_filter === "all") {
 	switch ($date_filter) {
 		case "before":
 			array_push($args["meta_query"], [
-				"key" => "start",
-				"value" => date("Y/m/d"),
-				"compare" => ">",
-				"type" => "DATE",
+				"key" => "product_purchasable",
+				"value" => "1",
+				"compare" => "=",
 			]);
 			break;
 		case "current":
