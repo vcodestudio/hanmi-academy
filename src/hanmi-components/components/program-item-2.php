@@ -36,12 +36,6 @@
         <div class="flex flex-col gap-[0.5rem]">
             <?php
             $tag_items = [];
-            if (_acf("product_purchasable")) {
-                $tag_items[] = [
-                    "text" => "신청중",
-                    "link" => "?date=before"
-                ];
-            }
             $tax_tags = [
                 [
                     "slug" => "course",

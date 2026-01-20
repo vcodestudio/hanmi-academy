@@ -25,8 +25,8 @@
 				<?= get_field("footer_description", "option") ?>
 			</p>
 		</div>
-		<div class="flex mobile:flex-col gap-28 footer-menu-wrapper">
-			<div class="flex-auto col gap-28 m-col-1 footer-menu">
+		<div class="row gap-28 footer-menu-wrapper">
+			<div class="col gap-28 footer-menu">
 				<?php foreach(get_field("footer_menu","option") as $item):
 				if($link=$item['link']): ?>
 				<a class="mobile:py-[10px]" href="<?= $link['url'] ?>" target="<?= $link['target'] ?>"><?= $link['title'] ?></a>
@@ -35,14 +35,28 @@
 				endforeach;
 				?>
 			</div>
+		</div>
+		<div class="row gap-12 footer-contact">
 			<?php if($phone_number = get_field("footer_phone_number","option")): ?>
-			<div class="flex-none col right gap-28 m-col-1 footer-phone">
-				<p>
-					<span class="footer-phone-label">대표번호 | </span>
-					<span class="footer-phone-number"><?= $phone_number ?></span>
-				</p>
-			</div>
+			<p>
+				<span class="footer-contact-label">대표번호 | </span>
+				<span class="footer-contact-value"><?= $phone_number ?></span>
+			</p>
 			<?php endif; ?>
+			<p>
+				<span class="footer-contact-label">대표메일 | </span>
+				<a href="mailto:academy@museumhanmi.or.kr" class="footer-contact-value" style="font-weight: normal;">academy@museumhanmi.or.kr</a>
+			</p>
+			<?php 
+			$instagram_url = get_field("footer_instagram_url", "option");
+			if (!$instagram_url) {
+				$instagram_url = "https://www.instagram.com/museumhanmi_academy";
+			}
+			?>
+			<p>
+				<span class="footer-contact-label">Instagram | </span>
+				<a href="<?= esc_url($instagram_url) ?>" target="_blank" rel="noopener noreferrer" class="footer-contact-value" style="font-weight: normal;">@museumhanmi_academy</a>
+			</p>
 		</div>
 	</div>
 </div>

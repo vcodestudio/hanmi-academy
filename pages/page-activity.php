@@ -131,18 +131,23 @@ $currentPost = get_post();
     <div class="gallery-view col-3 tw-items-center">
         <?php
         while($posts->have_posts()):$posts->the_post();
+        $activity_title = get_the_title();
         ?>
         <div class="item row gap-24">
             <div class="thumb" gallery style="position: relative;">
                 <?php 
                 $gallery_imgs = _acf("gallery");
-                foreach($gallery_imgs as $index => $img): ?>
-                    <?php if($index === 0): ?>
-                        <?= img($img, "thumb") ?>
-                    <?php else: ?>
-                        <img src="<?= $img['sizes']['thumb'] ?? $img['url'] ?>" alt="" style="display: none;">
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                if ($gallery_imgs && is_array($gallery_imgs)):
+                    foreach($gallery_imgs as $index => $img):
+                        $img_caption = $img['caption'] ?? $img['alt'] ?? $activity_title;
+                        ?>
+                        <?php if($index === 0): ?>
+                            <img src="<?= esc_url($img['sizes']['thumb'] ?? $img['url']) ?>" alt="<?= esc_attr($img_caption) ?>" />
+                        <?php else: ?>
+                            <img src="<?= esc_url($img['sizes']['thumb'] ?? $img['url']) ?>" alt="<?= esc_attr($img_caption) ?>" style="display: none;">
+                        <?php endif; ?>
+                    <?php endforeach;
+                endif; ?>
             </div>
         </div>
         <?php

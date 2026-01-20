@@ -28,7 +28,7 @@ $tags[] = [
     "link"=>"/",
     "label"=>get_post_type_label($pi)
 ];
-$fields = ["location", "program_theme", "relative_program", "relative_exhibition"];
+$fields = ["course", "participant", "relative_program", "relative_exhibition"];
 foreach ($fields as $field) {
     if ($f = get_field($field, $pi)) {
         $tags[] = [
