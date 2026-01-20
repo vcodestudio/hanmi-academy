@@ -38,6 +38,10 @@
             $tag_items = [];
             $tax_tags = [
                 [
+                    "slug" => "application",
+                    "label" => null
+                ],
+                [
                     "slug" => "course",
                     "label" => null
                 ],
@@ -60,7 +64,7 @@
             
             if (!empty($tag_items)):
             ?>
-            <div class="flex items-center gap-[0.5rem]">
+            <div class="flex items-center gap-[0.5rem] flex-wrap">
                 <?php
                 $tag_count = count($tag_items);
                 foreach ($tag_items as $index => $tag_item):
