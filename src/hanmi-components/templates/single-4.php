@@ -97,9 +97,16 @@
         <?php if ($f = _acf("imgs")): ?>
         <!-- gallery -->
         <div class="col-4 gap-24 _square" gallery>
-            <?php foreach ($f as $item): ?>
+            <?php foreach ($f as $item): 
+                // ID인 경우와 배열인 경우 모두 처리 (하위 호환성 유지)
+                $img_id = is_array($item) ? ($item['id'] ?? $item['ID'] ?? 0) : (is_numeric($item) ? (int)$item : 0);
+            ?>
             <div class="item">
-                <?= img($item, "thumb") ?>
+                <?php if ($img_id): ?>
+                    <?= img(['id' => $img_id], "thumb") ?>
+                <?php else: ?>
+                    <?= img($item, "thumb") ?>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>

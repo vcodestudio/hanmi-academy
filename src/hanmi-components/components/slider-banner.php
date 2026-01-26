@@ -63,7 +63,7 @@
     $isGallery = is_array($args) && (count($args) > 1 || $forceSlider);
     $hidePagination = $arg["hidePagination"] ?? false;
     $showBullets = $arg["showBullets"] ?? false; // 불릿 가시성 제어 (기본값: false)
-    $imgCount = count($args);
+    $imgCount = is_array($args) ? count($args) : 0;
     // forceSlider가 true이고 이미지가 있을 때 슬라이더가 작동하도록 설정
     $sliderDataAttrs = '';
     if ($forceSlider && $imgCount > 0) {
@@ -76,17 +76,28 @@
 ?>
 <div class="swiper banner swiper-container" <?= $isGallery ? 'gallery' : '' ?> <?= $sliderDataAttrs ?> data-name="banner">
     <div class="swiper-wrapper">
-        <?php foreach($args as $index => $item): ?>
-        <div class="swiper-slide">
-            <?php
-                // detail_slider가 크롭일 경우를 대비해 large 우선, 없을 때 detail_slider 사용
+        <?php foreach($args as $index => $item): 
+            // ID인 경우와 배열인 경우 모두 처리 (하위 호환성 유지)
+            $img_id = is_array($item) ? ($item['id'] ?? $item['ID'] ?? 0) : (is_numeric($item) ? (int)$item : 0);
+            
+            if ($img_id) {
+                // ID로 필요한 정보만 가져오기 (성능 최적화)
+                $src = wp_get_attachment_image_url($img_id, 'large') ?: wp_get_attachment_image_url($img_id, 'full') ?: getImg("empty.svg");
+                $caption = wp_get_attachment_caption($img_id) ?: "";
+            } else if (is_array($item)) {
+                // 기존 배열 형식 지원 (하위 호환성)
                 $src = $item["sizes"]["large"] ?? ($item["sizes"]["detail_slider"] ?? ($item["sizes"]["full"] ?? ($item["url"] ?? getImg("empty.svg"))));
                 $caption = $item["caption"] ?? "";
-                // 전시 상세 페이지의 메인 슬라이더는 첫 2개 이미지를 즉시 로드하여 부드러운 전환 보장
-                // 나머지는 lazy loading으로 초기 로딩 시간 단축
-                $loading_attr = $index < 2 ? '' : 'loading="lazy"';
-            ?>
-            <img src="<?= $src ?>" <?= $isGallery ? '' : 'zoom' ?> alt="<?= esc_attr($caption) ?>" <?= $loading_attr ?> />
+            } else {
+                continue;
+            }
+            
+            // 전시 상세 페이지의 메인 슬라이더는 첫 2개 이미지를 즉시 로드하여 부드러운 전환 보장
+            // 나머지는 lazy loading으로 초기 로딩 시간 단축
+            $loading_attr = $index < 2 ? '' : 'loading="lazy"';
+        ?>
+        <div class="swiper-slide">
+            <img src="<?= esc_url($src) ?>" <?= $isGallery ? '' : 'zoom' ?> alt="<?= esc_attr($caption) ?>" <?= $loading_attr ?> />
             <?php if ($caption): ?>
                 <div class="banner-caption" style="display: none;">
                     <p><?= esc_html($caption) ?></p>
