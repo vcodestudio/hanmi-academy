@@ -140,6 +140,7 @@ if (is_home()) {
 						<?= icon("user") ?>
 						<?= $user->display_name ?>
 					</a>
+					<a href="<?= wp_logout_url("/") ?>">로그아웃</a>
 					<?php else: ?>
 					<a href="javascript:void()" @click="loginPanel ^= 1">로그인</a>
 					<a href="<?= getPage("account-create")->permalink ?>">회원가입</a>

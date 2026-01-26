@@ -1,7 +1,7 @@
 <?php
 get_header();
 echo temp("account-header");
-session_start();
+if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 if(isset($_POST["age"])) {
     $_SESSION["age"] = $_POST["age"];
     wp_redirect(getPage("account-create-agreement")->permalink);

@@ -1,6 +1,6 @@
 <?php
 get_header();
-session_start();
+if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 $row_class="field col gap-24 p-gap-8";
 $col_class="field-input row gap-1r non-stretch";
 $item_class="field-item flex gap-1r middle";

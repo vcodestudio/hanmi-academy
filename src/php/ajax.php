@@ -12,7 +12,7 @@
     }
     //functions 
 	function createEmailCert() {
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) { @session_start(); }
         $_SESSION["email"] = $_POST["email"];
 		$_SESSION["cert_numb"] = rand(100000,999999);
         $etc = (is_user_logged_in() || isset($_POST["pw_reset"]));
@@ -57,7 +57,7 @@
 	wp_ajax("createEmailCert");
 	
 	function getNumber() {
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 		wp_send_json($_SESSION["cert_numb"] ?? "0");
 	}
 	wp_ajax("getNumber");
@@ -566,8 +566,8 @@
         
         if ($obj && isset($obj->resultCode) && $obj->resultCode == "200") {
             // 세션 업데이트 (결제 상태를 취소로 변경)
-            if (!session_id()) {
-                session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                @session_start();
             }
             if (isset($_SESSION['mainpay_payment_result'])) {
                 $_SESSION['mainpay_payment_result']['status'] = 'cancelled';

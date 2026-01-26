@@ -64,7 +64,7 @@ if (!$is_logged_in) {
                     <?php if ($needs_login): ?>
                         <a href="javascript:void(0)" 
                            class="button" 
-                           onclick="if(confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) { window.location.href='<?= esc_url($login_url) ?>'; }">
+                           onclick="var btn = document.querySelector('.header .wrap.pc a[href=&quot;javascript:void()&quot;]'); if(btn) btn.click();">
                             신청하기
                         </a>
                     <?php else: ?>

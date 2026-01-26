@@ -244,7 +244,7 @@ function get_start_end_format($post)
 }
 function matchEmailCert()
 {
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 	$pmail = $_POST["email"] ?? $_POST["email_id"] . "@" . $_POST["email_addr"];
 	$mail = isset($_SESSION["email"]);
 	if ($_POST["cert_numb"]) {

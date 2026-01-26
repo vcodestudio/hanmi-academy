@@ -12,7 +12,7 @@
     }
     //functions 
 	function createEmailCert() {
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) { @session_start(); }
         $_SESSION["email"] = $_POST["email"];
 		$_SESSION["cert_numb"] = rand(100000,999999);
         if(get_user_by_email($_SESSION["email"])) {
@@ -55,7 +55,7 @@
 	wp_ajax("createEmailCert");
 	
 	function getNumber() {
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 		wp_send_json($_SESSION["cert_numb"] ?? "0");
 	}
 	wp_ajax("getNumber");

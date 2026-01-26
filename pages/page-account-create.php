@@ -29,7 +29,10 @@ echo temp("account-header");
                 사진과 문화예술에 관심 있는 분들을 위한 뮤지엄한미 멤버십을 운영합니다. 뮤지엄한미의 전시와 교육 등 여러 문화행사의 참여 할인과 함께 회원제만의 다양한 혜택을 드리니 많은 참여 바랍니다.
                 </p>
                 <div class="flex">
-                    <a href="<?= $p->permalink ?>" class="button w">
+                    <!-- <a href="<?= $p->permalink ?>" class="button w">
+                        신청하기
+                    </a> -->
+                    <a href="https://museumhanmi.or.kr/account/membership-select/" target="_blank" class="button w">
                         신청하기
                     </a>
                 </div>

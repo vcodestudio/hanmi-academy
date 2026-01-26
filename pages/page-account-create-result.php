@@ -7,7 +7,7 @@
  * @since Vanilla 1.0
  */
 get_header();
-session_start();
+if (session_status() === PHP_SESSION_NONE) { @session_start(); }
 ?>
 <div class="page-wrap row middle center">
     <?php

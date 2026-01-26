@@ -1,5 +1,7 @@
 <?php
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
         //check,fail back
         //진행상황별 session기록하기. 각 페이지별로 따로 지정해야할 듯 함.
         //왠만하면 a tag 로
