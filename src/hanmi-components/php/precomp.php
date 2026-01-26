@@ -404,24 +404,4 @@ function get_img_url($img_object, $img_size = "large")
     }
     return $img_url;
 }
-
-/**
- * 문자열 앞뒤의 br 태그와 공백을 제거
- * @param string $str 입력 문자열
- * @return string 정리된 문자열
- */
-function trim_br($str)
-{
-    if (empty($str)) {
-        return '';
-    }
-    // 앞뒤 공백 제거
-    $str = trim($str);
-    // 앞쪽 br 태그 제거 (br, br/, br /, <br>, <br/>, <br /> 등 모든 형태)
-    $str = preg_replace('/^(<br\s*\/?>|\s|&nbsp;)+/i', '', $str);
-    // 뒤쪽 br 태그 제거
-    $str = preg_replace('/(<br\s*\/?>|\s|&nbsp;)+$/i', '', $str);
-    // 최종 trim
-    return trim($str);
-}
 ?>

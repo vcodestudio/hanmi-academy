@@ -14,9 +14,9 @@
             $has_content = false;
             if ($additional_info && is_array($additional_info)) {
                 foreach ($additional_info as $info) {
-                    // trim_br로 앞뒤 br태그와 공백 제거
-                    $title = isset($info['title']) ? trim_br($info['title']) : '';
-                    $description = isset($info['description']) ? trim_br($info['description']) : '';
+                    // trim + strip_tags로 공백/HTML태그 제거
+                    $title = isset($info['title']) ? trim(strip_tags($info['title'])) : '';
+                    $description = isset($info['description']) ? trim(strip_tags($info['description'])) : '';
                     if (!empty($title) || !empty($description) || 
                         (!empty($info['has_attachments']) && !empty($info['attachments']))) {
                         $has_content = true;
@@ -28,9 +28,9 @@
             <div class="row gap-24">
                 <div class="metabox row gap-24">
                     <?php foreach($additional_info as $info): 
-                        // trim_br로 앞뒤 br태그와 공백 제거
-                        $title = isset($info['title']) ? trim_br($info['title']) : '';
-                        $description = isset($info['description']) ? trim_br($info['description']) : '';
+                        // trim + strip_tags로 공백/HTML태그 제거
+                        $title = isset($info['title']) ? trim(strip_tags($info['title'])) : '';
+                        $description = isset($info['description']) ? trim(strip_tags($info['description'])) : '';
                         $has_info_content = !empty($title) || !empty($description) || 
                                            (!empty($info['has_attachments']) && !empty($info['attachments']));
                         if (!$has_info_content) continue;
@@ -49,10 +49,10 @@
                         <?php if(!empty($title) || !empty($description)): ?>
                         <div class="flex gap-24">
                             <?php if(!empty($title)): ?>
-                                <p class="bold"><?= $title ?></p>
+                                <p class="bold"><?= esc_html($title) ?></p>
                             <?php endif; ?>
                             <?php if(!empty($description)): ?>
-                                <p><?= $description ?></p>
+                                <p><?= esc_html($description) ?></p>
                             <?php endif; ?>
                         </div>
                         <?php endif; ?>
@@ -86,11 +86,11 @@
     <div class="w-limit row gap-24">
         <?php 
         $desc = _acf("desc");
-        $desc = $desc ? trim_br($desc) : '';
+        $desc = $desc ? trim($desc) : '';
         if (!empty($desc)): ?>
         <div class="row gap-16">
             <p>
-                <?= $desc ?>
+                <?= esc_html($desc) ?>
             </p>
         </div>
         <?php endif; ?>
