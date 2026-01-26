@@ -38,6 +38,33 @@
     .page-wrap > .title {
         display:none;
     }
+    /* 로그인 페이지에서는 헤더의 로그인 팝업 숨기기 */
+    header .login-panel {
+        display: none !important;
+    }
+    /* 모바일 레이아웃 개선 */
+    @media (max-width: 765px) {
+        .user-login {
+            padding: 24px 16px;
+        }
+        .user-login .inner {
+            gap: 20px;
+        }
+        .user-login .s-col-2 {
+            flex-direction: column;
+            gap: 8px;
+        }
+        .user-login .flex.gap-1r {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .user-login .divider {
+            justify-content: center;
+        }
+        .user-login .flex-none.right {
+            justify-content: center;
+        }
+    }
 </style>
         <form action="/wp-login.php" method="post" class="flex center">
             <?= temp("user-login") ?>
