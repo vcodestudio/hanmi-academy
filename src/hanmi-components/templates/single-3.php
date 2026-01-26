@@ -21,22 +21,28 @@ $current_user = $is_logged_in ? wp_get_current_user() : null;
 $order_url = home_url('/order?program_id=' . $program_id);
 $can_apply = false;
 $apply_message = '';
+$needs_login = false;
 
 if (!$is_logged_in) {
-    // 로그인하지 않은 경우
-    $login_url = home_url('/login?redirect_to=' . urlencode($order_url));
-    $order_url = $login_url;
-    $apply_message = '로그인이 필요합니다.';
+    // 로그인하지 않은 경우 - 버튼은 보여주되 로그인 필요 표시
+    $login_url = home_url('/login?redirect_to=' . urlencode(get_permalink()));
+    $needs_login = true;
+    // 상품 정보가 있으면 버튼 활성화 (로그인 확인 후 이동)
+    if ($has_product_info) {
+        $can_apply = true;
+    } else {
+        $apply_message = '현재 신청할 수 없는 프로그램입니다.';
+    }
 } elseif (!$has_product_info) {
     // 상품 정보가 없는 경우
     $order_url = 'javascript:void(0)';
-    $apply_message = '상품 정보가 없습니다.';
+    $apply_message = '현재 신청할 수 없는 프로그램입니다.';
 } else {
     // 정상적인 경우
     $can_apply = true;
     // 상품이 판매 가능한지 확인
     if (!$product_purchasable) {
-        $apply_message = '현재 신청할 수 없는 상품입니다.';
+        $apply_message = '현재 신청할 수 없는 프로그램입니다.';
         $can_apply = false;
     } elseif ($product_stock > 0 && $current_applicants >= $product_stock) {
         // 수강인원 제한이 있고, 현재 신청자 수가 제한을 초과한 경우
@@ -55,7 +61,15 @@ if (!$is_logged_in) {
             </div>
             <div class="flex">
                 <?php if ($can_apply): ?>
-                    <a href="<?= esc_url($order_url) ?>" class="button"><?= $is_logged_in ? '신청하기' : '로그인 후 신청하기' ?></a>
+                    <?php if ($needs_login): ?>
+                        <a href="javascript:void(0)" 
+                           class="button" 
+                           onclick="if(confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) { window.location.href='<?= esc_url($login_url) ?>'; }">
+                            신청하기
+                        </a>
+                    <?php else: ?>
+                        <a href="<?= esc_url($order_url) ?>" class="button">신청하기</a>
+                    <?php endif; ?>
                 <?php elseif ($apply_message): ?>
                     <p style="margin-top: 0; font-size: 0.875rem; color: #888;"><?= esc_html($apply_message) ?></p>
                 <?php endif; ?>
