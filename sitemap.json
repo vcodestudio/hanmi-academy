@@ -1,0 +1,91 @@
+{
+  "total": 27,
+  "redirect_count": 6,
+  "urls": [
+    "http://academy.museumhanmi.or.kr/",
+    "http://academy.museumhanmi.or.kr/about",
+    "http://academy.museumhanmi.or.kr/academy_archive/",
+    "http://academy.museumhanmi.or.kr/account-2/",
+    "http://academy.museumhanmi.or.kr/account-2/account-create-agreement/",
+    "http://academy.museumhanmi.or.kr/account-2/account-create-init/",
+    "http://academy.museumhanmi.or.kr/account-2/account-create-result/",
+    "http://academy.museumhanmi.or.kr/account-2/account-create-select/",
+    "http://academy.museumhanmi.or.kr/account-2/account-create/",
+    "http://academy.museumhanmi.or.kr/account-2/account-find/",
+    "http://academy.museumhanmi.or.kr/account-2/membership-select/",
+    "http://academy.museumhanmi.or.kr/account-create-certification/",
+    "http://academy.museumhanmi.or.kr/exhibition/",
+    "http://academy.museumhanmi.or.kr/faq",
+    "http://academy.museumhanmi.or.kr/front/",
+    "http://academy.museumhanmi.or.kr/login/",
+    "http://academy.museumhanmi.or.kr/notice",
+    "http://academy.museumhanmi.or.kr/page_gallery/activity/",
+    "http://academy.museumhanmi.or.kr/post_exhibition/%ec%a0%84%ec%8b%9c-1/",
+    "http://academy.museumhanmi.or.kr/post_exhibition/2025-photo-master-%ec%88%98%eb%a3%8c%ec%a0%84/",
+    "http://academy.museumhanmi.or.kr/post_program/3726/",
+    "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy-copy-copy/",
+    "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy-copy/",
+    "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy/",
+    "http://academy.museumhanmi.or.kr/private-policy/",
+    "http://academy.museumhanmi.or.kr/program/",
+    "http://academy.museumhanmi.or.kr/register/"
+  ],
+  "redirect_urls": [
+    "http://academy.museumhanmi.or.kr/login/?redirect_to=http%3A%2F%2Facademy.museumhanmi.or.kr%2Fmypage%2F",
+    "http://academy.museumhanmi.or.kr/login/?redirect_to=http%3A%2F%2Facademy.museumhanmi.or.kr%2Forder",
+    "http://academy.museumhanmi.or.kr/login/?redirect_to=http%3A%2F%2Facademy.museumhanmi.or.kr%2Forder%2F",
+    "http://academy.museumhanmi.or.kr/login/?redirect_to=http%3A%2F%2Facademy.museumhanmi.or.kr%2Fpayment-detail",
+    "http://academy.museumhanmi.or.kr/login/?redirect_to=http%3A%2F%2Facademy.museumhanmi.or.kr%2Fpayment-detail%2F"
+  ],
+  "categories": {
+    "메인": [
+      "http://academy.museumhanmi.or.kr/"
+    ],
+    "아카데미 소개": [
+      "http://academy.museumhanmi.or.kr/about",
+      "http://academy.museumhanmi.or.kr/academy_archive/",
+      "http://academy.museumhanmi.or.kr/faq"
+    ],
+    "회원/계정": [
+      "http://academy.museumhanmi.or.kr/account-2/",
+      "http://academy.museumhanmi.or.kr/account-2/account-create-agreement/",
+      "http://academy.museumhanmi.or.kr/account-2/account-create-init/",
+      "http://academy.museumhanmi.or.kr/account-2/account-create-result/",
+      "http://academy.museumhanmi.or.kr/account-2/account-create-select/",
+      "http://academy.museumhanmi.or.kr/account-2/account-create/",
+      "http://academy.museumhanmi.or.kr/account-2/account-find/",
+      "http://academy.museumhanmi.or.kr/account-2/membership-select/",
+      "http://academy.museumhanmi.or.kr/account-create-certification/",
+      "http://academy.museumhanmi.or.kr/login/",
+      "http://academy.museumhanmi.or.kr/register/"
+    ],
+    "전시 목록": [
+      "http://academy.museumhanmi.or.kr/exhibition/"
+    ],
+    "프론트 페이지": [
+      "http://academy.museumhanmi.or.kr/front/"
+    ],
+    "공지사항": [
+      "http://academy.museumhanmi.or.kr/notice"
+    ],
+    "활동사진/갤러리": [
+      "http://academy.museumhanmi.or.kr/page_gallery/activity/"
+    ],
+    "전시 상세": [
+      "http://academy.museumhanmi.or.kr/post_exhibition/%ec%a0%84%ec%8b%9c-1/",
+      "http://academy.museumhanmi.or.kr/post_exhibition/2025-photo-master-%ec%88%98%eb%a3%8c%ec%a0%84/"
+    ],
+    "프로그램 상세": [
+      "http://academy.museumhanmi.or.kr/post_program/3726/",
+      "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy-copy-copy/",
+      "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy-copy/",
+      "http://academy.museumhanmi.or.kr/post_program/photo-craft-copy/"
+    ],
+    "정책": [
+      "http://academy.museumhanmi.or.kr/private-policy/"
+    ],
+    "프로그램 목록": [
+      "http://academy.museumhanmi.or.kr/program/"
+    ]
+  }
+}
