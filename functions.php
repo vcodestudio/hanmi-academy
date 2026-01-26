@@ -81,17 +81,38 @@ function getPosts()
 		"paged" => $p["p"],
 	];
 }
+/**
+ * 페이지 슬러그로 페이지 객체 가져오기 (캐싱 적용)
+ * @param string $slug 페이지 슬러그
+ * @return object|null 페이지 객체 또는 null
+ */
 function getPage($slug = "")
 {
+	static $cache = [];
+	
+	// 캐시에 있으면 캐시된 값 반환
+	if (isset($cache[$slug])) {
+		return $cache[$slug];
+	}
+	
 	$query = get_posts([
 		"post_type" => "page",
 		"name" => $slug,
 		"post_status" => "publish",
+		"posts_per_page" => 1,
+		"no_found_rows" => true, // 페이지네이션 불필요, 쿼리 최적화
+		"update_post_meta_cache" => false, // 메타 캐시 불필요
+		"update_post_term_cache" => false, // 용어 캐시 불필요
 	]);
-	if ($out = $query[0] ?? null) {
+	
+	$out = null;
+	if ($query[0] ?? null) {
+		$out = $query[0];
 		$out->permalink = get_permalink($out);
 	}
-
+	
+	// 결과 캐싱
+	$cache[$slug] = $out;
 	return $out;
 }
 

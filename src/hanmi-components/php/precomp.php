@@ -50,32 +50,103 @@ class HM
     }
 }
 
+/**
+ * ACF 필드 값 가져오기 (캐싱 적용)
+ * @param string $str 필드 이름
+ * @param int|WP_Post $id 포스트 ID 또는 객체
+ * @return mixed 필드 값
+ */
 function _acf($str, $id = 0)
 {
+    static $cache = [];
+    
     if (!$id) {
         $id = get_post();
     }
-    return get_field($str, $id);
+    
+    // 포스트 객체인 경우 ID 추출
+    $post_id = is_object($id) ? $id->ID : $id;
+    $cache_key = $post_id . '_' . $str;
+    
+    // 캐시에 있으면 반환 (null 값도 캐싱)
+    if (array_key_exists($cache_key, $cache)) {
+        return $cache[$cache_key];
+    }
+    
+    $value = get_field($str, $id);
+    $cache[$cache_key] = $value;
+    
+    return $value;
 }
+
+/**
+ * ACF 필드 객체 가져오기 (캐싱 적용)
+ * @param string $str 필드 이름
+ * @param int|WP_Post $id 포스트 ID 또는 객체
+ * @return array|false 필드 객체 또는 false
+ */
 function _acfobj($str, $id = 0)
 {
+    static $cache = [];
+    
     if (!$id) {
         $id = get_post();
     }
+    
+    // 포스트 객체인 경우 ID 추출
+    $post_id = is_object($id) ? $id->ID : $id;
+    $cache_key = $post_id . '_obj_' . $str;
+    
+    // 캐시에 있으면 반환
+    if (array_key_exists($cache_key, $cache)) {
+        return $cache[$cache_key];
+    }
+    
+    $result = false;
     if (
         ($obj = get_field_object($str, $id)) &&
         ((function_exists("user_level") &&
             ((int) $obj["instructions"] ?? 0) <= user_level()) ||
             !function_exists("user_level"))
     ) {
-        return $obj;
-    } else {
-        return false;
+        $result = $obj;
     }
+    
+    $cache[$cache_key] = $result;
+    return $result;
 }
 
+/**
+ * 여러 ACF 필드를 한 번에 로드 (성능 최적화)
+ * @param array $fields 필드 이름 배열
+ * @param int|WP_Post $id 포스트 ID 또는 객체
+ * @return array 필드명 => 값 배열
+ */
+function _acf_batch($fields, $id = 0)
+{
+    if (!$id) {
+        $id = get_post();
+    }
+    
+    $result = [];
+    foreach ($fields as $field) {
+        $result[$field] = _acf($field, $id);
+    }
+    
+    return $result;
+}
+
+/**
+ * 이미지 출력 함수 (캐싱 적용)
+ * @param array|int $obj 이미지 객체 또는 ID
+ * @param string $size 이미지 사이즈
+ * @param array $empty 빈 이미지 대체용
+ * @return string 이미지 HTML
+ */
 function img($obj = [], $size = "large", $empty = [])
 {
+    static $img_cache = [];
+    
     $id = 0;
     if ((empty($obj) || !$obj) && !empty($empty)) {
         $obj = $empty;
@@ -85,57 +156,127 @@ function img($obj = [], $size = "large", $empty = [])
             $id = $obj;
             break;
         case "array":
-            $id = $obj["id"];
+            $id = $obj["id"] ?? 0;
             break;
     }
-    $img = wp_get_attachment_image_url($id, $size);
-    if ($img) {
+    
+    if (!$id) {
+        return '<img src="' . getImg("empty.svg") . '" class="empty" />';
+    }
+    
+    $cache_key = $id . '_' . $size;
+    
+    // 이미지 URL 캐싱
+    if (!isset($img_cache[$cache_key])) {
+        $img_cache[$cache_key] = wp_get_attachment_image_url($id, $size);
+    }
+    
+    if ($img_cache[$cache_key]) {
         return comp("img", ["id" => $id, "size" => $size]);
     } else {
-         ?>
-			<img src="<?= getImg("empty.svg") ?>" class="empty" />
-		<?php
+        return '<img src="' . getImg("empty.svg") . '" class="empty" />';
     }
 }
+
+/**
+ * 시스템 이미지 경로 가져오기 (캐싱 적용)
+ * @param string $str 이미지 파일명
+ * @return string 이미지 URL
+ */
 function getImg($str = "error.svg")
 {
+    static $cache = [];
+    
+    if (isset($cache[$str])) {
+        return $cache[$str];
+    }
+    
     $path = DIR_SRC . "/imgs/system/$str";
     if (file_exists($path)) {
-        $path = SRC . "/imgs/system/$str";
+        $cache[$str] = SRC . "/imgs/system/$str";
     } else {
-        $path = SRC_MODULE . "/imgs/system/error.svg";
+        $cache[$str] = SRC_MODULE . "/imgs/system/error.svg";
     }
-    return $path;
+    
+    return $cache[$str];
 }
+
+/**
+ * 아이콘 출력 함수 (캐싱 적용)
+ * @param string $str 아이콘 이름
+ * @param string $class CSS 클래스
+ * @return string 이미지 태그
+ */
 function icon($str, $class = "")
 {
-    $url = DIR_MODULE . "/imgs/icons/$str.svg";
-    $url = file_exists($url)
-        ? SRC_MODULE . "/imgs/icons/$str.svg"
-        : SRC_MODULE . "/imgs/system/empty.svg";
-    return "<img class='$class' src='$url'/>";
+    static $cache = [];
+    
+    if (!isset($cache[$str])) {
+        $path = DIR_MODULE . "/imgs/icons/$str.svg";
+        $cache[$str] = file_exists($path)
+            ? SRC_MODULE . "/imgs/icons/$str.svg"
+            : SRC_MODULE . "/imgs/system/empty.svg";
+    }
+    
+    return "<img class='$class' src='{$cache[$str]}'/>";
 }
+
+/**
+ * 컴포넌트 렌더링 함수 (파일 존재 캐싱 적용)
+ * @param string $name 컴포넌트 이름
+ * @param array $arg 컴포넌트 인자
+ * @return string 렌더링된 HTML
+ */
 function comp($name = "", $arg = [])
 {
-    $html = "";
-    if (($path = DIR_MODULE . "/components/$name.php") && file_exists($path)):
-        ob_start();
-        require $path;
-        $html = ob_get_contents();
-        ob_end_clean();
-    endif;
+    static $file_exists_cache = [];
+    
+    $path = DIR_MODULE . "/components/$name.php";
+    
+    // 파일 존재 여부 캐싱
+    if (!isset($file_exists_cache[$path])) {
+        $file_exists_cache[$path] = file_exists($path);
+    }
+    
+    if (!$file_exists_cache[$path]) {
+        return "";
+    }
+    
+    ob_start();
+    require $path;
+    $html = ob_get_contents();
+    ob_end_clean();
+    
     return $html;
 }
+
+/**
+ * 템플릿 렌더링 함수 (파일 존재 캐싱 적용)
+ * @param string $name 템플릿 이름
+ * @param array $arg 템플릿 인자
+ * @return string 렌더링된 HTML
+ */
 function temp($name = "", $arg = [])
 {
-    $html = "";
-    if (($path = DIR_MODULE . "/templates/$name.php") && file_exists($path)):
-        ob_start();
-        extract($arg);
-        require $path;
-        $html = ob_get_contents();
-        ob_end_clean();
-    endif;
+    static $file_exists_cache = [];
+    
+    $path = DIR_MODULE . "/templates/$name.php";
+    
+    // 파일 존재 여부 캐싱
+    if (!isset($file_exists_cache[$path])) {
+        $file_exists_cache[$path] = file_exists($path);
+    }
+    
+    if (!$file_exists_cache[$path]) {
+        return "";
+    }
+    
+    ob_start();
+    extract($arg);
+    require $path;
+    $html = ob_get_contents();
+    ob_end_clean();
+    
     return $html;
 }
 function comp_attr_str($arg = [])
