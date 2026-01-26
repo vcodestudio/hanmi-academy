@@ -14,10 +14,11 @@
         // strong 태그를 b 태그로 변환
         $about_intro_clean = str_replace(['<strong>', '</strong>'], ['<b>', '</b>'], $about_intro_clean);
         // p 태그에 클래스 추가 (WYSIWYG에서 나온 p 태그에 클래스 적용)
-        $about_intro_clean = preg_replace('/<p>/i', '<p class="text-[22px] m:text-[16px]">', $about_intro_clean);
+        // m:break-keep-all - 모바일에서 단어 단위 줄바꿈
+        $about_intro_clean = preg_replace('/<p>/i', '<p class="text-[22px] m:text-[16px] m:[word-break:keep-all]">', $about_intro_clean);
         // p 태그가 없는 경우 전체를 p 태그로 감싸기
         if (!preg_match('/<p[^>]*>/i', $about_intro_clean)) {
-            $about_intro_clean = '<p class="text-[22px] m:text-[16px]">' . $about_intro_clean . '</p>';
+            $about_intro_clean = '<p class="text-[22px] m:text-[16px] m:[word-break:keep-all]">' . $about_intro_clean . '</p>';
         }
     ?>
     <div class="row py-[60px] m:py-[24px] m:pt-0">

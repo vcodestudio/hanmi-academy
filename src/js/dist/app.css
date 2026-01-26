@@ -508,6 +508,9 @@
     .m\:text-\[16px\] {
         font-size: 16px
     }
+    .m\:\[word-break\:keep-all\] {
+        word-break: keep-all
+    }
 }
 .\[\&\>\*\]\:flex-1>* {
     flex: 1 1 0%
