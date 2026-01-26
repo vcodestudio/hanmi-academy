@@ -20,44 +20,58 @@
     .page-wrap > .row.gap-24 > p:first-child {
         display: none !important;
     }
+    /* 로그인 페이지 레이아웃 */
+    .page-wrap > .row.gap-24 > form.flex.center {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .page-wrap > .row.gap-24 > form.flex.center > .user-login {
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        background: transparent !important;
+    }
+    .page-wrap > .row.gap-24 > form.flex.center > .user-login > .inner {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    /* 닫기 버튼 숨기기 (로그인 페이지에서만) */
+    .page-wrap > .row.gap-24 > form.flex.center .s-col-2 > .flex.right {
+        display: none !important;
+    }
     /* 모바일 레이아웃 개선 */
     @media (max-width: 765px) {
-        .user-login {
-            padding: 24px 16px !important;
-            width: 100% !important;
-            max-width: none !important;
-        }
-        .user-login .inner {
+        .page-wrap > .row.gap-24 > form.flex.center > .user-login > .inner {
             gap: 20px !important;
         }
-        .user-login .s-col-2 {
+        .page-wrap > .row.gap-24 > form.flex.center .s-col-2 {
             flex-direction: column !important;
             gap: 8px !important;
         }
-        .user-login h3 {
+        .page-wrap > .row.gap-24 > form.flex.center h3 {
             text-align: center;
         }
-        .user-login .flex.gap-1r {
+        .page-wrap > .row.gap-24 > form.flex.center .flex.gap-1r {
             flex-direction: column !important;
             gap: 16px !important;
             align-items: center !important;
         }
-        .user-login .flex.gap-1r > .flex-auto,
-        .user-login .flex.gap-1r > .flex-none {
+        .page-wrap > .row.gap-24 > form.flex.center .flex.gap-1r > .flex-auto,
+        .page-wrap > .row.gap-24 > form.flex.center .flex.gap-1r > .flex-none {
             width: 100%;
             justify-content: center !important;
         }
-        .user-login .divider {
+        .page-wrap > .row.gap-24 > form.flex.center .divider {
             justify-content: center !important;
         }
-        .user-login .row.gap-1r .gap-8.row p.bold {
+        .page-wrap > .row.gap-24 > form.flex.center .row.gap-1r .gap-8.row p.bold {
             text-align: left;
         }
-        .user-login input[type="text"],
-        .user-login input[type="password"] {
+        .page-wrap > .row.gap-24 > form.flex.center input[type="text"],
+        .page-wrap > .row.gap-24 > form.flex.center input[type="password"] {
             width: 100%;
         }
-        .user-login .button-primary {
+        .page-wrap > .row.gap-24 > form.flex.center .button-primary {
             width: 100%;
         }
     }
