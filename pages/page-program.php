@@ -75,16 +75,16 @@ foreach ($b_args as $b) {
 }
 $posts = new WP_Query($args);
 ?>
-<div class="row gap-32 page-wrap">
+<div class="row gap-32 m:gap-24 page-wrap">
     <div class="flex gap-8 middle">
-        <h3>
+        <h3 class="single-line">
             <?= !empty($query["keyword"] ?? "")
             	? "[" . $query["keyword"] . "] " . get_the_title() . " 검색결과"
             	: get_the_title() ?>
         </h3>
         <span class="text-sub light"><?= $posts->found_posts ?></span>
     </div>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center flex-wrap gap-y-4">
         <div class="col tab">
             <a href="?date=before" class="<?= ($date_filter == "before")
             	? "selected"
@@ -119,7 +119,7 @@ $posts = new WP_Query($args);
         </div>
     </div>
     <?php if ($posts->have_posts()): ?>
-    <div class="gallery-grid">
+    <div class="gallery-grid m:gap-16">
         <?= comp("program-item-2", ["posts" => $posts]) ?>
     </div>
     <?php else: ?>

@@ -7,13 +7,13 @@
         $thumb_url = $thumb ? ($thumb["sizes"]["large"] ?? $thumb["url"] ?? '') : '';
         if (empty($thumb_url)) continue; // 이미지가 없으면 스킵
         ?>
-    <div class="program-card flex flex-col gap-[1.5rem]">
+    <div class="program-card flex flex-col gap-6">
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full">
                 <img class="block w-full h-auto object-contain" src="<?= esc_url($thumb_url) ?>" alt="<?= esc_attr(get_the_title()) ?>" />
             </div>
         </a>
-        <div class="flex flex-col gap-[0.5rem]">
+        <div class="flex flex-col gap-3">
             <?php
             $tag_items = [];
             $terms = ["location"];
@@ -33,31 +33,22 @@
             
             if (!empty($tag_items)):
             ?>
-            <div class="flex items-center gap-[0.5rem]">
-                <?php
-                $tag_count = count($tag_items);
-                foreach ($tag_items as $index => $tag_item):
-                ?>
-                    <span class="text-[1rem] font-bold leading-[1.5rem] tracking-[-0.0125rem] text-black no-hover">
-                        <?= esc_html($tag_item["text"]) ?>
-                    </span>
-                    <?php if ($index < $tag_count - 1): ?>
-                    <div class="bg-[rgba(0,0,0,0.1)] h-[1rem] w-px"></div>
-                    <?php endif; ?>
+            <div class="inline-flex gap-2 flex-wrap">
+                <?php foreach ($tag_items as $tag_item): ?>
+                    <span class="tag small no-hover"><?= esc_html($tag_item["text"]) ?></span>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-2">
                 <a href="<?= esc_url(get_permalink()) ?>">
-                    <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
+                    <div class="text-[1rem] leading-[1.2em] font-bold"><?= get_the_title() ?></div>
                 </a>
+                <div class="caption"><?= function_exists('getDateRange') ? getDateRange() : '' ?></div>
             </div>
         </div>
     </div>
     <?php
     endwhile;
     wp_reset_postdata();
-
-
 ?>
 

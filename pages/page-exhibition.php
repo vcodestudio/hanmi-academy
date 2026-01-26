@@ -121,9 +121,9 @@ if ($has_range) {
 
 $posts = new WP_Query($args);
 ?>
-<div class="row gap-32 page-wrap">
+<div class="row gap-32 m:gap-24 page-wrap">
     <div class="flex gap-8 middle">
-        <h3>
+        <h3 class="single-line">
             <?= !empty($query["keyword"] ?? "")
             	? "[" . $query["keyword"] . "] " . get_the_title() . " 검색결과"
             	: get_the_title() ?>
@@ -175,7 +175,7 @@ $posts = new WP_Query($args);
         <div class="tw-self-stretch tw-h-px tw-bg-black/10"></div>
     </div>
     <?php if ($posts->have_posts()): ?>
-    <div class="gallery-grid">
+    <div class="gallery-grid m:gap-16">
         <?= comp("exhibition-item-2", ["posts" => $posts, "query" => $query]) ?>
     </div>
     <?php else: ?>
