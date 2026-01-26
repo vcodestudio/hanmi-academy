@@ -14,7 +14,10 @@
             $has_content = false;
             if ($additional_info && is_array($additional_info)) {
                 foreach ($additional_info as $info) {
-                    if (!empty($info['title']) || !empty($info['description']) || 
+                    // trim으로 공백만 있는 값도 빈 값으로 처리
+                    $title = isset($info['title']) ? trim($info['title']) : '';
+                    $description = isset($info['description']) ? trim($info['description']) : '';
+                    if (!empty($title) || !empty($description) || 
                         (!empty($info['has_attachments']) && !empty($info['attachments']))) {
                         $has_content = true;
                         break;
@@ -25,7 +28,10 @@
             <div class="row gap-24">
                 <div class="metabox row gap-24">
                     <?php foreach($additional_info as $info): 
-                        $has_info_content = !empty($info['title']) || !empty($info['description']) || 
+                        // trim으로 공백만 있는 값도 빈 값으로 처리
+                        $title = isset($info['title']) ? trim($info['title']) : '';
+                        $description = isset($info['description']) ? trim($info['description']) : '';
+                        $has_info_content = !empty($title) || !empty($description) || 
                                            (!empty($info['has_attachments']) && !empty($info['attachments']));
                         if (!$has_info_content) continue;
                         
@@ -40,13 +46,13 @@
                             }
                         }
                     ?>
-                        <?php if(!empty($info['title']) || !empty($info['description'])): ?>
+                        <?php if(!empty($title) || !empty($description)): ?>
                         <div class="flex gap-24">
-                            <?php if(!empty($info['title'])): ?>
-                                <p class="bold"><?= $info['title'] ?></p>
+                            <?php if(!empty($title)): ?>
+                                <p class="bold"><?= esc_html($title) ?></p>
                             <?php endif; ?>
-                            <?php if(!empty($info['description'])): ?>
-                                <p><?= $info['description'] ?></p>
+                            <?php if(!empty($description)): ?>
+                                <p><?= esc_html($description) ?></p>
                             <?php endif; ?>
                         </div>
                         <?php endif; ?>
@@ -58,7 +64,7 @@
                                         $file = $attachment['file'];
                                         $file_url = $file['url'] ?? '';
                                         $file_label = !empty($attachment['file_label']) 
-                                            ? $attachment['file_label'] 
+                                            ? trim($attachment['file_label']) 
                                             : ($file['filename'] ?? '다운로드');
                                         ?>
                                         <div class="flex">
@@ -78,10 +84,13 @@
         </div>
     </div>
     <div class="w-limit row gap-24">
-        <?php if ($desc = _acf("desc")): ?>
+        <?php 
+        $desc = _acf("desc");
+        $desc = $desc ? trim($desc) : '';
+        if (!empty($desc)): ?>
         <div class="row gap-16">
             <p>
-                <?= $desc ?>
+                <?= esc_html($desc) ?>
             </p>
         </div>
         <?php endif; ?>
