@@ -21,7 +21,7 @@
 			<div>
 				<img src="<?= HM::$logo_w ?>" />
 			</div>
-			<p>
+			<p class="m:[&_br]:hidden">
 				<?= get_field("footer_description", "option") ?>
 			</p>
 		</div>
@@ -36,7 +36,7 @@
 				?>
 			</div>
 		</div>
-		<div class="row gap-12 footer-contact">
+		<div class="row gap-12 m:gap-4 footer-contact">
 			<?php if($phone_number = get_field("footer_phone_number","option")): ?>
 			<p>
 				<span class="footer-contact-label">대표번호 | </span>

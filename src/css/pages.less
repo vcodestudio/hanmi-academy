@@ -152,16 +152,33 @@ body {
   }
 }
 .detail {
+  overflow: hidden;
+  max-width: 100%;
+  
+  p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  &.col-2 > * {
+    min-width: 0;
+    overflow: hidden;
+  }
+  
   .metabox {
     & > * {
       & > * {
         flex: auto;
+        min-width: 0;
         &:first-child {
           width: 100px;
           flex: none;
           @media @mobile {
             width: 60px;
           }
+        }
+        &:last-child {
+          overflow: hidden;
         }
       }
     }

@@ -194,11 +194,17 @@
 .w-px {
     width: 1px
 }
+.min-w-0 {
+    min-width: 0px
+}
 .max-w-\[2\.2rem\] {
     max-width: 2.2rem
 }
 .max-w-\[640px\] {
     max-width: 640px
+}
+.max-w-full {
+    max-width: 100%
 }
 .flex-1 {
     flex: 1 1 0%
@@ -308,11 +314,11 @@
 .gap-\[1\.5rem\] {
     gap: 1.5rem
 }
-.gap-y-16 {
-    row-gap: 4rem
-}
 .gap-y-8 {
     row-gap: 2rem
+}
+.overflow-hidden {
+    overflow: hidden
 }
 .text-wrap {
     text-wrap: wrap
@@ -475,14 +481,35 @@
     .m\:order-3 {
         order: 3
     }
+    .m\:flex {
+        display: flex
+    }
     .m\:h-\[300px\] {
         height: 300px
     }
     .m\:w-\[328px\] {
         width: 328px
     }
+    .m\:w-full {
+        width: 100%
+    }
+    .m\:flex-wrap {
+        flex-wrap: wrap
+    }
+    .m\:justify-end {
+        justify-content: flex-end
+    }
     .m\:gap-16 {
         gap: 4rem
+    }
+    .m\:gap-4 {
+        gap: 1rem
+    }
+    .m\:gap-8 {
+        gap: 2rem
+    }
+    .m\:gap-\[1rem\] {
+        gap: 1rem
     }
     .m\:gap-x-0 {
         -moz-column-gap: 0px;
@@ -508,8 +535,14 @@
     .m\:pt-0 {
         padding-top: 0px
     }
+    .m\:text-\[1\.25rem\] {
+        font-size: 1.25rem
+    }
     .m\:text-\[16px\] {
         font-size: 16px
+    }
+    .m\:leading-\[1\.75rem\] {
+        line-height: 1.75rem
     }
     .m\:\[word-break\:keep-all\] {
         word-break: keep-all
@@ -4784,8 +4817,21 @@ body .page-wrap.forms p.caption.alert:not(.active) {
 body .page-wrap.forms p.caption .alert {
   color: red;
 }
+.detail {
+  overflow: hidden;
+  max-width: 100%;
+}
+.detail p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.detail.col-2 > * {
+  min-width: 0;
+  overflow: hidden;
+}
 .detail .metabox > * > * {
   flex: auto;
+  min-width: 0;
 }
 .detail .metabox > * > *:first-child {
   width: 100px;
@@ -4795,6 +4841,9 @@ body .page-wrap.forms p.caption .alert {
   .detail .metabox > * > *:first-child {
     width: 60px;
   }
+}
+.detail .metabox > * > *:last-child {
+  overflow: hidden;
 }
 .lab_2 > *:first-child {
   width: 120px;
@@ -5422,6 +5471,11 @@ body#error-page {
 }
 .archive-list > .item:not(.active) .a-content {
   display: none;
+}
+@media screen and (max-width:765px) {
+  .gallery-grid {
+    gap: 32px;
+  }
 }
 .gallery-grid .alert {
   width: 70px;

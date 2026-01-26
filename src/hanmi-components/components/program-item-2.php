@@ -2,7 +2,7 @@
     $posts = $arg["posts"];
     while ($posts->have_posts()):
         $posts->the_post(); ?>
-    <div class="program-card flex flex-col gap-[1.5rem]">
+    <div class="program-card flex flex-col gap-[1.5rem] m:gap-[1rem]">
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full" style="">
                 <div class="relative w-full">
@@ -80,7 +80,7 @@
             <?php endif; ?>
             <div class="flex flex-col">
                 <a href="<?= esc_url(get_permalink()) ?>">
-                    <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
+                    <div class="text-[1.5rem] leading-[2.25rem] m:text-[1.25rem] m:leading-[1.75rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
                 </a>
             </div>
         </div>

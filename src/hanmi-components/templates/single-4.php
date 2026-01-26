@@ -5,7 +5,7 @@
         <div class="col-2 gap-32 detail">
             <div class="row gap-24">
                 <div class="row gap-12">
-                    <h3><?= get_the_title() ?></h3>
+                    <h3 class="m:text-[1.25rem] m:leading-[1.75rem]"><?= get_the_title() ?></h3>
                     <h6 class="light"><?= getDateRange() ?></h6>
                 </div>
             </div>

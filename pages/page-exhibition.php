@@ -130,7 +130,7 @@ $posts = new WP_Query($args);
         </h3>
         <span class="text-sub light"><?= $posts->found_posts ?></span>
     </div>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center flex-wrap gap-y-8">
         <div class="col tab">
             <a href="." class="<?= ($date_filter == "all" || !$date_filter)
             	? "selected"
@@ -145,7 +145,7 @@ $posts = new WP_Query($args);
             	? "selected"
             	: "" ?>">종료</a>
         </div>
-        <div>
+        <div class="m:w-full m:justify-end m:flex">
         <?php
             // 기간 버튼 (활동 페이지와 동일한 토글 UX)
             echo comp('filter-toggle', ['label' => '전시기간']);

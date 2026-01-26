@@ -84,7 +84,7 @@ $posts = new WP_Query($args);
         </h3>
         <span class="text-sub light"><?= $posts->found_posts ?></span>
     </div>
-    <div class="flex justify-between items-center flex-wrap gap-y-16">
+    <div class="flex justify-between items-center flex-wrap gap-y-8">
         <div class="col tab">
             <a href="?date=before" class="<?= ($date_filter == "before")
             	? "selected"
@@ -99,7 +99,7 @@ $posts = new WP_Query($args);
             	? "selected"
             	: "" ?>">전체</a>
         </div>
-        <div class="flex gap-1r">
+        <div class="flex gap-1r m:w-full m:justify-end">
             <?= comp("select", [
             	"type" => "course",
             	"options" => $c_arr,

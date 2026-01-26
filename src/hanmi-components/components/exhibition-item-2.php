@@ -7,7 +7,7 @@
         $thumb_url = $thumb ? ($thumb["sizes"]["large"] ?? $thumb["url"] ?? '') : '';
         if (empty($thumb_url)) continue; // 이미지가 없으면 스킵
         ?>
-    <div class="program-card flex flex-col gap-[1.5rem]">
+    <div class="program-card flex flex-col gap-[1.5rem] m:gap-[1rem]">
         <a href="<?= esc_url(get_permalink()) ?>" class="block">
             <div class="relative w-full">
                 <img class="block w-full h-auto object-contain" src="<?= esc_url($thumb_url) ?>" alt="<?= esc_attr(get_the_title()) ?>" />
@@ -49,7 +49,7 @@
             <?php endif; ?>
             <div class="flex flex-col">
                 <a href="<?= esc_url(get_permalink()) ?>">
-                    <div class="text-[1.5rem] leading-[2.25rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
+                    <div class="text-[1.5rem] leading-[2.25rem] m:text-[1.25rem] m:leading-[1.75rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
                 </a>
             </div>
         </div>

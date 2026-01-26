@@ -53,10 +53,10 @@ if (!$is_logged_in) {
 ?>
 <div class="row gap-32 page-wrap detail">
     <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: (_acf("thumb") ? [_acf("thumb")] : []), "forceSlider" => true, "showBullets" => true]) ?>
-    <div class="col-2 gap-32 detail">
-        <div class="row gap-24">
+    <div class="col-2 gap-32 detail overflow-hidden">
+        <div class="row gap-24 overflow-hidden">
             <div class="row gap-12">
-                <h3><?= get_the_title() ?></h3>
+                <h3 class="m:text-[1.25rem] m:leading-[1.75rem]"><?= get_the_title() ?></h3>
                 <h6 class="light"><?= getDateRange() ?></h6>
             </div>
             <div class="flex">
@@ -75,7 +75,7 @@ if (!$is_logged_in) {
                 <?php endif; ?>
             </div>
         </div>
-        <div class="row gap-24">
+        <div class="row gap-24 overflow-hidden">
             <?php if ($f = _acf("desc")): ?>
             <div class="row gap-12">
                 <p>
@@ -104,12 +104,12 @@ if (!$is_logged_in) {
                 <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($f = _acf("uploads")): ?>
-                <div class="flex gap-24">
+                <div class="flex gap-24 min-w-0">
                     <p class="bold">참고자료</p>
-                    <div class="row gap-16">
+                    <div class="row gap-16 min-w-0 overflow-hidden">
                         <?php foreach ($f as $i): ?>
                         <?php if (isset($i["item"]) && is_array($i["item"]) && isset($i["item"]["url"])): ?>
-                        <a class="underline" href="<?= esc_url($i["item"]["url"]) ?>"
+                        <a class="underline single-line block" href="<?= esc_url($i["item"]["url"]) ?>"
                             target="_blank"><?= esc_html($i["item"]["filename"] ?? basename($i["item"]["url"])) ?></a>
                         <div class="flex">
                             <?= comp("download", [

@@ -14,9 +14,9 @@
     <h3 class="title">
         통합검색
     </h3>
-    <div class="col-2 gap-24">
-        <div class="flex gap-16">
-            <div class="flex-none">
+    <div class="row gap-24 m:gap-16">
+        <div class="flex gap-16 m:flex-wrap m:gap-8">
+            <div class="flex-none m:w-full">
                 <?= comp("select",[
                     'name'=>'post_type',
                     'options'=>[
@@ -31,7 +31,7 @@
                     "
                 ]) ?>
             </div>
-            <div class="flex-auto">
+            <div class="flex-auto m:w-full">
                 <?= comp("search",['root'=>'/','prop'=>'s','filters'=>[['post_type',$_GET["post_type"] ?? ""]]]) ?>
             </div>
         </div>
