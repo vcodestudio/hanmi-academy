@@ -14,9 +14,9 @@
             $has_content = false;
             if ($additional_info && is_array($additional_info)) {
                 foreach ($additional_info as $info) {
-                    // trim + strip_tags로 공백/HTML태그 제거
-                    $title = isset($info['title']) ? trim(strip_tags($info['title'])) : '';
-                    $description = isset($info['description']) ? trim(strip_tags($info['description'])) : '';
+                    // <br> 태그만 제거하고 trim
+                    $title = isset($info['title']) ? trim(preg_replace('/<br\s*\/?>/i', '', $info['title'])) : '';
+                    $description = isset($info['description']) ? trim(preg_replace('/<br\s*\/?>/i', '', $info['description'])) : '';
                     if (!empty($title) || !empty($description) || 
                         (!empty($info['has_attachments']) && !empty($info['attachments']))) {
                         $has_content = true;
@@ -28,9 +28,9 @@
             <div class="row gap-24">
                 <div class="metabox row gap-24">
                     <?php foreach($additional_info as $info): 
-                        // trim + strip_tags로 공백/HTML태그 제거
-                        $title = isset($info['title']) ? trim(strip_tags($info['title'])) : '';
-                        $description = isset($info['description']) ? trim(strip_tags($info['description'])) : '';
+                        // <br> 태그만 제거하고 trim
+                        $title = isset($info['title']) ? trim(preg_replace('/<br\s*\/?>/i', '', $info['title'])) : '';
+                        $description = isset($info['description']) ? trim(preg_replace('/<br\s*\/?>/i', '', $info['description'])) : '';
                         $has_info_content = !empty($title) || !empty($description) || 
                                            (!empty($info['has_attachments']) && !empty($info['attachments']));
                         if (!$has_info_content) continue;
@@ -49,10 +49,10 @@
                         <?php if(!empty($title) || !empty($description)): ?>
                         <div class="flex gap-24">
                             <?php if(!empty($title)): ?>
-                                <p class="bold"><?= esc_html($title) ?></p>
+                                <p class="bold"><?= $title ?></p>
                             <?php endif; ?>
                             <?php if(!empty($description)): ?>
-                                <p><?= esc_html($description) ?></p>
+                                <p><?= $description ?></p>
                             <?php endif; ?>
                         </div>
                         <?php endif; ?>
@@ -86,12 +86,11 @@
     <div class="w-limit row gap-24">
         <?php 
         $desc = _acf("desc");
-        $desc = $desc ? trim($desc) : '';
+        // <br> 태그만 제거, 나머지 HTML은 유지
+        $desc = $desc ? trim(preg_replace('/<br\s*\/?>/i', '', $desc)) : '';
         if (!empty($desc)): ?>
         <div class="row gap-16">
-            <p>
-                <?= esc_html($desc) ?>
-            </p>
+            <?= $desc ?>
         </div>
         <?php endif; ?>
 
