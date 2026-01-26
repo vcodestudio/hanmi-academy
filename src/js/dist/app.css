@@ -522,6 +522,9 @@
     .m\:\[\&\>\*\]\:basis-\[150px\]>* {
         flex-basis: 150px
     }
+    .m\:\[\&_br\]\:hidden br {
+        display: none
+    }
 }
 
 
