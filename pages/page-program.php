@@ -55,7 +55,8 @@ if ($date_filter === "all") {
 }
 $cats = ["course", "participant"];
 foreach ($cats as $cat) {
-	if ($f = $query[$cat] ?? false) {
+	$f = $query[$cat] ?? "";
+	if ($f !== "" && $f !== "all") {
 		array_push($args["tax_query"], [
 			"taxonomy" => $cat,
 			"field" => "slug",
@@ -63,8 +64,9 @@ foreach ($cats as $cat) {
 		]);
 	}
 }
-$c_arr = [["", "전체"]];
-$b_arr = [["", "전체"]];
+// 파라미터 없음 → 박스에 "과정"/"참여대상" 표시, "전체" 선택 시 → course=all 등 추가·박스에 "전체" 표시
+$c_arr = [["", "과정"], ["all", "전체"]];
+$b_arr = [["", "참여대상"], ["all", "전체"]];
 $b_args = get_terms(["taxonomy" => "participant"]);
 $c_args = get_terms(["taxonomy" => "course"]);
 foreach ($c_args as $c) {

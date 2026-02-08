@@ -184,6 +184,12 @@ body {
     }
   }
 }
+// 전시/상세 페이지: .w-limit 마디마다 양옆 패딩 제거 (16px → 0)
+.content_wrap .page-wrap.detail .w-limit,
+.content_wrap .page-wrap.detail.row .w-limit {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .lab_2 {
   & > * {
     &:first-child {

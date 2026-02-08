@@ -28,6 +28,15 @@
     margin: 0 auto;
   }
 
+  // 푸터 연락처 세로 간격
+  .footer-contact {
+    gap: 0;
+  }
+  // 푸터 연락처 값(링크 포함) 일반 굵기
+  .footer-contact-value {
+    font-weight: 400;
+  }
+
   // 모바일 스타일
   @media @mobile {
     padding: 24px 0;
@@ -38,8 +47,8 @@
       gap: 16px;
     }
 
-    // 로고와 설명 영역
-    > .wrap > .row {
+    // 로고와 설명 영역 (footer-contact 제외, 해당 영역은 gap: 0 유지)
+    > .wrap > .row:not(.footer-contact) {
       flex-direction: column;
       gap: 16px;
       
@@ -71,7 +80,7 @@
     .footer-phone {
       justify-content: flex-start !important;
       width: 100%;
-      
+
       p {
         font-size: 14px;
         font-weight: 500;
@@ -82,6 +91,7 @@
         display: none; // 모바일에서 "대표번호 |" 숨김
       }
     }
+
   }
 }
 

@@ -351,11 +351,11 @@ $(window).on("load", () => {
         },
         queryLinkTo() {
           let query = getQueries();
-          // 선택된 값이 빈 문자열이면 해당 키를 쿼리에서 제거
-          if (this.selected && this.selected.length > 0) {
-            query[name] = this.selected;
-          } else {
+          // 빈 문자열: 파라미터 제거(박스에는 defaultLabel 표시), "all" 또는 값 있음: 파라미터 추가
+          if (this.selected === "" || this.selected == null) {
             delete query[name];
+          } else {
+            query[name] = this.selected;
           }
           let str = `./`;
           if (queryToString(query)?.length) str = `./?${queryToString(query)}`;
@@ -383,6 +383,13 @@ $(window).on("load", () => {
         selectedItem() {
           const found = this.options.find((a) => a.value == this.selected);
           if (found) {
+            // 빈 값(전체 선택)일 때는 항목 이름(과정/참여대상 등) 표시 → 각 박스가 구분되게
+            if (found.value === "" || found.value === null) {
+              return {
+                value: "",
+                label: this.defaultLabel,
+              };
+            }
             return found;
           }
           return {
@@ -589,14 +596,19 @@ function academyInit() {
     // 실제 사용 가능한 컨텐츠 너비 계산
     const availableWidth = Math.min(windowWidth, contMaxWidth) - padding;
     
+    // data-mslidesperview 속성이 있으면 모바일에서 해당 값 사용
+    const mSlidesPerView = el.dataset["mslidesperview"] ? +el.dataset["mslidesperview"] : null;
+
     // breakpoint별 기본 slidesPerView
     let slidesPerView;
     if (windowWidth <= 650) {
-      // phone: 1.5개
-      slidesPerView = 1.5;
+      // phone
+      slidesPerView = mSlidesPerView || 1.5;
     } else if (windowWidth <= 765) {
-      // mobile: 1.5 ~ 2개 (너비에 따라 조정)
-      slidesPerView = Math.min(2, Math.max(1.5, availableWidth / 320));
+      // mobile
+      slidesPerView = mSlidesPerView
+        ? Math.min(mSlidesPerView + 0.5, Math.max(mSlidesPerView, availableWidth / 320))
+        : Math.min(2, Math.max(1.5, availableWidth / 320));
     } else if (windowWidth < contMaxWidth) {
       // 컨텐츠 너비 미만: 2 ~ 3개 (너비에 따라 조정)
       slidesPerView = Math.min(3, Math.max(2, availableWidth / 400));

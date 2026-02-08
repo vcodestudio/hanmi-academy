@@ -110,6 +110,9 @@
 .visible {
     visibility: visible
 }
+.collapse {
+    visibility: collapse
+}
 .static {
     position: static
 }
@@ -155,11 +158,20 @@
 .table {
     display: table
 }
+.table-caption {
+    display: table-caption
+}
+.table-cell {
+    display: table-cell
+}
 .grid {
     display: grid
 }
 .contents {
     display: contents
+}
+.\!hidden {
+    display: none !important
 }
 .hidden {
     display: none
@@ -323,6 +335,11 @@
 .overflow-hidden {
     overflow: hidden
 }
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
 .text-wrap {
     text-wrap: wrap
 }
@@ -405,8 +422,14 @@
 .text-\[22px\] {
     font-size: 22px
 }
+.text-\[clamp\(14px\2c 2\.5vw\2c 22px\)\] {
+    font-size: clamp(14px,2.5vw,22px)
+}
 .font-bold {
     font-weight: 700
+}
+.uppercase {
+    text-transform: uppercase
 }
 .lowercase {
     text-transform: lowercase
@@ -419,6 +442,9 @@
 }
 .leading-\[1\.375rem\] {
     line-height: 1.375rem
+}
+.leading-\[1\.5\] {
+    line-height: 1.5
 }
 .leading-\[1\.5em\] {
     line-height: 1.5em
@@ -466,9 +492,16 @@
     --tw-blur: blur(8px);
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
 }
+.\!invert {
+    --tw-invert: invert(100%) !important;
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important
+}
 .invert {
     --tw-invert: invert(100%);
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+}
+.\!filter {
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important
 }
 .filter {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
@@ -509,9 +542,6 @@
     .m\:gap-16 {
         gap: 4rem
     }
-    .m\:gap-4 {
-        gap: 1rem
-    }
     .m\:gap-8 {
         gap: 2rem
     }
@@ -542,6 +572,9 @@
     .m\:pt-0 {
         padding-top: 0px
     }
+    .m\:pt-\[40px\] {
+        padding-top: 40px
+    }
     .m\:text-\[1\.25rem\] {
         font-size: 1.25rem
     }
@@ -550,9 +583,6 @@
     }
     .m\:leading-\[1\.75rem\] {
         line-height: 1.75rem
-    }
-    .m\:\[word-break\:keep-all\] {
-        word-break: keep-all
     }
 }
 .\[\&\>\*\]\:flex-1>* {
@@ -2529,7 +2559,7 @@ input::placeholder {
   text-align: center;
   padding: 12px 24px;
   border-radius: 3em;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
   line-height: 1em;
   font-weight: 400;
 }
@@ -4568,6 +4598,9 @@ body.search-form .hambug {
   opacity: 0;
   transform: translate(0, -100%);
 }
+.header .hambug-menu.mob {
+  z-index: -1;
+}
 .header .hambug-menu .wrap {
   display: grid;
   justify-content: stretch;
@@ -4575,7 +4608,7 @@ body.search-form .hambug {
 .header .hambug-menu .wrap > p {
   font-size: 1.5rem;
   line-height: 1em;
-  height: 1.1em;
+  height: 1.01em;
   overflow: hidden;
 }
 .header .hambug-menu .wrap > p a {
@@ -4855,6 +4888,11 @@ body .page-wrap.forms p.caption .alert {
 }
 .detail .metabox > * > *:last-child {
   overflow: hidden;
+}
+.content_wrap .page-wrap.detail .w-limit,
+.content_wrap .page-wrap.detail.row .w-limit {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 .lab_2 > *:first-child {
   width: 120px;
@@ -5646,6 +5684,12 @@ body#error-page {
   padding: 0 1rem;
   margin: 0 auto;
 }
+.footer .footer-contact {
+  gap: 0;
+}
+.footer .footer-contact-value {
+  font-weight: 400;
+}
 @media screen and (max-width:765px) {
   .footer {
     padding: 24px 0;
@@ -5655,11 +5699,11 @@ body#error-page {
     flex-direction: column;
     gap: 16px;
   }
-  .footer > .wrap > .row {
+  .footer > .wrap > .row:not(.footer-contact) {
     flex-direction: column;
     gap: 16px;
   }
-  .footer > .wrap > .row p {
+  .footer > .wrap > .row:not(.footer-contact) p {
     font-size: 14px;
     line-height: 24px;
   }

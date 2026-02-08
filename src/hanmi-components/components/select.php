@@ -43,6 +43,6 @@
         </span>
     </div>
     <ul class="option" v-show="open">
-        <li v-for="(item,i) in options" :key="i" @click="(selected = item.value) && (open = 0)">{{item.label}}</li>
+        <li v-for="(item,i) in options.filter(o => o.label !== defaultLabel)" :key="i" @click="(selected = item.value) && (open = 0)">{{item.label}}</li>
     </ul>
 </div>

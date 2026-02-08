@@ -100,7 +100,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll">
+            <div class="gallery-grid m-hori_scroll" data-mslidesperview="1.2">
                 <?=
             comp("program-item",["posts"=>$posts]);
             ?>
@@ -133,7 +133,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
                     </a>
                 </div>
             </div>
-            <div class="gallery-grid m-hori_scroll">
+            <div class="gallery-grid m-hori_scroll" data-mslidesperview="1.2">
                 <?=
             comp("exhibition-item",["posts"=>$posts]);
             ?>
@@ -169,7 +169,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
             </div>
         </div>
     </div>
-    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="2.2" data-loop="1" fade>
+    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="2.8" data-loop="1" fade>
         <div class="swiper-wrapper flex middle">
             <?php
             $acts = get_posts(["post_type"=>"post_activity","post_status"=>"publish"]);

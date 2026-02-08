@@ -36,7 +36,7 @@
 				?>
 			</div>
 		</div>
-		<div class="row gap-12 m:gap-4 footer-contact">
+		<div class="row gap-0 footer-contact">
 			<?php if($phone_number = get_field("footer_phone_number","option")): ?>
 			<p>
 				<span class="footer-contact-label">대표번호 | </span>
