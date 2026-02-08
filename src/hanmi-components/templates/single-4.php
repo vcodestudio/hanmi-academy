@@ -1,4 +1,4 @@
-<div class="row gap-64">
+<div class="row gap-64 page-wrap detail">
 
     <div class="row gap-32 detail w-limit">
         <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: _acf("imgs"), "forceSlider" => true, "showBullets" => true]) ?>

@@ -161,7 +161,7 @@ $currentPost = get_post();
             <br/>
             <br/>
             <h2>
-                검색된 활동이 없습니다.
+                검색된 갤러리가 없습니다.
             </h2>
             <br/>
         </div>

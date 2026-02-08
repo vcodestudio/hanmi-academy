@@ -383,16 +383,8 @@ $(window).on("load", () => {
         selectedItem() {
           const found = this.options.find((a) => a.value == this.selected);
           if (found) {
-            // 빈 값일 때는 원본 라벨 이름 표시
-            if (found.value === "" || found.value === null) {
-              return {
-                value: "",
-                label: this.defaultLabel,
-              };
-            }
             return found;
           }
-          // 기본값: 빈 값일 때 원본 라벨 표시
           return {
             value: "",
             label: this.defaultLabel,

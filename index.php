@@ -153,13 +153,13 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
             ]);
             if($posts->have_posts()):
     ?>
-<!-- 활동 -->
+<!-- 갤러리 -->
 <div class="row gap-24">
     <div class="w-limit row gap-24">
         <div class="s-col-2 middle">
             <div class="flex middle">
                 <h3 class="single-line">
-                    활동
+                    갤러리
                 </h3>
             </div>
             <div class="flex middle right">
@@ -169,7 +169,7 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
             </div>
         </div>
     </div>
-    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="3.5" data-loop="1" fade>
+    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="2.2" data-loop="1" fade>
         <div class="swiper-wrapper flex middle">
             <?php
             $acts = get_posts(["post_type"=>"post_activity","post_status"=>"publish"]);

@@ -21,7 +21,7 @@
             $about_intro_clean = '<p class="text-[22px] m:text-[16px] m:[word-break:keep-all] m:[&_br]:hidden">' . $about_intro_clean . '</p>';
         }
     ?>
-    <div class="row py-[60px] m:py-[24px] m:pt-0">
+    <div class="row gap-[1.5em] py-[60px] m:py-[24px]">
         <?= wp_kses_post($about_intro_clean) ?>
     </div>
     <?php endif; ?>
@@ -67,7 +67,7 @@
             }
         }
     ?>
-    <div class="row gap-32 py-[20px] m:gap-16 m:py-[16px]<?= !$is_first ? ' hide' : '' ?>" data-tab="<?= esc_attr($index) ?>">
+    <div class="row gap-32 py-[40px] m:gap-16 m:py-[24px]<?= !$is_first ? ' hide' : '' ?>" data-tab="<?= esc_attr($index) ?>">
         <div class="flex gap/8 justify-between flex-wrap gap-y-8 m:gap-x-0 m:gap-y-4">
             <?php if ($image_url): ?>
             <img class="w-full h-auto m:w-[328px] m:order-2" src="<?= esc_url($image_url) ?>" alt="<?= esc_attr($tab['title'] ?? '') ?> 이미지" />
