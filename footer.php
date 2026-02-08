@@ -45,17 +45,7 @@
 			<?php endif; ?>
 			<p>
 				<span class="footer-contact-label">대표메일 | </span>
-				<a href="mailto:academy@museumhanmi.or.kr" class="footer-contact-value" style="font-weight: normal;">academy@museumhanmi.or.kr</a>
-			</p>
-			<?php 
-			$instagram_url = get_field("footer_instagram_url", "option");
-			if (!$instagram_url) {
-				$instagram_url = "https://www.instagram.com/museumhanmi_academy";
-			}
-			?>
-			<p>
-				<span class="footer-contact-label">Instagram | </span>
-				<a href="<?= esc_url($instagram_url) ?>" target="_blank" rel="noopener noreferrer" class="footer-contact-value" style="font-weight: normal;">@museumhanmi_academy</a>
+				<a href="mailto:academy@museumhanmi.or.kr" class="footer-contact-value">academy@museumhanmi.or.kr</a>
 			</p>
 		</div>
 	</div>

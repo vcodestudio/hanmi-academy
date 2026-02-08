@@ -51,7 +51,7 @@ if (!$is_logged_in) {
     }
 }
 ?>
-<div class="row gap-32 page-wrap detail">
+<div class="row gap-32 page-wrap detail w-limit">
     <?= comp("slider-banner", ["imgs" => _acf("detail_imgs") ?: (_acf("thumb") ? [_acf("thumb")] : []), "forceSlider" => true, "showBullets" => true]) ?>
     <div class="col-2 gap-32 detail overflow-hidden">
         <div class="row gap-24 overflow-hidden">
