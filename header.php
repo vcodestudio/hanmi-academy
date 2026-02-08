@@ -101,7 +101,7 @@ if (is_home()) {
 			</div>
 			<div class="flex hide gap-1r w_fit" v-show="search.active">
 				<div class="search flex gap-1r max-width-half flex-auto">
-					<input class="flex-auto" type="text" v-model="search.text" @keyup.enter="$refs.searchAction.click()"
+					<input class="flex-auto min-w-[0px]" type="text" v-model="search.text" @keyup.enter="$refs.searchAction.click()"
 						placeholder="시리즈명 또는 작품명 또는 작가명을 입력하여 검색해주세요." />
 					<a :href="`/?s=${search.text}`" class="button flex-none" ref="searchAction">
 						검색
