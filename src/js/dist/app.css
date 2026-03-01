@@ -404,9 +404,6 @@
 .text-center {
     text-align: center
 }
-.text-\[0\.875rem\] {
-    font-size: 0.875rem
-}
 .text-\[1\.5rem\] {
     font-size: 1.5rem
 }
@@ -427,9 +424,6 @@
 }
 .capitalize {
     text-transform: capitalize
-}
-.leading-\[1\.25rem\] {
-    line-height: 1.25rem
 }
 .leading-\[1\.2em\] {
     line-height: 1.2em
@@ -455,9 +449,6 @@
 .text-\[\#5fb800\] {
     --tw-text-opacity: 1;
     color: rgb(95 184 0 / var(--tw-text-opacity, 1))
-}
-.text-\[rgba\(0\2c 0\2c 0\2c 0\.5\)\] {
-    color: rgba(0,0,0,0.5)
 }
 .text-ascent {
     --tw-text-opacity: 1;
