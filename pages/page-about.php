@@ -21,7 +21,7 @@
             $about_intro_clean = '<p class="text-[clamp(14px,2.5vw,22px)] leading-[1.5]">' . $about_intro_clean . '</p>';
         }
     ?>
-    <div class="row gap-[1.5em] py-[60px] m:py-[24px] m:pt-[40px]">
+    <div class="row gap-[2em] py-[60px] m:py-[24px] m:pt-[40px]">
         <?= wp_kses_post($about_intro_clean) ?>
     </div>
     <?php endif; ?>
@@ -75,7 +75,7 @@
             <div class="flex-auto m:order-1">
                 <h4 class="bold"><?= esc_html($tab['title'] ?? '') ?></h4>
             </div>
-            <div class="flex-none max-w-[640px] w-full m:order-3 keep-all">
+            <div class="flex-none max-w-[640px] w-full m:order-3 keep-all space-y-[1em]">
                 <?= wpautop(esc_html($tab['content'] ?? '')) ?>
             </div>
         </div>
