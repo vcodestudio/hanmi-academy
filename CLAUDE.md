@@ -17,6 +17,8 @@ npm run deploy:test
 
 `npm run dev` requires a `.env` file with `DEV_URL` (local dev URL) and `SITE_URL` variables. It launches a Playwright Chromium browser that auto-reloads on PHP/JS/LESS/CSS changes.
 
+Local development URL: **http://localhost:8883/**
+
 ## Architecture Overview
 
 ### Build System

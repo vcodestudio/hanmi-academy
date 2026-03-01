@@ -78,9 +78,9 @@ if (!$is_logged_in) {
         <div class="row gap-24 overflow-hidden">
             <?php if ($f = _acf("desc")): ?>
             <div class="row gap-12">
-                <p>
+                <div class="wysiwyg-content">
                     <?= $f ?>
-                </p>
+                </div>
             </div>
             <hr />
             <?php endif; ?>
@@ -130,7 +130,7 @@ if (!$is_logged_in) {
     <div class="row gap-16">
         <h6>상세내용</h6>
         <p>
-            <?= $f ?>
+            <?= nl2br(esc_html($f)) ?>
         </p>
     </div>
     <?php endif; ?>
