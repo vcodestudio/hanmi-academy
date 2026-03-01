@@ -105,18 +105,14 @@ if (!$is_logged_in) {
                 <?php endif; ?>
                 <?php if ($f = _acf("uploads")): ?>
                 <div class="flex gap-24 min-w-0">
-                    <p class="bold">참고자료</p>
-                    <div class="row gap-16 min-w-0 overflow-hidden">
+                    <p class="bold invisible select-none" aria-hidden="true">-</p>
+                    <div class="row gap-12 min-w-0 overflow-hidden">
                         <?php foreach ($f as $i): ?>
                         <?php if (isset($i["item"]) && is_array($i["item"]) && isset($i["item"]["url"])): ?>
-                        <a class="underline single-line block" href="<?= esc_url($i["item"]["url"]) ?>"
-                            target="_blank"><?= esc_html($i["item"]["filename"] ?? basename($i["item"]["url"])) ?></a>
-                        <div class="flex">
-                            <?= comp("download", [
-                            	"label" => "다운로드",
-                            	"link" => esc_url($i["item"]["url"]),
-                            ]) ?>
-                        </div>
+                        <?= comp("download", [
+                            "label" => $i["item"]["filename"] ?? basename($i["item"]["url"]),
+                            "link" => esc_url($i["item"]["url"]),
+                        ]) ?>
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
