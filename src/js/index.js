@@ -12,6 +12,7 @@ import "../css/global.less";
 window.$ = $;
 window.tabs = [];
 window.selectboxes = {};
+window.sliders = {};
 window.addEventListener("load", () => {
   Header.init();
   CommonFilter.init();
@@ -190,7 +191,6 @@ $(window).on("load", () => {
     });
   }
   //slider-common
-  window.sliders = {};
   document.querySelectorAll(".swiper").forEach((obj, i) => {
     const id = `slider-${i}`;
     obj.classList.add(id);
