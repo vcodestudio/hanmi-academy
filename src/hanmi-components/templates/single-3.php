@@ -104,9 +104,9 @@ if (!$is_logged_in) {
                 <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($f = _acf("uploads")): ?>
-                <div class="flex gap-24 min-w-0">
+                <div class="flex gap-24">
                     <p class="bold invisible select-none" aria-hidden="true">-</p>
-                    <div class="row gap-12 min-w-0 overflow-hidden">
+                    <div class="row gap-12">
                         <?php foreach ($f as $i): ?>
                         <?php if (isset($i["item"]) && is_array($i["item"]) && isset($i["item"]["url"])): ?>
                         <?= comp("download", [

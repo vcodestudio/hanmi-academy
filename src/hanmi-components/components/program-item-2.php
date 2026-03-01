@@ -82,6 +82,7 @@
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1.5rem] leading-[2.25rem] m:text-[1.25rem] m:leading-[1.75rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
                 </a>
+                <p class="text-[0.875rem] leading-[1.25rem] text-[rgba(0,0,0,0.5)] tracking-[-0.0125rem]"><?= getDateRange() ?></p>
             </div>
         </div>
     </div>
