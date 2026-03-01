@@ -47,11 +47,6 @@
 				<span class="footer-contact-label">대표메일 | </span>
 				<a href="mailto:academy@museumhanmi.or.kr" class="footer-contact-value">academy@museumhanmi.or.kr</a>
 			</p>
-			<?php if($instagram_url = get_field("footer_instagram_url","option")): ?>
-			<a href="<?= esc_url($instagram_url) ?>" target="_blank" rel="noopener noreferrer" class="footer-sns-link">
-				<?= icon("instagram") ?>
-			</a>
-			<?php endif; ?>
 		</div>
 	</div>
 </div>
