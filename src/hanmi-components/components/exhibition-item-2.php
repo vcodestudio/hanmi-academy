@@ -47,12 +47,12 @@
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
-            <div class="flex flex-col gap-[0.25rem]">
+            <div class="flex flex-col">
                 <a href="<?= esc_url(get_permalink()) ?>">
                     <div class="text-[1.5rem] leading-[2.25rem] m:text-[1.25rem] m:leading-[1.75rem] font-bold tracking-[-0.0125rem] text-black"><?= get_the_title() ?></div>
                 </a>
-                <div class="caption"><?= getDateRange() ?></div>
             </div>
+            <p class="text-[1rem] leading-[1.5rem] tracking-[-0.0125rem] text-black"><?= getDateRange() ?></p>
         </div>
     </div>
     <?php
