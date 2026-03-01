@@ -311,6 +311,9 @@
 .gap-8 {
     gap: 2rem
 }
+.gap-\[0\.25rem\] {
+    gap: 0.25rem
+}
 .gap-\[0\.5rem\] {
     gap: 0.5rem
 }
@@ -5638,6 +5641,17 @@ body#error-page {
   .sticky-wrapper .sticky {
     position: static;
   }
+}
+.wysiwyg-content p {
+  margin-bottom: 1em;
+}
+.wysiwyg-content p:last-child {
+  margin-bottom: 0;
+}
+.wysiwyg-content br {
+  display: block;
+  content: "";
+  margin-top: 0.5em;
 }
 #trp-floater-ls {
   display: none !important;
