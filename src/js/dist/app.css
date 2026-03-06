@@ -5614,7 +5614,7 @@ body#error-page {
     -webkit-overflow-scrolling: touch;
   }
   .m-hori_scroll:not(.swiper) > * {
-    min-width: calc((100vw - 2rem - 16px) / 1.2);
+    min-width: calc((100vw - 2rem - 16px) / 1.04);
     flex-shrink: 0;
     scroll-snap-align: start;
   }
@@ -5628,7 +5628,7 @@ body#error-page {
 }
 @media screen and (max-width:765px) {
   .index > div {
-    padding: 0 0 24px;
+    padding: 0 0 6rem;
   }
   .index > div.main-banner-image {
     padding: 0;

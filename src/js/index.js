@@ -226,7 +226,7 @@ $(window).on("load", () => {
           },
           0: {
             slidesPerView: slides,
-            spaceBetween: 16,
+            spaceBetween: obj.dataset["mspacebetween"] ? +obj.dataset["mspacebetween"] : 16,
           },
         },
         effect: obj.dataset["effect"] ?? "slide",
