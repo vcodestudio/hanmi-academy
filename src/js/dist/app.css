@@ -5770,4 +5770,7 @@ form.wpforms-validate .wpforms-submit-container {
     padding: 1rem;
   }
 }
+.wp-playlist .mejs-container {
+  width: 100% !important;
+}
 
