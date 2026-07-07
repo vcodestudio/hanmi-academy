@@ -17,6 +17,14 @@
 		$_SESSION["cert_numb"] = rand(100000,999999);
         $etc = (is_user_logged_in() || isset($_POST["pw_reset"]));
 
+        // 이메일 형식 검사 (형식 오류와 발송 실패를 구분)
+        if(!is_email($_SESSION["email"])) {
+            wp_send_json([
+                "data"=>"<span class='alert'>올바른 이메일 주소를 입력해주세요.</span>"
+            ]);
+            exit;
+        }
+
         if(!$etc && get_user_by_email($_SESSION["email"])) {
             wp_send_json([
                 "data"=>"<span class='alert'>이미 등록된 이메일 입니다.</span>"
@@ -50,7 +58,7 @@
             wp_send_json($args);
         } else {
             wp_send_json([
-                "data"=>"<span class='alert'>올바른 이메일 주소를 입력해주세요.</span>"
+                "data"=>"<span class='alert'>인증번호 발송에 실패했습니다. 잠시 후 다시 시도해주세요.</span>"
             ]);
         }
 	}

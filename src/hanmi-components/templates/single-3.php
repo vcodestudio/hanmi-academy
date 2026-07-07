@@ -91,7 +91,7 @@ if (!$is_logged_in) {
                     <p><?= _acf("location_text") &&
                     !empty(_acf("location_text"))
                     	? _acf("location_text")
-                    	: "뮤지엄한미 $f->name" ?>
+                    	: (strpos($f->name,"뮤지엄한미")===0 ? $f->name : "뮤지엄한미 $f->name") ?>
                     </p>
                 </div>
                 <?php endif; ?>
@@ -110,7 +110,7 @@ if (!$is_logged_in) {
                         <?php foreach ($f as $i): ?>
                         <?php if (isset($i["item"]) && is_array($i["item"]) && isset($i["item"]["url"])): ?>
                         <?= comp("download", [
-                            "label" => $i["item"]["filename"] ?? basename($i["item"]["url"]),
+                            "label" => (!empty($i["item"]["title"]) ? $i["item"]["title"] : ($i["item"]["filename"] ?? basename($i["item"]["url"]))),
                             "link" => esc_url($i["item"]["url"]),
                         ]) ?>
                         <?php endif; ?>
@@ -132,7 +132,7 @@ if (!$is_logged_in) {
     <?php endif; ?>
     <hr />
     <div class="flex">
-        <a href="<?= getPage("activity")->permalink ?>" class="button">
+        <a href="<?= getPage("program")->permalink ?>" class="button">
             목록으로
         </a>
     </div>

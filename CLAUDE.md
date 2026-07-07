@@ -64,3 +64,8 @@ Overrides live in `woocommerce/` and `ultimate-member/` respectively, following 
 - **Naming**: `snake_case` PHP functions/vars, `kebab-case` CSS classes and filenames
 - **Multisite**: This theme runs in a WordPress Multisite environment — be aware of network vs. site-level settings
 - **SSH keys** live in `keys/` (gitignored); deploy target is `bitnami@3.37.141.188`, theme path `/opt/bitnami/wordpress/wp-content/themes/hanmi-academy`
+- 키 파일 권한 문제 시: `chmod 400 ./keys/mh.pem`
+
+## Multisite ACF Troubleshooting
+
+`Call to undefined function get_field()` 에러 발생 시 → ACF 플러그인 비활성화 상태. 네트워크 관리자(`/wp-admin/network/`)에서 네트워크 활성화 여부 확인.

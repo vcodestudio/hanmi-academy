@@ -34,7 +34,7 @@
                 <?php if($f=_acf("location")):?>
                 <div class="flex gap-24">
                     <p class="bold">장소</p>
-                    <p><?= (_acf("location_text") && !empty(_acf("location_text")))?_acf("location_text"):"뮤지엄한미 $f->name" ?></p>
+                    <p><?= (_acf("location_text") && !empty(_acf("location_text")))?_acf("location_text"):(strpos($f->name,"뮤지엄한미")===0?$f->name:"뮤지엄한미 $f->name") ?></p>
                 </div>
                 <?php endif; ?>
                 <?php if($f=_acf("price")): ?>

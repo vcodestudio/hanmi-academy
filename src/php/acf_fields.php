@@ -129,7 +129,9 @@ if( function_exists('acf_add_local_field_group') ):
 				'label' => '대표이미지',
 				'name' => 'thumb',
 				'type' => 'image',
-				'instructions' => '',
+				'instructions' => '권장 사이즈 : 1200 x 1200 (1:1 정방형)
+
+	* 공지사항 목록에 표시되는 대표 이미지입니다.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(
@@ -1507,7 +1509,9 @@ if( function_exists('acf_add_local_field_group') ):
 				'label' => '썸네일',
 				'name' => 'thumb',
 				'type' => 'image',
-				'instructions' => '권장사이즈 : 760 x 1020',
+				'instructions' => '권장 사이즈 : 1200 x 1200 (1:1 정방형)
+
+	* 전시 목록에 표시되는 대표 이미지입니다.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(
@@ -1531,7 +1535,10 @@ if( function_exists('acf_add_local_field_group') ):
 				'label' => '상세 이미지',
 				'name' => 'detail_imgs',
 				'type' => 'gallery',
-				'instructions' => '전시 상단 배너 슬라이더에 사용됩니다.',
+				'instructions' => '권장 사이즈 : 2400 x 960 (5:2 가로형)
+
+	* 전시 상단 배너 슬라이더에 사용됩니다.
+	* 여러 장 등록 시 좌우로 슬라이드됩니다.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(
@@ -1903,9 +1910,10 @@ if( function_exists('acf_add_local_field_group') ):
 				'label' => '썸네일',
 				'name' => 'thumb',
 				'type' => 'image',
-				'instructions' => '권장 사이즈 : 760 x 1020
-	
-	* 이 이미지는 해당 프로그램의 기본 이미지 입니다.',
+				'instructions' => '권장 사이즈 : 1200 x 1200 (1:1 정방형)
+
+	* 이 이미지는 해당 프로그램의 기본 이미지 입니다.
+	* 프로그램 목록에 표시됩니다.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(
@@ -1929,7 +1937,10 @@ if( function_exists('acf_add_local_field_group') ):
 				'label' => '상세 이미지',
 				'name' => 'detail_imgs',
 				'type' => 'gallery',
-				'instructions' => '프로그램 상단 배너 슬라이더에 사용됩니다.',
+				'instructions' => '권장 사이즈 : 2400 x 960 (5:2 가로형)
+
+	* 프로그램 상단 배너 슬라이더에 사용됩니다.
+	* 여러 장 등록 시 좌우로 슬라이드됩니다.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(

@@ -59,31 +59,31 @@ if ($date_filter === "all") {
 		case "before":
 			array_push($args["meta_query"], [
 				"key" => "start",
-				"value" => date("Y.m.d"),
+				"value" => date("Ymd"),
 				"compare" => ">",
-				"type" => "CHAR",
+				"type" => "NUMERIC",
 			]);
 			break;
 		case "current":
 			array_push($args["meta_query"], [
 				"key" => "start",
-				"value" => date("Y.m.d"),
+				"value" => date("Ymd"),
 				"compare" => "<=",
-				"type" => "CHAR",
+				"type" => "NUMERIC",
 			]);
 			array_push($args["meta_query"], [
 				"key" => "end",
-				"value" => date("Y.m.d"),
+				"value" => date("Ymd"),
 				"compare" => ">=",
-				"type" => "CHAR",
+				"type" => "NUMERIC",
 			]);
 			break;
 		case "closed":
 			array_push($args["meta_query"], [
 				"key" => "end",
-				"value" => date("Y.m.d"),
+				"value" => date("Ymd"),
 				"compare" => "<",
-				"type" => "CHAR",
+				"type" => "NUMERIC",
 			]);
 			break;
 	}
