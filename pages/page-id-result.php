@@ -6,10 +6,13 @@
     $item_class="field-item flex gap-1r middle";
     
     $email = $_POST["email_id"]."@".$_POST["email_addr"];
+    // 회원(wp_users)은 네트워크 전체가 공유하지만 권한(role)은 사이트별로 분리돼 있다.
+    // role/blog 조건으로 좁히면 아카데미 권한이 없는 기존 회원(메인사이트 가입자)이
+    // 검색에서 누락돼 아이디·비밀번호를 못 찾으므로 네트워크 전체를 대상으로 조회한다.
     $args = [
         "search"=>$email,
         "search_columns"=>["user_email"],
-        "role"=>"subscriber",
+        "blog_id"=>0,
         "meta_query"=>[
             "AND"
         ]
