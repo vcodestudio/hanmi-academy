@@ -25,9 +25,20 @@
             exit;
         }
 
+        // 회원(wp_users)은 네트워크 전체가 공유하므로 메인사이트 등 다른 사이트에 가입한
+        // 이메일은 여기서 신규 가입이 불가능하다. 기존 계정으로 로그인하면 그대로 이용할 수
+        // 있으므로(이메일 주소로도 로그인 가능) 막다른 안내 대신 로그인 경로를 제시한다.
         if(!$etc && get_user_by_email($_SESSION["email"])) {
+            $login_page = getPage("login");
+            $find_page = getPage("account-find");
+            $msg = "이미 뮤지엄한미 회원으로 가입된 이메일입니다. 새로 가입하지 않으셔도 이 이메일 주소로 바로 ";
+            $msg .= $login_page ? "<a href='".esc_url($login_page->permalink)."'>로그인</a>" : "로그인";
+            $msg .= "하시면 아카데미를 이용하실 수 있습니다.";
+            if($find_page) {
+                $msg .= " 비밀번호가 기억나지 않으시면 <a href='".esc_url($find_page->permalink."?cert_type=password")."'>비밀번호 찾기</a>를 이용해주세요.";
+            }
             wp_send_json([
-                "data"=>"<span class='alert'>이미 등록된 이메일 입니다.</span>"
+                "data"=>"<span class='alert'>".$msg."</span>"
             ]);
             exit;
         }

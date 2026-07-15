@@ -24,6 +24,9 @@ $birth = date("Y년 m월 d일",strtotime($birth_str));
 ?>
 <form class="page-wrap forms row gap-32" method="POST">
     <h3>회원정보 입력</h3>
+    <?php if(!empty($join_error)): ?>
+        <?= comp("alert",["label"=>$join_error]) ?>
+    <?php endif; ?>
     <div class="row gap-24">
         <div class="<?= $row_class ?>">
             <h6>이름</h6>
