@@ -519,6 +519,30 @@ function payment_history_endpoint_title($title, $endpoint) {
 	return '결제내역';
 }
 
+/**
+ * 회원 연락처(전화번호) 단일 조회 지점.
+ *
+ * 회원가입(src/php/join_check.php)은 전화번호를 ACF 필드 `tel`(usermeta key `tel`)로 저장한다.
+ * `billing_phone`/`phone`은 초기 계정 일부에만 남아 있는 레거시 키이므로 폴백으로만 본다.
+ * 주문 생성 시 이 값이 비면 관리자 "프로그램 신청자현황"의 전화번호 칸이 빈칸이 된다.
+ */
+function hanmi_get_user_tel($user_id) {
+	$user_id = intval($user_id);
+	if ($user_id <= 0) {
+		return '';
+	}
+
+	$tel = get_user_meta($user_id, 'tel', true);
+	if (empty($tel)) {
+		$tel = get_user_meta($user_id, 'billing_phone', true);
+	}
+	if (empty($tel)) {
+		$tel = get_user_meta($user_id, 'phone', true);
+	}
+
+	return is_string($tel) ? trim($tel) : '';
+}
+
 include DIR_SRC . "/php/ajax.php";
 
 // Filter out deprecated warnings and specific WooCommerce session warnings from output

@@ -126,10 +126,12 @@ $current_user = wp_get_current_user();
 $user_meta = get_user_meta($current_user->ID);
 
 // 회원 정보 가져오기
+// 연락처는 회원가입(join_check.php)에서 ACF 필드 `tel`로 저장된다.
+// billing_phone/phone은 일부 계정에만 있는 레거시 키라 이것만 보면 대부분 빈값이 된다.
 $orderer = [
     'name' => $current_user->display_name ?: ($user_meta['first_name'][0] ?? '') . ' ' . ($user_meta['last_name'][0] ?? ''),
     'email' => $current_user->user_email,
-    'phone' => $user_meta['billing_phone'][0] ?? $user_meta['phone'][0] ?? ''
+    'phone' => hanmi_get_user_tel($current_user->ID)
 ];
 
 // 이름이 비어있으면 사용자명 사용

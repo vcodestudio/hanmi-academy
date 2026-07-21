@@ -160,7 +160,11 @@
             $buyerName = sanitize_text_field($_POST['buyer_name'] ?? '');
             $buyerEmail = sanitize_email($_POST['buyer_email'] ?? '');
             $buyerTel = sanitize_text_field($_POST['buyer_tel'] ?? '');
-            
+            // 폼에서 연락처가 비어 오면 회원정보(ACF tel)로 보완한다.
+            if (empty($buyerTel) && function_exists('hanmi_get_user_tel')) {
+                $buyerTel = hanmi_get_user_tel(get_current_user_id());
+            }
+
             if ($amount <= 0) {
                 wp_send_json_error(array('message' => '결제 금액이 올바르지 않습니다.'));
                 return;
@@ -633,7 +637,11 @@
             $buyerName = sanitize_text_field($_POST['buyer_name'] ?? '');
             $buyerEmail = sanitize_email($_POST['buyer_email'] ?? '');
             $buyerTel = sanitize_text_field($_POST['buyer_tel'] ?? '');
-            
+            // 폼에서 연락처가 비어 오면 회원정보(ACF tel)로 보완한다.
+            if (empty($buyerTel) && function_exists('hanmi_get_user_tel')) {
+                $buyerTel = hanmi_get_user_tel(get_current_user_id());
+            }
+
             // #region agent log
             $log_entry = json_encode(array(
                 'sessionId' => 'debug-session',
