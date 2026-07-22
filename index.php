@@ -169,25 +169,29 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
             </div>
         </div>
     </div>
-    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="2.15" data-mspacebetween="8" data-loop="1" fade>
+    <div class="swiper main_activity" data-slidesperview="6.5" data-mslidesperview="2.15" data-mspacebetween="8" fade>
         <div class="swiper-wrapper flex middle">
             <?php
-            $acts = get_posts(["post_type"=>"post_activity","post_status"=>"publish"]);
-        for($i=1;$i<6;$i++): ?>
-            <a href="<?= getPage("activity")->permalink ?? "/" ?>" class="swiper-slide">
-                <?php
-                    if(isset($acts[$i-1])):
-                ?>
-                <img src="<?= _acf("gallery",$acts[$i-1]->ID)[0]["sizes"]["medium"] ?>" />
-                <?php
-                    else:
-                ?>
-                <img src="<?= getImg("academy/image-{$i}.png") ?>" />
-                <?php
-                    endif;
-                ?>
-            </a>
-        <?php endfor; ?>
+            // 발행된 활동사진 전체를 노출(기존: 5장 하드코딩 + loop로 반복 노출되던 문제 수정).
+            // 각 슬라이드는 page-activity와 동일한 gallery 라이트박스 구조로, 클릭 시 목록 탭 이동이
+            // 아니라 그 게시물의 이미지가 오버레이(footer .img_overlay.gall_overlay)로 바로 열린다.
+            $acts = get_posts(["post_type"=>"post_activity","post_status"=>"publish","numberposts"=>-1]);
+            foreach($acts as $act):
+                $imgs = _acf("gallery", $act->ID);
+                if(!$imgs || !is_array($imgs)) continue;
+            ?>
+            <div class="swiper-slide">
+                <div class="thumb" gallery style="position: relative; cursor: pointer;">
+                    <?php foreach($imgs as $idx=>$img):
+                        $src = $img["sizes"]["medium"] ?? $img["url"] ?? "";
+                        if(!$src) continue;
+                        $cap = $img["caption"] ?? $img["alt"] ?? $act->post_title;
+                    ?>
+                    <img src="<?= esc_url($src) ?>" alt="<?= esc_attr($cap) ?>"<?= $idx === 0 ? "" : ' style="display:none;"' ?> />
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>

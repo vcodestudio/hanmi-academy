@@ -8,7 +8,8 @@
                 <div class="relative w-full">
                     <img class="block w-full h-auto object-contain" src="<?= _acf("thumb")["sizes"]["large"] ?>" alt="<?= esc_attr(get_the_title()) ?>" />
                     <?php
-                    $deadline_status = _acf("deadline_status");
+                    // 수동 마감표시 + 정원 자동판정(정원 차면 자동 '마감'). functions.php 참조.
+                    $deadline_status = function_exists('hanmi_program_deadline_label') ? hanmi_program_deadline_label(get_the_ID()) : _acf("deadline_status");
                     if ($deadline_status && $deadline_status !== 'none'):
                         $deadline_labels = [
                             'soon' => '마감임박',

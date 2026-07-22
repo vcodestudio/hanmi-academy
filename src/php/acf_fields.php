@@ -18,12 +18,14 @@ if( function_exists('acf_add_local_field_group') ):
 					'class' => '',
 					'id' => '',
 				),
-				'layout' => 'table',
+				// table → block: 각 문항(제목/내용 wysiwyg/링크)을 전체폭으로 펼쳐 관리자가 게시 내용을 바로 확인·편집.
+				// collapsed에 제목 필드를 지정해 접었을 때 문항 제목이 헤더에 보이도록(아코디언식 목록 훑기).
+				'layout' => 'block',
 				'pagination' => 0,
 				'min' => 0,
 				'max' => 0,
-				'collapsed' => '',
-				'button_label' => 'Add Row',
+				'collapsed' => 'field_63691b02b30e1',
+				'button_label' => '문항 추가',
 				'rows_per_page' => 20,
 				'sub_fields' => array(
 					array(

@@ -409,17 +409,32 @@ if (!empty($orders)) {
                         </td>
                         <td>
                             <?php if ($order['status'] === 'success'): ?>
-                                <button type="button" class="button process-order-btn" 
-                                        data-order-id="<?= $order['post_id'] ?>"
-                                        data-mbr-ref-no="<?= esc_attr($order['mbr_ref_no']) ?>"
-                                        data-ref-no="<?= esc_attr($order['ref_no']) ?>"
-                                        data-amount="<?= $order['amount'] ?>"
-                                        data-program-id="<?= $order['program_id'] ?>"
-                                        data-program-title="<?= esc_attr($order['program_title']) ?>"
-                                        data-quantity="<?= $order['quantity'] ?>"
-                                        style="background-color: #2271b1; color: #fff; border-color: #2271b1;">
-                                    주문 처리
-                                </button>
+                                <?php if (intval($order['amount']) === 0): ?>
+                                    <?php // 무료 주문은 환불 대상이 아니므로 '주문 처리'(환불/이월) 대신 '신청취소'만 노출.
+                                          // 클릭 시 admin_cancel_order AJAX가 상태를 cancelled로 바꾸고 신청자 수를 차감한다. ?>
+                                    <button type="button" class="button cancel-order-btn"
+                                            data-order-id="<?= $order['post_id'] ?>"
+                                            data-mbr-ref-no="<?= esc_attr($order['mbr_ref_no']) ?>"
+                                            data-ref-no="<?= esc_attr($order['ref_no']) ?>"
+                                            data-amount="<?= $order['amount'] ?>"
+                                            data-program-id="<?= $order['program_id'] ?>"
+                                            data-quantity="<?= $order['quantity'] ?>"
+                                            style="background-color: #b32d2e; color: #fff; border-color: #b32d2e;">
+                                        신청취소
+                                    </button>
+                                <?php else: ?>
+                                    <button type="button" class="button process-order-btn"
+                                            data-order-id="<?= $order['post_id'] ?>"
+                                            data-mbr-ref-no="<?= esc_attr($order['mbr_ref_no']) ?>"
+                                            data-ref-no="<?= esc_attr($order['ref_no']) ?>"
+                                            data-amount="<?= $order['amount'] ?>"
+                                            data-program-id="<?= $order['program_id'] ?>"
+                                            data-program-title="<?= esc_attr($order['program_title']) ?>"
+                                            data-quantity="<?= $order['quantity'] ?>"
+                                            style="background-color: #2271b1; color: #fff; border-color: #2271b1;">
+                                        주문 처리
+                                    </button>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <span style="color: #999;">처리완료</span>
                             <?php endif; ?>

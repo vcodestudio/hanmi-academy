@@ -543,6 +543,41 @@ function hanmi_get_user_tel($user_id) {
 	return is_string($tel) ? trim($tel) : '';
 }
 
+/**
+ * 프로그램 카드의 마감 배지 상태를 결정한다.
+ *
+ * 우선순위:
+ *  1) 관리자가 프로그램 편집화면에서 직접 고른 deadline_status('closed'/'soon')가 있으면 그대로 존중.
+ *  2) 수동값이 없으면(none/빈값) 정원 자동판정: 수강인원 제한(product_stock)이 설정돼 있고
+ *     신청자 수(program_applicants_count)가 정원 이상이면 자동으로 'closed'(마감).
+ *  - product_stock 0 = 제한 없음이므로 자동 마감 대상이 아니다.
+ *
+ * @return string '' | 'closed' | 'soon'  (기존 컴포넌트가 이 값으로 배지 라벨을 고른다)
+ */
+function hanmi_program_deadline_label($post_id = null) {
+	$post_id = $post_id ? intval($post_id) : get_the_ID();
+	if ($post_id <= 0) {
+		return '';
+	}
+
+	// 1) 수동 설정 우선
+	$manual = get_field('deadline_status', $post_id);
+	if ($manual === 'closed' || $manual === 'soon') {
+		return $manual;
+	}
+
+	// 2) 정원 자동판정
+	$stock = intval(get_field('product_stock', $post_id) ?? 0);
+	if ($stock > 0) {
+		$applicants = intval(get_post_meta($post_id, 'program_applicants_count', true) ?? 0);
+		if ($applicants >= $stock) {
+			return 'closed';
+		}
+	}
+
+	return '';
+}
+
 include DIR_SRC . "/php/ajax.php";
 
 // Filter out deprecated warnings and specific WooCommerce session warnings from output

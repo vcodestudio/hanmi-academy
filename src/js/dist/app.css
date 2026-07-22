@@ -695,6 +695,12 @@ http://scripts.sil.org/OFL
 body.dev *:hover {
   border: 1px dashed #333 !important;
 }
+/* iOS Safari·인앱 브라우저(네이버 등 WebView)의 자동 텍스트 확대(font-boosting)를 차단해
+   브라우저별로 폰트 크기가 달라 보이던 문제를 없앤다. 메인 미술관 사이트와 동일한 정규화. */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
 html,
 body {
   font-size: 16px;
@@ -706,13 +712,13 @@ body {
 @media screen and (max-width:765px) {
   html,
   body {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 @media screen and (max-width:650px) {
   html,
   body {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 html *,
