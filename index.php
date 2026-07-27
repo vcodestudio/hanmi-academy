@@ -183,11 +183,16 @@ $main_video_mobile = function_exists('get_field') ? get_field("main_video_mobile
             <div class="swiper-slide">
                 <div class="thumb" gallery style="position: relative; cursor: pointer;">
                     <?php foreach($imgs as $idx=>$img):
+                        // 표시용(src)은 슬라이더 크기에 맞는 작은 사이즈를 쓰고, 클릭 시 열리는
+                        // 오버레이용 원본은 data-ov로 따로 넘긴다. 슬라이드 전체 이미지가 DOM에
+                        // 올라가므로(숨은 것도 브라우저가 내려받음) src를 큰 사이즈로 바꾸면
+                        // 메인 전송량이 폭증한다. 오버레이 사이즈는 page-activity와 동일하게 large.
                         $src = $img["sizes"]["medium"] ?? $img["url"] ?? "";
                         if(!$src) continue;
+                        $ov = $img["sizes"]["large"] ?? $img["url"] ?? $src;
                         $cap = $img["caption"] ?? $img["alt"] ?? $act->post_title;
                     ?>
-                    <img src="<?= esc_url($src) ?>" alt="<?= esc_attr($cap) ?>"<?= $idx === 0 ? "" : ' style="display:none;"' ?> />
+                    <img src="<?= esc_url($src) ?>" data-ov="<?= esc_url($ov) ?>" alt="<?= esc_attr($cap) ?>"<?= $idx === 0 ? "" : ' style="display:none;"' ?> />
                     <?php endforeach; ?>
                 </div>
             </div>

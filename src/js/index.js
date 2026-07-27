@@ -89,7 +89,10 @@ $(window).on("load", () => {
           const imgElement = iov.querySelector(".img");
           const captionElement = iov.querySelector(".caption");
           const flexContainer = iov.querySelector(".flex");
-          if (imgElement) imgElement.setAttribute("src", e.target.src);
+          // 오버레이는 data-ov(큰 사이즈)를 우선 쓰고 없으면 썸네일 src로 폴백한다.
+          // 썸네일을 작게 유지하면서 팝업만 크게 띄우기 위한 분리.
+          if (imgElement)
+            imgElement.setAttribute("src", e.target.dataset.ov || e.target.src);
           if (captionElement) {
             captionElement.textContent = e.target.alt ?? "";
           }

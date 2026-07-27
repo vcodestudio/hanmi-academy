@@ -140,11 +140,15 @@ $currentPost = get_post();
                 if ($gallery_imgs && is_array($gallery_imgs)):
                     foreach($gallery_imgs as $index => $img):
                         $img_caption = $img['caption'] ?? $img['alt'] ?? $activity_title;
+                        // 'thumb'는 등록된 이미지 사이즈가 아니어서 여기가 원본(수천 px)으로
+                        // 폴백하고 있었다 → 그리드 표시엔 과하고, 메인(medium)과 오버레이 크기가
+                        // 달라 보이는 원인이었다. 표시·오버레이 모두 large로 통일한다.
+                        $img_src = $img['sizes']['large'] ?? $img['url'];
                         ?>
                         <?php if($index === 0): ?>
-                            <img src="<?= esc_url($img['sizes']['thumb'] ?? $img['url']) ?>" alt="<?= esc_attr($img_caption) ?>" />
+                            <img src="<?= esc_url($img_src) ?>" data-ov="<?= esc_url($img_src) ?>" alt="<?= esc_attr($img_caption) ?>" />
                         <?php else: ?>
-                            <img src="<?= esc_url($img['sizes']['thumb'] ?? $img['url']) ?>" alt="<?= esc_attr($img_caption) ?>" style="display: none;">
+                            <img src="<?= esc_url($img_src) ?>" data-ov="<?= esc_url($img_src) ?>" alt="<?= esc_attr($img_caption) ?>" style="display: none;">
                         <?php endif; ?>
                     <?php endforeach;
                 endif; ?>
